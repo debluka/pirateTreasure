@@ -1,0 +1,17 @@
+-upgrade menu
+-settings menu
+-scoreboard
+-improved main menu
+
+-enemy color features (blue - slow, red - more damage, green - slower rate of fire)
+-pickable buffs (friendly targets that you have to shoot)
+-saving
+-checkpoints
+-boss fights
+-sounds
+-improved enemy movement/spawning
+
+-weather conditions
+-wave animations
+-credits
+
