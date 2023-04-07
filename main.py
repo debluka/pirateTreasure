@@ -55,7 +55,7 @@ def main():
 
         if lost:
             lost_label = lost_font.render("GAME OVER", True, (255, 255, 255))
-            WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
+            WIN.blit(lost_label, (WIDTH / 2 - lost_label.get_width() / 2, 350))
 
         pygame.display.update()
 
@@ -78,7 +78,7 @@ def main():
             wave_length += 5
             for i in range(wave_length):
                 enemy = Enemy(random.randrange(
-                    50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
+                    50, WIDTH - 100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                 enemies.append(enemy)
 
         for event in pygame.event.get():
@@ -101,7 +101,7 @@ def main():
             enemy.move(enemy_vel)
             enemy.move_lasers(laser_vel, player)
 
-            if random.randrange(0, 2*60) == 1:
+            if random.randrange(0, 2 * 60) == 1:
                 enemy.shoot()
 
             if collide(enemy, player):
@@ -122,7 +122,7 @@ def main_menu():
         # WIN.blit(BG, (0, 0))
         title_label = title_font.render(
             "Click to start the game", True, (255, 255, 255))
-        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        WIN.blit(title_label, (WIDTH / 2 - title_label.get_width() / 2, 350))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
