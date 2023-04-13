@@ -10,5 +10,5 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://piratestreasure-a3944-default-rtdb.europe-west1.firebasedatabase.app/'
 })
 
-# As an admin, the app has access to read and write all data, regradless of Security Rules
+# As an admin, the app has access to read and write all data, regardless of Security Rules
 ref = db.reference('/')
