@@ -4,7 +4,7 @@ import random
 
 from Enemy import Enemy
 from Player import Player
-from util import WIDTH, HEIGHT, collide
+from util import WIDTH, HEIGHT, FPS, PLAYER_BASE_VELOCITY, LASER_BASE_VELOCITY, ENEMY_BASE_VELOCITY, collide
 
 #Font config
 pygame.font.init()
@@ -22,7 +22,6 @@ BG = pygame.transform.scale(pygame.image.load(
 def main():
     # Initialization
     run = True
-    FPS = 60
     level = 0
     lives = 5
     main_font = pygame.font.SysFont("bahnschrift", 25)
@@ -30,12 +29,8 @@ def main():
 
     enemies = []
     wave_length = 5
-    enemy_vel = 1
 
-    player_vel = 5
-    laser_vel = 5
-
-    player = Player(300, 630)
+    player = Player(300, 630, PLAYER_BASE_VELOCITY)
 
     clock = pygame.time.Clock()
 
@@ -85,8 +80,10 @@ def main():
             level += 1
             wave_length += 5
             for i in range(wave_length):
-                enemy = Enemy(random.randrange(
-                    50, WIDTH - 100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
+                enemy = Enemy(random.randrange(50, WIDTH - 100),
+                              random.randrange(-1500, -100),
+                              random.choice(["red", "blue", "green"]),
+                              PLAYER_BASE_VELOCITY)
                 enemies.append(enemy)
 
         # Window close button
@@ -95,23 +92,24 @@ def main():
                 quit()
 
         # Player Movement
-        player.move_lasers(-laser_vel, enemies)
+        player.move_lasers(-LASER_BASE_VELOCITY, enemies)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a] and player.x - player_vel > 0:  # left
-            player.x -= player_vel
-        if keys[pygame.K_d] and player.x + player_vel + player.get_width() < WIDTH:  # right
-            player.x += player_vel
-        if keys[pygame.K_w] and player.y - player_vel > 0:  # up
-            player.y -= player_vel
-        if keys[pygame.K_s] and player.y + player_vel + player.get_height() + 15 < HEIGHT:  # down
-            player.y += player_vel
+        if keys[pygame.K_a] and player.x - player.velocity > 0:  # left
+            player.x -= player.velocity
+        if keys[pygame.K_d] and player.x + player.velocity + player.get_width() < WIDTH:  # right
+            player.x += player.velocity
+        if keys[pygame.K_w] and player.y - player.velocity > 0:  # up
+            player.y -= player.velocity
+        if keys[pygame.K_s] and player.y + player.velocity + player.get_height() + 15 < HEIGHT:  # down
+            player.y += player.velocity
         if keys[pygame.K_SPACE]:
             player.shoot()
 
         # Enemy updating
         for enemy in enemies[:]:
-            enemy.move(enemy_vel)
-            enemy.move_lasers(laser_vel, player)
+            enemy.updateEffects()
+            enemy.move(ENEMY_BASE_VELOCITY)
+            enemy.move_lasers(LASER_BASE_VELOCITY, player)
 
             # Shooting
             if random.randrange(0, 2 * 60) == 1:
@@ -125,6 +123,8 @@ def main():
                 # If enemy gets to the bottom of the screen we also lose lives
                 lives -= 1
                 enemies.remove(enemy)
+
+        player.updateEffects()
 
 
 # Renders the main menu

@@ -18,8 +18,9 @@ class Enemy(Ship):
         "blue": (BLUE_SHIP, BLUE_LASER)
     }
 
-    def __init__(self, x, y, color, health=100):
-        super().__init__(x, y, health)
+    def __init__(self, x, y, color, velocity, health=100):
+        super().__init__(x, y, velocity, health)
+        self.color = color
         self.ship_img, self.laser_img = self.COLOR_MAP[color]
         self.mask = pygame.mask.from_surface(self.ship_img)
 

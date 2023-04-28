@@ -13,8 +13,8 @@ PLAYER_IMAGE = pygame.image.load(
 
 
 class Player(Ship):
-    def __init__(self, x, y, health=100):
-        super().__init__(x, y, health)
+    def __init__(self, x, y, velocity, health=100):
+        super().__init__(x, y, velocity, health)
         self.ship_img = PLAYER_IMAGE
         self.laser_img = YELLOW_LASER
         self.mask = pygame.mask.from_surface(self.ship_img)

@@ -1,18 +1,21 @@
 from Laser import Laser
-from util import HEIGHT
+from util import HEIGHT, FPS
 
 
 class Ship:
     COOLDOWN = 30
 
-    def __init__(self, x, y, health=100):
+    def __init__(self, x, y, velocity, health=100):
         self.x = x
         self.y = y
         self.health = health
         self.ship_img = None
         self.laser_img = None
         self.lasers = []
+        self.effects = dict()
         self.cool_down_counter = 0
+        self.base_velocity = velocity
+        self.velocity = velocity
 
     def draw(self, window):
         window.blit(self.ship_img, (self.x, self.y))
@@ -26,8 +29,28 @@ class Ship:
             if laser.off_screen(HEIGHT):
                 self.lasers.remove(laser)
             elif laser.collision(obj):
+                # Apply laser effects
+                match self.color:
+                    case 'red':
+                        obj.effects['vulnerable'] = FPS * 3
+                    case 'green':
+                        obj.effects['poisoned'] = FPS * 3
+                    case 'blue':
+                        obj.effects['slowed'] = FPS * 3
                 obj.health -= 10
                 self.lasers.remove(laser)
+
+    def updateEffects(self):
+        for effect, duration in self.effects.items():
+            if (duration > 0):
+                self.effects[effect] = duration - 1
+                match effect:
+                    case 'slowed':
+                        self.velocity = self.base_velocity * 0.6 if duration > 1 else 5
+                    case 'poisoned':
+                        if duration % 10 == 0:
+                            self.health = self.health - 1
+
 
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
