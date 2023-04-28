@@ -6,6 +6,7 @@ from Enemy import Enemy
 from Player import Player
 from util import WIDTH, HEIGHT, collide
 
+#Font config
 pygame.font.init()
 
 # Window config
@@ -24,8 +25,8 @@ def main():
     FPS = 60
     level = 0
     lives = 5
-    main_font = pygame.font.SysFont("comicsans", 25)
-    lost_font = pygame.font.SysFont("comicsans", 30)
+    main_font = pygame.font.SysFont("bahnschrift", 25)
+    lost_font = pygame.font.SysFont("bahnschrift", 30)
 
     enemies = []
     wave_length = 5
@@ -128,7 +129,7 @@ def main():
 
 # Renders the main menu
 def main_menu():
-    title_font = pygame.font.SysFont("comicsans", 50)
+    title_font = pygame.font.SysFont("bahnschrift", 50)
     run = True
     while run:
         WIN.fill((14, 194, 249))
