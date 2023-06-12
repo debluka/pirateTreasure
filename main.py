@@ -5,9 +5,7 @@ import random
 from Enemy import Enemy
 from Player import Player
 from util import WIDTH, HEIGHT, FPS, PLAYER_BASE_VELOCITY, LASER_BASE_VELOCITY, ENEMY_BASE_VELOCITY, collide
-
-#Font config
-pygame.font.init()
+from fonts import main_font, lost_font
 
 # Window config
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -24,8 +22,6 @@ def main():
     run = True
     level = 0
     lives = 5
-    main_font = pygame.font.SysFont("bahnschrift", 25)
-    lost_font = pygame.font.SysFont("bahnschrift", 30)
 
     enemies = []
     wave_length = 5
