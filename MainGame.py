@@ -26,12 +26,9 @@ class MainGame(GameScreen):
         if self.nextScreen is not None:
             return True
 
-        # Loose condition
-        # TODO: move to separate functions
-        if self.lives <= 0 or self.player.health <= 0:
-            self.gameLost = True
-            self.lostCount += 1
+        self.checkEndgameConditions()
 
+        # Endgame text timer
         if self.gameLost:
             if self.lostCount > FPS * 3:
                 self.nextScreen = ScreenType.MAIN_MENU
@@ -39,40 +36,9 @@ class MainGame(GameScreen):
             else:
                 return False
 
-        # Enemy spawning
-        if len(self.enemies) == 0:
-            self.level += 1
-            self.waveLength += 5
-            for i in range(self.waveLength):
-                enemy = Enemy(random.randrange(50, WIDTH - 100),
-                              random.randrange(-1500, -100),
-                              random.choice(["red", "blue", "green"]),
-                              PLAYER_BASE_VELOCITY)
-                self.enemies.append(enemy)
+        self.updateEnemies()
+        self.updatePlayer()
 
-        # Player projectile update
-        self.player.move_lasers(-LASER_BASE_VELOCITY, self.enemies)
-
-        # Enemy updating
-        for enemy in self.enemies[:]:
-            enemy.updateEffects()
-            enemy.move(ENEMY_BASE_VELOCITY)
-            enemy.move_lasers(LASER_BASE_VELOCITY, self.player)
-
-            # Shooting
-            if random.randrange(0, 2 * 60) == 1:
-                enemy.shoot()
-
-            # Collision checking
-            if collide(enemy, self.player):
-                self.player.health -= 10
-                self.enemies.remove(enemy)
-            elif enemy.y + enemy.get_height() > HEIGHT:
-                # If enemy gets to the bottom of the screen we also lose lives
-                self.lives -= 1
-                self.enemies.remove(enemy)
-
-        self.player.updateEffects()
 
     def render(self):
         self.window.fill((14, 194, 249))
@@ -104,13 +70,55 @@ class MainGame(GameScreen):
         pass
 
     def keyboard_button_handler(self, keys: tuple[bool, ...]):
-        if keys[pygame.K_a] and self.player.x - self.player.velocity > 0:  # left
-            self.player.x -= self.player.velocity
-        if keys[pygame.K_d] and self.player.x + self.player.velocity + self.player.get_width() < WIDTH:  # right
-            self.player.x += self.player.velocity
-        if keys[pygame.K_w] and self.player.y - self.player.velocity > 0:  # up
-            self.player.y -= self.player.velocity
-        if keys[pygame.K_s] and self.player.y + self.player.velocity + self.player.get_height() + 15 < HEIGHT:  # down
-            self.player.y += self.player.velocity
-        if keys[pygame.K_SPACE]:
-            self.player.shoot()
+        if not self.gameLost:
+            if keys[pygame.K_a] and self.player.x - self.player.velocity > 0:  # left
+                self.player.x -= self.player.velocity
+            if keys[pygame.K_d] and self.player.x + self.player.velocity + self.player.get_width() < WIDTH:  # right
+                self.player.x += self.player.velocity
+            if keys[pygame.K_w] and self.player.y - self.player.velocity > 0:  # up
+                self.player.y -= self.player.velocity
+            if keys[pygame.K_s] and self.player.y + self.player.velocity + self.player.get_height() + 15 < HEIGHT:  # down
+                self.player.y += self.player.velocity
+            if keys[pygame.K_SPACE]:
+                self.player.shoot()
+
+    def checkEndgameConditions(self) -> None:
+        if self.lives <= 0 or self.player.health <= 0:
+            self.gameLost = True
+            self.lostCount += 1
+
+    def updatePlayer(self):
+        self.player.move_lasers(-LASER_BASE_VELOCITY, self.enemies)
+        self.player.updateEffects()
+
+    def updateEnemies(self):
+        if len(self.enemies) == 0:
+            self.goToNextLevel()
+
+        for enemy in self.enemies[:]:
+            enemy.updateEffects()
+            enemy.move(ENEMY_BASE_VELOCITY)
+            enemy.move_lasers(LASER_BASE_VELOCITY, self.player)
+
+            # Shooting
+            if random.randrange(0, 2 * 60) == 1:
+                enemy.shoot()
+
+            # Collision checking
+            if collide(enemy, self.player):
+                self.player.health -= 10
+                self.enemies.remove(enemy)
+            elif enemy.y + enemy.get_height() > HEIGHT:
+                # If enemy gets to the bottom of the screen we also lose lives
+                self.lives -= 1
+                self.enemies.remove(enemy)
+
+    def goToNextLevel(self):
+        self.level += 1
+        self.waveLength += 5
+        for i in range(self.waveLength):
+            enemy = Enemy(random.randrange(50, WIDTH - 100),
+                          random.randrange(-1500, -100),
+                          random.choice(["red", "blue", "green"]),
+                          PLAYER_BASE_VELOCITY)
+            self.enemies.append(enemy)
