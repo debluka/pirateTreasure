@@ -1,13 +1,16 @@
 import pygame
 
+import util
 from fonts import main_font
 
 
 # button class
 class TextButton():
-    def __init__(self, x: float, y: float, text: str, surface: pygame.Surface, margin=10):
+    def __init__(self, surface: pygame.Surface, y: float, text: str, x: float = None, margin: int = 10):
         fontWidth, fontHeight = main_font.size(text)
-        
+        if x is None:
+            x = (util.WIDTH - fontWidth) / 2 - margin
+
         self.margin = margin
         self.buttonRect: pygame.Rect = pygame.Rect(x - self.margin,
                                                    y - self.margin,

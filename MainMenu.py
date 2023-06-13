@@ -3,6 +3,7 @@ from pygame import Surface
 
 from GameScreen import GameScreen
 from ScreenType import ScreenType
+from TextButton import TextButton
 from fonts import title_font
 from util import WIDTH
 
@@ -10,21 +11,36 @@ from util import WIDTH
 class MainMenu(GameScreen):
     def __init__(self, window: Surface):
         super().__init__(window)
+        TOP_OFFSET: int = 270
+        BUTTON_SPACING = 60
+        self.buttons: dict[str, TextButton] = {"Start game": TextButton(self. window, TOP_OFFSET, "Start game"),
+                                               "Leaderboard": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING, "Leaderboard"),
+                                               "Options": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 2, "Options"),
+                                               "Exit": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 3, "Exit")}
 
     # Renders the main menu
     def update(self) -> bool:
         if self.nextScreen is not None:
             return True
 
+        for key, button in self.buttons.items():
+            if button.clicked is True:
+                match key:
+                    case "Start game":
+                        self.nextScreen = ScreenType.MAIN_GAME
+                    # case "Leaderboard":
+                    #     self.nextScreen = ScreenType.LEADERBOARD
+                    # case "Options":
+                    #     self.nextScreen = ScreenType.OPTIONS_MENU
+                    case "Exit":
+                        return True
+
     def render(self):
         self.window.fill((14, 194, 249))
-        title_label = title_font.render("Click to start the game", True, (255, 255, 255))
-        self.window.blit(title_label, (WIDTH / 2 - title_label.get_width() / 2, 350))
+        for _, button in self.buttons.items():
+            button.draw()
 
     def click_handler(self, button: int, position: tuple[int, int]):
-        match button:
-            case 1:
-                self.nextScreen = ScreenType.MAIN_GAME
         print("Main menu click_handler")
 
     def mouse_move_handler(self, button: int, position: tuple[int, int]):

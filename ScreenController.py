@@ -27,6 +27,8 @@ class ScreenController:
         self.currentScreen.keyboard_button_handler(keys)
 
         if self.currentScreen.update():
+            if self.currentScreen.nextScreen is None:
+                return True
             self.switch_screen()
             return False
 
