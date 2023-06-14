@@ -1,5 +1,7 @@
+import pygame
+
+from GameSettings import gameSettings
 from Laser import Laser
-from util import HEIGHT, FPS
 
 
 class Ship:
@@ -26,17 +28,17 @@ class Ship:
         self.cooldown()
         for laser in self.lasers:
             laser.move(vel)
-            if laser.off_screen(HEIGHT):
+            if laser.off_screen(gameSettings.height):
                 self.lasers.remove(laser)
             elif laser.collision(obj):
                 # Apply laser effects
                 match self.color:
                     case 'red':
-                        obj.effects['vulnerable'] = FPS * 3
+                        obj.effects['vulnerable'] = gameSettings.FPS * 3
                     case 'green':
-                        obj.effects['poisoned'] = FPS * 3
+                        obj.effects['poisoned'] = gameSettings.FPS * 3
                     case 'blue':
-                        obj.effects['slowed'] = FPS * 3
+                        obj.effects['slowed'] = gameSettings.FPS * 3
                 obj.health -= 10
                 self.lasers.remove(laser)
 

@@ -5,7 +5,6 @@ from GameScreen import GameScreen
 from ScreenType import ScreenType
 from TextButton import TextButton
 from fonts import title_font
-from util import WIDTH
 
 
 class MainMenu(GameScreen):
@@ -41,10 +40,10 @@ class MainMenu(GameScreen):
             button.draw()
 
     def click_handler(self, button: int, position: tuple[int, int]):
-        print("Main menu click_handler")
+        pass
 
     def mouse_move_handler(self, button: int, position: tuple[int, int]):
-        print("Main menu mouse_move_handler")
+        pass
 
     def keyboard_button_handler(self, keys: tuple[bool, ...]):
-        print("Main menu keyboard_button_handler")
+        pass

@@ -4,10 +4,11 @@ import pygame
 
 from Enemy import Enemy
 from GameScreen import GameScreen
+from GameSettings import gameSettings
 from Player import Player
 from ScreenType import ScreenType
 from fonts import lost_font, main_font
-from util import PLAYER_BASE_VELOCITY, WIDTH, FPS, LASER_BASE_VELOCITY, HEIGHT, ENEMY_BASE_VELOCITY, collide
+from util import collide
 
 
 class MainGame(GameScreen):
@@ -17,7 +18,7 @@ class MainGame(GameScreen):
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 5
-        self.player = Player(300, 630, PLAYER_BASE_VELOCITY)
+        self.player = Player(300, 630, gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost = False
         self.lostCount = 0
 
@@ -30,7 +31,7 @@ class MainGame(GameScreen):
 
         # Endgame text timer
         if self.gameLost:
-            if self.lostCount > FPS * 3:
+            if self.lostCount > gameSettings.FPS * 3:
                 self.nextScreen = ScreenType.MAIN_MENU
                 return True
             else:
@@ -52,14 +53,14 @@ class MainGame(GameScreen):
         # Lose screen
         if self.gameLost:
             lost_label = lost_font.render("GAME OVER", True, (255, 255, 255))
-            self.window.blit(lost_label, (WIDTH / 2 - lost_label.get_width() / 2, 350))
+            self.window.blit(lost_label, (gameSettings.width / 2 - lost_label.get_width() / 2, 350))
 
         # Lives and level display
         lives_label = main_font.render(f"Lives: {self.lives}", True, (255, 255, 255))
         level_label = main_font.render(f"Level: {self.level}", True, (255, 255, 255))
 
         self.window.blit(lives_label, (10, 10))
-        self.window.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
+        self.window.blit(level_label, (gameSettings.width - level_label.get_width() - 10, 10))
 
         pygame.display.update()
 
@@ -73,11 +74,11 @@ class MainGame(GameScreen):
         if not self.gameLost:
             if keys[pygame.K_a] and self.player.x - self.player.velocity > 0:  # left
                 self.player.x -= self.player.velocity
-            if keys[pygame.K_d] and self.player.x + self.player.velocity + self.player.get_width() < WIDTH:  # right
+            if keys[pygame.K_d] and self.player.x + self.player.velocity + self.player.get_width() < gameSettings.width:  # right
                 self.player.x += self.player.velocity
             if keys[pygame.K_w] and self.player.y - self.player.velocity > 0:  # up
                 self.player.y -= self.player.velocity
-            if keys[pygame.K_s] and self.player.y + self.player.velocity + self.player.get_height() + 15 < HEIGHT:  # down
+            if keys[pygame.K_s] and self.player.y + self.player.velocity + self.player.get_height() + 15 < gameSettings.height:  # down
                 self.player.y += self.player.velocity
             if keys[pygame.K_SPACE]:
                 self.player.shoot()
@@ -88,7 +89,7 @@ class MainGame(GameScreen):
             self.lostCount += 1
 
     def updatePlayer(self):
-        self.player.move_lasers(-LASER_BASE_VELOCITY, self.enemies)
+        self.player.move_lasers(-gameSettings.LASER_BASE_VELOCITY, self.enemies)
         self.player.updateEffects()
 
     def updateEnemies(self):
@@ -97,8 +98,8 @@ class MainGame(GameScreen):
 
         for enemy in self.enemies[:]:
             enemy.updateEffects()
-            enemy.move(ENEMY_BASE_VELOCITY)
-            enemy.move_lasers(LASER_BASE_VELOCITY, self.player)
+            enemy.move(gameSettings.ENEMY_BASE_VELOCITY)
+            enemy.move_lasers(gameSettings.LASER_BASE_VELOCITY, self.player)
 
             # Shooting
             if random.randrange(0, 2 * 60) == 1:
@@ -108,7 +109,7 @@ class MainGame(GameScreen):
             if collide(enemy, self.player):
                 self.player.health -= 10
                 self.enemies.remove(enemy)
-            elif enemy.y + enemy.get_height() > HEIGHT:
+            elif enemy.y + enemy.get_height() > gameSettings.height:
                 # If enemy gets to the bottom of the screen we also lose lives
                 self.lives -= 1
                 self.enemies.remove(enemy)
@@ -117,8 +118,8 @@ class MainGame(GameScreen):
         self.level += 1
         self.waveLength += 5
         for i in range(self.waveLength):
-            enemy = Enemy(random.randrange(50, WIDTH - 100),
+            enemy = Enemy(random.randrange(50, gameSettings.width - 100),
                           random.randrange(-1500, -100),
                           random.choice(["red", "blue", "green"]),
-                          PLAYER_BASE_VELOCITY)
+                          gameSettings.PLAYER_BASE_VELOCITY)
             self.enemies.append(enemy)

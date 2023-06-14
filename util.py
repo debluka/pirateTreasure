@@ -1,8 +1,4 @@
-WIDTH, HEIGHT = 750, 750
-FPS = 60
-PLAYER_BASE_VELOCITY = 5
-LASER_BASE_VELOCITY = 5
-ENEMY_BASE_VELOCITY = 1
+from GameSettings import gameSettings
 
 
 def collide(obj1, obj2):

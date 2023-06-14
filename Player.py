@@ -2,12 +2,11 @@ import os
 
 import pygame
 
+from GameSettings import gameSettings
 from Laser import YELLOW_LASER
 from Ship import Ship
 
 # Player player
-from util import HEIGHT
-
 PLAYER_IMAGE = pygame.image.load(
     os.path.join("assets", "player_ship.png"))
 
@@ -24,7 +23,7 @@ class Player(Ship):
         self.cooldown()
         for laser in self.lasers:
             laser.move(vel)
-            if laser.off_screen(HEIGHT):
+            if laser.off_screen(gameSettings.height):
                 self.lasers.remove(laser)
             else:
                 for obj in objs:

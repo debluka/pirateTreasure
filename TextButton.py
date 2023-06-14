@@ -1,6 +1,6 @@
 import pygame
 
-import util
+from GameSettings import gameSettings
 from fonts import main_font
 
 
@@ -9,7 +9,7 @@ class TextButton():
     def __init__(self, surface: pygame.Surface, y: float, text: str, x: float = None, margin: int = 10):
         fontWidth, fontHeight = main_font.size(text)
         if x is None:
-            x = (util.WIDTH - fontWidth) / 2 - margin
+            x = (gameSettings.width - fontWidth) / 2 - margin
 
         self.margin = margin
         self.buttonRect: pygame.Rect = pygame.Rect(x - self.margin,
