@@ -5,18 +5,21 @@ from fonts import main_font
 
 
 # button class
+
 class TextButton():
     def __init__(self, surface: pygame.Surface, y: float, text: str, x: float = None, margin: int = 10):
-        fontWidth, fontHeight = main_font.size(text)
+        self.fontWidth, self.fontHeight = main_font.size(text)
         if x is None:
-            x = (gameSettings.width - fontWidth) / 2 - margin
+            x = (gameSettings.width - self.fontWidth) / 2 - margin
 
-        self.margin = margin
-        self.buttonRect: pygame.Rect = pygame.Rect(x - self.margin,
-                                                   y - self.margin,
-                                                   fontWidth + self.margin * 2,
-                                                   fontHeight + self.margin * 2)
-        self.textRect: pygame.Rect = pygame.Rect(x, y, fontWidth, fontHeight)
+        self.Xmargin = margin
+        self.Ymargin = margin
+        self.buttonRect: pygame.Rect = pygame.Rect(x - self.Xmargin,
+                                                   y - self.Ymargin,
+                                                   self.fontWidth + self.Xmargin * 2,
+                                                   self.fontHeight + self.Ymargin * 2)
+        self.textRect: pygame.Rect = pygame.Rect(x, y, self.fontWidth, self.fontHeight)
+
         self.clicked: bool = False
         self.text: str = text
         self.surface: pygame.Surface = surface
@@ -37,6 +40,11 @@ class TextButton():
 
         # Draw button on screen
         pygame.draw.rect(self.surface, pygame.Color(255, 255, 255), self.buttonRect, 2)
-        self.surface.blit(main_font.render(self.text, True, (255, 255, 255)), (self.textRect.x, self.textRect.y))
+        self.surface.blit(main_font.render(self.text, True, (255, 255, 255)), (self.buttonRect.center[0] - self.textRect.width / 2, self.buttonRect.center[1] - self.textRect.height / 2))
 
         return action
+
+    def resize(self):
+        self.buttonRect.x = (gameSettings.width - self.fontWidth) / 2 - self.Xmargin
+        self.buttonRect.y = self.buttonRect.y * gameSettings.h_scale
+        #rect.height = rect.height * gameSettings.h_scale

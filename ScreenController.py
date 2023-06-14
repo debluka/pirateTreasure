@@ -24,10 +24,11 @@ class ScreenController:
                 case pygame.MOUSEBUTTONDOWN:
                     self.currentScreen.click_handler(event.button, pygame.mouse.get_pos())
                 case pygame.VIDEORESIZE:
+                    gameSettings.w_scale = event.w / gameSettings.width
+                    gameSettings.h_scale = event.h / gameSettings.height
                     gameSettings.width = event.w
                     gameSettings.height = event.h
-                    gameSettings.w_scale = event.w / gameSettings.BASE_WIDTH
-                    gameSettings.h_scale = event.h / gameSettings.BASE_HEIGHT
+                    self.currentScreen.window_resize_handler()
 
         keys = pygame.key.get_pressed()
         self.currentScreen.keyboard_button_handler(keys)

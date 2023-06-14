@@ -47,3 +47,7 @@ class MainMenu(GameScreen):
 
     def keyboard_button_handler(self, keys: tuple[bool, ...]):
         pass
+
+    def window_resize_handler(self):
+        for _, button in self.buttons.items():
+            button.resize()

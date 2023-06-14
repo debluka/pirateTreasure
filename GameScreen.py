@@ -23,3 +23,5 @@ class GameScreen():
     def keyboard_button_handler(self, keys: tuple[bool, ...]):
         pass
 
+    def window_resize_handler(self):
+        pass
