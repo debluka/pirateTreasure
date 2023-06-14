@@ -13,6 +13,8 @@ class GameSettings():
 
         self.w_scale = 1.0
         self.h_scale = 1.0
+        self.w_scale_base = 1.0
+        self.h_scale_base = 1.0
 
 
 gameSettings = GameSettings()

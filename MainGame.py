@@ -7,6 +7,7 @@ from GameScreen import GameScreen
 from GameSettings import gameSettings
 from Player import Player
 from ScreenType import ScreenType
+from ShipType import ShipType
 from fonts import lost_font, main_font
 from util import collide
 
@@ -18,7 +19,7 @@ class MainGame(GameScreen):
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 5
-        self.player = Player(300, 630, gameSettings.PLAYER_BASE_VELOCITY)
+        self.player = Player(ShipType.PLAYER, 300, 630, gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost = False
         self.lostCount = 0
 
@@ -73,15 +74,20 @@ class MainGame(GameScreen):
     def keyboard_button_handler(self, keys: tuple[bool, ...]):
         if not self.gameLost:
             if keys[pygame.K_a] and self.player.x - self.player.velocity > 0:  # left
-                self.player.x -= self.player.velocity
+                self.player.x -= self.player.velocity * gameSettings.w_scale_base
             if keys[pygame.K_d] and self.player.x + self.player.velocity + self.player.get_width() < gameSettings.width:  # right
-                self.player.x += self.player.velocity
+                self.player.x += self.player.velocity * gameSettings.w_scale_base
             if keys[pygame.K_w] and self.player.y - self.player.velocity > 0:  # up
-                self.player.y -= self.player.velocity
+                self.player.y -= self.player.velocity * gameSettings.h_scale_base
             if keys[pygame.K_s] and self.player.y + self.player.velocity + self.player.get_height() + 15 < gameSettings.height:  # down
-                self.player.y += self.player.velocity
+                self.player.y += self.player.velocity * gameSettings.h_scale_base
             if keys[pygame.K_SPACE]:
                 self.player.shoot()
+
+    def window_resize_handler(self):
+        self.player.resize()
+        for enemy in self.enemies:
+            enemy.resize()
 
     def checkEndgameConditions(self) -> None:
         if self.lives <= 0 or self.player.health <= 0:
@@ -89,7 +95,7 @@ class MainGame(GameScreen):
             self.lostCount += 1
 
     def updatePlayer(self):
-        self.player.move_lasers(-gameSettings.LASER_BASE_VELOCITY, self.enemies)
+        self.player.move_lasers(self.enemies)
         self.player.updateEffects()
 
     def updateEnemies(self):
@@ -98,8 +104,8 @@ class MainGame(GameScreen):
 
         for enemy in self.enemies[:]:
             enemy.updateEffects()
-            enemy.move(gameSettings.ENEMY_BASE_VELOCITY)
-            enemy.move_lasers(gameSettings.LASER_BASE_VELOCITY, self.player)
+            enemy.move()
+            enemy.move_lasers(self.player)
 
             # Shooting
             if random.randrange(0, 2 * 60) == 1:
@@ -118,8 +124,9 @@ class MainGame(GameScreen):
         self.level += 1
         self.waveLength += 5
         for i in range(self.waveLength):
-            enemy = Enemy(random.randrange(50, gameSettings.width - 100),
+            enemy = Enemy(ShipType.ENEMY,
+                          random.randrange(50, gameSettings.width - 100),
                           random.randrange(-1500, -100),
                           random.choice(["red", "blue", "green"]),
-                          gameSettings.PLAYER_BASE_VELOCITY)
+                          gameSettings.ENEMY_BASE_VELOCITY)
             self.enemies.append(enemy)

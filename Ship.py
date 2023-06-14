@@ -2,32 +2,36 @@ import pygame
 
 from GameSettings import gameSettings
 from Laser import Laser
+from ShipType import ShipType
+from util import scaleSurface, scaleSurfaceBase
 
 
 class Ship:
     COOLDOWN = 30
 
-    def __init__(self, x, y, velocity, health=100):
+    def __init__(self, shipType: ShipType, shipImg, laserImg, x, y, velocity, health=100):
         self.x = x
         self.y = y
         self.health = health
-        self.ship_img = None
-        self.laser_img = None
+        self.ship_img = scaleSurfaceBase(shipImg)
+        self.laser_img = scaleSurfaceBase(laserImg)
         self.lasers = []
         self.effects = dict()
         self.cool_down_counter = 0
         self.base_velocity = velocity
         self.velocity = velocity
+        self.mask = pygame.mask.from_surface(self.ship_img)
+        self.shipType = shipType
 
     def draw(self, window):
         window.blit(self.ship_img, (self.x, self.y))
         for laser in self.lasers:
             laser.draw(window)
 
-    def move_lasers(self, vel, obj):
+    def move_lasers(self, obj):
         self.cooldown()
         for laser in self.lasers:
-            laser.move(vel)
+            laser.move()
             if laser.off_screen(gameSettings.height):
                 self.lasers.remove(laser)
             elif laser.collision(obj):
@@ -62,7 +66,7 @@ class Ship:
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            laser = Laser(self.x + self.get_width()/2 - self.laser_img.get_width()/2, self.y, self.laser_img)
+            laser = Laser(self.x + self.get_width()/2 - self.laser_img.get_width()/2, self.y, self.laser_img, -gameSettings.LASER_BASE_VELOCITY)
             self.lasers.append(laser)
             self.cool_down_counter = 1
 
@@ -71,3 +75,18 @@ class Ship:
 
     def get_height(self):
         return self.ship_img.get_height()
+
+    def resize(self):
+        self.x = self.x * gameSettings.w_scale
+        self.y = self.y * gameSettings.h_scale
+
+        self.ship_img = scaleSurface(self.ship_img)
+        self.laser_img = scaleSurface(self.laser_img)
+        self.mask = pygame.mask.from_surface(self.ship_img)
+
+        if self.shipType is ShipType.ENEMY:
+            self.velocity *= gameSettings.h_scale_base
+
+        for laser in self.lasers:
+            laser.resize()
+            print(laser.velocity)

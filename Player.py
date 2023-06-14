@@ -5,6 +5,8 @@ import pygame
 from GameSettings import gameSettings
 from Laser import YELLOW_LASER
 from Ship import Ship
+from ShipType import ShipType
+from util import scaleSurface, scaleSurfaceBase
 
 # Player player
 PLAYER_IMAGE = pygame.image.load(
@@ -12,17 +14,14 @@ PLAYER_IMAGE = pygame.image.load(
 
 
 class Player(Ship):
-    def __init__(self, x, y, velocity, health=100):
-        super().__init__(x, y, velocity, health)
-        self.ship_img = PLAYER_IMAGE
-        self.laser_img = YELLOW_LASER
-        self.mask = pygame.mask.from_surface(self.ship_img)
+    def __init__(self, shipType: ShipType, x, y, velocity, health=100):
+        super().__init__(shipType, PLAYER_IMAGE, YELLOW_LASER, x, y, velocity, health)
         self.max_health = health
 
-    def move_lasers(self, vel, objs):
+    def move_lasers(self, objs):
         self.cooldown()
         for laser in self.lasers:
-            laser.move(vel)
+            laser.move()
             if laser.off_screen(gameSettings.height):
                 self.lasers.remove(laser)
             else:
