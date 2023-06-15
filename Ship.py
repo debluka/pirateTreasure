@@ -85,7 +85,7 @@ class Ship:
         self.mask = pygame.mask.from_surface(self.ship_img)
 
         if self.shipType is ShipType.ENEMY:
-            self.velocity *= gameSettings.h_scale_base
+            self.velocity *= gameSettings.h_scale
 
         for laser in self.lasers:
             laser.resize()

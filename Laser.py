@@ -40,4 +40,4 @@ class Laser:
 
         self.img = scaleSurface(self.img)
         self.mask = pygame.mask.from_surface(self.img)
-        self.velocity = self.velocity * gameSettings.h_scale_base
+        self.velocity = self.velocity * gameSettings.h_scale
