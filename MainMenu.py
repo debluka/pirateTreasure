@@ -45,7 +45,10 @@ class MainMenu(GameScreen):
     def mouse_move_handler(self, button: int, position: tuple[int, int]):
         pass
 
-    def keyboard_button_handler(self, keys: tuple[bool, ...]):
+    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]):
+        pass
+
+    def keyboard_press_button_handler(self, key: int):
         pass
 
     def window_resize_handler(self):

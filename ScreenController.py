@@ -35,11 +35,13 @@ class ScreenController:
                 case pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE and self.currentScreen.screenType is ScreenType.MAIN_GAME:
                         mainGameState.isPaused = not mainGameState.isPaused
+                    else:
+                        self.currentScreen.keyboard_press_button_handler(event.key)
 
         keys = pygame.key.get_pressed()
 
         if mainGameState.isPaused is False:
-            self.currentScreen.keyboard_button_handler(keys)
+            self.currentScreen.keyboard_hold_button_handler(keys)
 
             if self.currentScreen.update():
                 if self.currentScreen.nextScreen is None:

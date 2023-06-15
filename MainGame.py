@@ -7,6 +7,7 @@ import Textures
 from Enemy import Enemy
 from GameScreen import GameScreen
 from GameSettings import gameSettings
+from MainGameState import mainGameState
 from Player import Player
 from ScreenType import ScreenType
 from ShipType import ShipType
@@ -73,7 +74,7 @@ class MainGame(GameScreen):
     def mouse_move_handler(self, button: int, position: tuple[int, int]):
         pass
 
-    def keyboard_button_handler(self, keys: tuple[bool, ...]):
+    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]):
         if not self.gameLost:
             if keys[pygame.K_a] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
                 self.player.x -= self.player.velocity * gameSettings.w_scale_base
@@ -85,6 +86,13 @@ class MainGame(GameScreen):
                 self.player.y += self.player.velocity * gameSettings.h_scale_base
             if keys[pygame.K_SPACE]:
                 self.player.shoot()
+
+    def keyboard_press_button_handler(self, key: int):
+        match key:
+            case pygame.K_u:
+                print("Upgrade menu")
+                if mainGameState.isPaused is False:
+                    mainGameState.isPaused = True
 
     def window_resize_handler(self):
         self.player.resize()
