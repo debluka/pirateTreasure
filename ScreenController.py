@@ -3,6 +3,7 @@ import pygame
 from GameScreen import GameScreen
 from GameSettings import gameSettings
 from MainGame import MainGame
+from MainGameState import mainGameState
 from MainMenu import MainMenu
 from ScreenType import ScreenType
 
@@ -31,15 +32,20 @@ class ScreenController:
                     gameSettings.width = event.w
                     gameSettings.height = event.h
                     self.currentScreen.window_resize_handler()
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE and self.currentScreen.screenType is ScreenType.MAIN_GAME:
+                        mainGameState.isPaused = not mainGameState.isPaused
 
         keys = pygame.key.get_pressed()
-        self.currentScreen.keyboard_button_handler(keys)
 
-        if self.currentScreen.update():
-            if self.currentScreen.nextScreen is None:
-                return True
-            self.switch_screen()
-            return False
+        if mainGameState.isPaused is False:
+            self.currentScreen.keyboard_button_handler(keys)
+
+            if self.currentScreen.update():
+                if self.currentScreen.nextScreen is None:
+                    return True
+                self.switch_screen()
+                return False
 
         self.currentScreen.render()
 

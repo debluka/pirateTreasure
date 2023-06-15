@@ -16,7 +16,7 @@ from util import collide, scaleSurfaceBase
 
 class MainGame(GameScreen):
     def __init__(self, window: pygame.Surface):
-        super().__init__(window)
+        super().__init__(ScreenType.MAIN_GAME, window)
         self.level: int = 0
         self.lives: int = 5
         self.enemies: [Enemy] = []

@@ -9,7 +9,7 @@ from fonts import title_font
 
 class MainMenu(GameScreen):
     def __init__(self, window: Surface):
-        super().__init__(window)
+        super().__init__(ScreenType.MAIN_MENU, window)
         TOP_OFFSET: int = 270
         BUTTON_SPACING = 60
         self.buttons: dict[str, TextButton] = {"Start game": TextButton(self. window, TOP_OFFSET, "Start game"),

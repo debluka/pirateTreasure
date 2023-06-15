@@ -4,8 +4,9 @@ from ScreenType import ScreenType
 
 
 class GameScreen():
-    def __init__(self, window):
+    def __init__(self, screenType: ScreenType, window: pygame.Surface):
         self.window: pygame.Surface = window
+        self.screenType: ScreenType = screenType
         self.nextScreen: ScreenType | None = None
 
     def update(self):
