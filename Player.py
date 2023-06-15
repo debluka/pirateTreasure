@@ -3,15 +3,10 @@ import os
 import pygame
 
 from GameSettings import gameSettings
-from Laser import YELLOW_LASER
 from Ship import Ship
 from ShipType import ShipType
+from Textures import PLAYER_IMAGE, YELLOW_LASER
 from util import scaleSurface, scaleSurfaceBase
-
-# Player player
-PLAYER_IMAGE = pygame.image.load(
-    os.path.join("assets", "player_ship.png"))
-
 
 class Player(Ship):
     def __init__(self, shipType: ShipType, x, y, velocity, health=100):

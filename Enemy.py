@@ -5,14 +5,8 @@ from GameSettings import gameSettings
 from Laser import RED_LASER, GREEN_LASER, BLUE_LASER, Laser
 from Ship import Ship
 from ShipType import ShipType
+from Textures import RED_SHIP, BLUE_SHIP, GREEN_SHIP, RED_LASER, BLUE_LASER, GREEN_LASER
 from util import scaleSurface, scaleSurfaceBase
-
-RED_SHIP = pygame.image.load(
-    os.path.join("assets", "enemy_red.png"))
-GREEN_SHIP = pygame.image.load(
-    os.path.join("assets", "enemy_green.png"))
-BLUE_SHIP = pygame.image.load(
-    os.path.join("assets", "enemy_blue.png"))
 
 class Enemy(Ship):
     COLOR_MAP = {
