@@ -1,7 +1,9 @@
+import math
 import random
 
 import pygame
 
+import Textures
 from Enemy import Enemy
 from GameScreen import GameScreen
 from GameSettings import gameSettings
@@ -9,7 +11,7 @@ from Player import Player
 from ScreenType import ScreenType
 from ShipType import ShipType
 from fonts import lost_font, main_font
-from util import collide
+from util import collide, scaleSurfaceBase
 
 
 class MainGame(GameScreen):
@@ -19,7 +21,7 @@ class MainGame(GameScreen):
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 5
-        self.player = Player(ShipType.PLAYER, 300, 630, gameSettings.PLAYER_BASE_VELOCITY)
+        self.player = Player(ShipType.PLAYER, gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2, gameSettings.height * 0.8, gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost = False
         self.lostCount = 0
 
@@ -73,13 +75,13 @@ class MainGame(GameScreen):
 
     def keyboard_button_handler(self, keys: tuple[bool, ...]):
         if not self.gameLost:
-            if keys[pygame.K_a] and self.player.x - self.player.velocity > 0:  # left
+            if keys[pygame.K_a] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
                 self.player.x -= self.player.velocity * gameSettings.w_scale_base
-            if keys[pygame.K_d] and self.player.x + self.player.velocity + self.player.get_width() < gameSettings.width:  # right
+            if keys[pygame.K_d] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
                 self.player.x += self.player.velocity * gameSettings.w_scale_base
-            if keys[pygame.K_w] and self.player.y - self.player.velocity > 0:  # up
+            if keys[pygame.K_w] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
                 self.player.y -= self.player.velocity * gameSettings.h_scale_base
-            if keys[pygame.K_s] and self.player.y + self.player.velocity + self.player.get_height() + 15 < gameSettings.height:  # down
+            if keys[pygame.K_s] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
                 self.player.y += self.player.velocity * gameSettings.h_scale_base
             if keys[pygame.K_SPACE]:
                 self.player.shoot()
@@ -125,8 +127,8 @@ class MainGame(GameScreen):
         self.waveLength += 5
         for i in range(self.waveLength):
             enemy = Enemy(ShipType.ENEMY,
-                          random.randrange(50, gameSettings.width - 100),
-                          random.randrange(-1500, -100),
+                          random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP).get_width())),
+                          random.randrange(math.ceil(-1500 * gameSettings.h_scale_base), math.ceil(-100 * gameSettings.h_scale_base)),
                           random.choice(["red", "blue", "green"]),
-                          gameSettings.ENEMY_BASE_VELOCITY)
+                          gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base)
             self.enemies.append(enemy)

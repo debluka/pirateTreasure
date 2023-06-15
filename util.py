@@ -18,9 +18,9 @@ def scaleRect(rect: pygame.Rect) -> pygame.Rect:
     return rect
 
 
-def scaleSurface(img: pygame.Surface) -> pygame.Surface:
-    return pygame.transform.scale(img, (img.get_width() * gameSettings.w_scale,
-                                        img.get_height() * gameSettings.h_scale))
+def scaleSurface(img: pygame.Surface, srcImg: pygame.Surface) -> pygame.Surface:
+    return pygame.transform.scale(srcImg, (img.get_width() * gameSettings.w_scale,
+                                           img.get_height() * gameSettings.h_scale))
 
 
 def scaleRectBase(rect: pygame.Rect) -> pygame.Rect:

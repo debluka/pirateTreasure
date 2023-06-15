@@ -13,8 +13,9 @@ class Ship:
         self.x = x
         self.y = y
         self.health = health
+        self.imgSrc = shipImg
         self.ship_img = scaleSurfaceBase(shipImg)
-        self.laser_img = scaleSurfaceBase(laserImg)
+        self.laser_img = laserImg
         self.lasers = []
         self.effects = dict()
         self.cool_down_counter = 0
@@ -80,8 +81,7 @@ class Ship:
         self.x = self.x * gameSettings.w_scale
         self.y = self.y * gameSettings.h_scale
 
-        self.ship_img = scaleSurface(self.ship_img)
-        self.laser_img = scaleSurface(self.laser_img)
+        self.ship_img = scaleSurface(self.ship_img, self.imgSrc)
         self.mask = pygame.mask.from_surface(self.ship_img)
 
         if self.shipType is ShipType.ENEMY:
@@ -89,4 +89,3 @@ class Ship:
 
         for laser in self.lasers:
             laser.resize()
-            print(laser.velocity)

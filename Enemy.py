@@ -2,7 +2,7 @@ import os
 import pygame
 
 from GameSettings import gameSettings
-from Laser import RED_LASER, GREEN_LASER, BLUE_LASER, Laser
+from Laser import Laser
 from Ship import Ship
 from ShipType import ShipType
 from Textures import RED_SHIP, BLUE_SHIP, GREEN_SHIP, RED_LASER, BLUE_LASER, GREEN_LASER

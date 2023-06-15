@@ -23,7 +23,6 @@ class ScreenController:
                     self.currentScreen.mouse_move_handler(event.buttons, pygame.mouse.get_pos())
                 case pygame.MOUSEBUTTONDOWN:
                     self.currentScreen.click_handler(event.button, pygame.mouse.get_pos())
-                    print(gameSettings.w_scale, gameSettings.h_scale)
                 case pygame.VIDEORESIZE:
                     gameSettings.w_scale = event.w / gameSettings.width
                     gameSettings.h_scale = event.h / gameSettings.height
