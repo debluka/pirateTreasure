@@ -40,14 +40,13 @@ class ScreenController:
 
         keys = pygame.key.get_pressed()
 
-        if mainGameState.isPaused is False:
-            self.currentScreen.keyboard_hold_button_handler(keys)
+        self.currentScreen.keyboard_hold_button_handler(keys)
 
-            if self.currentScreen.update():
-                if self.currentScreen.nextScreen is None:
-                    return True
-                self.switch_screen()
-                return False
+        if self.currentScreen.update():
+            if self.currentScreen.nextScreen is None:
+                return True
+            self.switch_screen()
+            return False
 
         self.currentScreen.render()
 

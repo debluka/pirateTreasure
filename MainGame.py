@@ -11,6 +11,7 @@ from MainGameState import mainGameState
 from Player import Player
 from ScreenType import ScreenType
 from ShipType import ShipType
+from UpgradeMenu import UpgradeMenu
 from fonts import lost_font, main_font
 from util import collide, scaleSurfaceBase
 
@@ -26,23 +27,30 @@ class MainGame(GameScreen):
         self.gameLost = False
         self.lostCount = 0
 
+        self.upgradeMenu = UpgradeMenu(self.window)
+
     # Renders the main menu
     def update(self) -> bool:
-        if self.nextScreen is not None:
-            return True
-
-        self.checkEndgameConditions()
-
-        # Endgame text timer
-        if self.gameLost:
-            if self.lostCount > gameSettings.FPS * 3:
-                self.nextScreen = ScreenType.MAIN_MENU
+        if mainGameState.isPaused is False:
+            if self.nextScreen is not None:
                 return True
-            else:
-                return False
 
-        self.updateEnemies()
-        self.updatePlayer()
+            self.checkEndgameConditions()
+
+            # Endgame text timer
+            if self.gameLost:
+                if self.lostCount > gameSettings.FPS * 3:
+                    self.nextScreen = ScreenType.MAIN_MENU
+                    return True
+                else:
+                    return False
+
+            self.updateEnemies()
+            self.updatePlayer()
+
+        if self.upgradeMenu.isShown:
+            self.upgradeMenu.update()
+            self.player.updateUpgrades()
 
 
     def render(self):
@@ -66,6 +74,9 @@ class MainGame(GameScreen):
         self.window.blit(lives_label, (10, 10))
         self.window.blit(level_label, (gameSettings.width - level_label.get_width() - 10, 10))
 
+        if self.upgradeMenu.isShown:
+            self.upgradeMenu.draw()
+
         pygame.display.update()
 
     def click_handler(self, button: int, position: tuple[int, int]):
@@ -75,27 +86,31 @@ class MainGame(GameScreen):
         pass
 
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]):
-        if not self.gameLost:
-            if keys[pygame.K_a] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
-                self.player.x -= self.player.velocity * gameSettings.w_scale_base
-            if keys[pygame.K_d] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
-                self.player.x += self.player.velocity * gameSettings.w_scale_base
-            if keys[pygame.K_w] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
-                self.player.y -= self.player.velocity * gameSettings.h_scale_base
-            if keys[pygame.K_s] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
-                self.player.y += self.player.velocity * gameSettings.h_scale_base
-            if keys[pygame.K_SPACE]:
-                self.player.shoot()
+        if mainGameState.isPaused is False:
+            if not self.gameLost:
+                if keys[pygame.K_a] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
+                    self.player.x -= self.player.velocity * gameSettings.w_scale_base
+                if keys[pygame.K_d] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
+                    self.player.x += self.player.velocity * gameSettings.w_scale_base
+                if keys[pygame.K_w] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
+                    self.player.y -= self.player.velocity * gameSettings.h_scale_base
+                if keys[pygame.K_s] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
+                    self.player.y += self.player.velocity * gameSettings.h_scale_base
+                if keys[pygame.K_SPACE]:
+                    self.player.shoot()
 
     def keyboard_press_button_handler(self, key: int):
         match key:
             case pygame.K_u:
-                print("Upgrade menu")
-                if mainGameState.isPaused is False:
+                self.upgradeMenu.isShown = not self.upgradeMenu.isShown
+                if mainGameState.isPaused is False and self.upgradeMenu.isShown is True:
                     mainGameState.isPaused = True
+                else:
+                    mainGameState.isPaused = False
 
     def window_resize_handler(self):
         self.player.resize()
+        self.upgradeMenu.resize()
         for enemy in self.enemies:
             enemy.resize()
 
