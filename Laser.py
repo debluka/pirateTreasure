@@ -15,6 +15,8 @@ class Laser:
         self.mask = pygame.mask.from_surface(self.img)
         self.y_velocity = y_velocity * gameSettings.h_scale_base
         self.x_velocity = x_velocity * gameSettings.h_scale_base
+        self.isSlowed: bool = False
+        self.health = 3
 
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))

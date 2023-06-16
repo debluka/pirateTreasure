@@ -72,11 +72,11 @@ class Ship:
             self.lasers.append(laser)
 
             if self.shipType is ShipType.PLAYER:
-                if playerUpgrades.number_of_bullets >= 2:
+                if playerUpgrades.numberOfBullets >= 2:
                     laser = Laser(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2, self.y,
                                   self.laser_img, -gameSettings.LASER_BASE_VELOCITY, -gameSettings.LASER_BASE_VELOCITY * 0.1)
                     self.lasers.append(laser)
-                if playerUpgrades.number_of_bullets >= 3:
+                if playerUpgrades.numberOfBullets >= 3:
                     laser = Laser(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2, self.y,
                                   self.laser_img, -gameSettings.LASER_BASE_VELOCITY, gameSettings.LASER_BASE_VELOCITY * 0.1)
                     self.lasers.append(laser)

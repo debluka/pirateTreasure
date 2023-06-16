@@ -44,7 +44,9 @@ class UpgradeButton:
             case UpgradeType.SHOOTING_SPEED:
                 playerUpgrades.shootingSpeed += 1
             case UpgradeType.NUMBER_OF_BULLETS:
-                playerUpgrades.number_of_bullets += 1
+                playerUpgrades.numberOfBullets += 1
+            case UpgradeType.BULLET_COLLISION:
+                playerUpgrades.bulletCollision += 1
 
 
 
