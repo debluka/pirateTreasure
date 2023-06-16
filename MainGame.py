@@ -22,7 +22,7 @@ class MainGame(GameScreen):
         self.level: int = 0
         self.lives: int = 5
         self.enemies: [Enemy] = []
-        self.waveLength: int = 5
+        self.waveLength: int = 0
         self.player = Player(ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost: bool = False
         self.lostCount: int = 0
@@ -149,7 +149,7 @@ class MainGame(GameScreen):
 
     def goToNextLevel(self) -> None:
         self.level += 1
-        self.waveLength += 5
+        self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):
             enemy = Enemy(ShipType(ShipType.ENEMY),
                           random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP).get_width())),
