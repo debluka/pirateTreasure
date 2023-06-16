@@ -7,13 +7,13 @@ from fonts import main_font
 # button class
 
 class TextButton():
-    def __init__(self, surface: pygame.Surface, y: float, text: str, x: float = None, margin: int = 10):
+    def __init__(self, surface: pygame.Surface, y: int, text: str, x: int = None, margin: int = 10):
         self.fontWidth, self.fontHeight = main_font.size(text)
         if x is None:
             x = (gameSettings.width - self.fontWidth) / 2 - margin
 
-        self.Xmargin = margin
-        self.Ymargin = margin
+        self.Xmargin: int = margin
+        self.Ymargin: int = margin
         self.buttonRect: pygame.Rect = pygame.Rect(x - self.Xmargin,
                                                    y - self.Ymargin,
                                                    self.fontWidth + self.Xmargin * 2,
@@ -24,7 +24,7 @@ class TextButton():
         self.text: str = text
         self.surface: pygame.Surface = surface
 
-    def draw(self):
+    def draw(self) -> bool:
         action: bool = False
         # Get mouse position
         pos: tuple[int, int] = pygame.mouse.get_pos()
@@ -44,7 +44,6 @@ class TextButton():
 
         return action
 
-    def resize(self):
+    def resize(self) -> None:
         self.buttonRect.x = (gameSettings.width - self.fontWidth) / 2 - self.Xmargin
         self.buttonRect.y = self.buttonRect.y * gameSettings.h_scale
-        #rect.height = rect.height * gameSettings.h_scale

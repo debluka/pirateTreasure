@@ -24,10 +24,10 @@ class MainGame(GameScreen):
         self.enemies: [Enemy] = []
         self.waveLength: int = 5
         self.player = Player(ShipType.PLAYER, gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2, gameSettings.height * 0.8, gameSettings.PLAYER_BASE_VELOCITY)
-        self.gameLost = False
-        self.lostCount = 0
+        self.gameLost: bool = False
+        self.lostCount: int = 0
 
-        self.upgradeMenu = UpgradeMenu(self.window)
+        self.upgradeMenu: UpgradeMenu = UpgradeMenu(self.window)
 
     # Renders the main menu
     def update(self) -> bool:
@@ -52,8 +52,7 @@ class MainGame(GameScreen):
             self.upgradeMenu.update()
             self.player.updateUpgrades()
 
-
-    def render(self):
+    def render(self) -> None:
         self.window.fill((14, 194, 249))
 
         # Enemies and player's character
@@ -64,12 +63,12 @@ class MainGame(GameScreen):
 
         # Lose screen
         if self.gameLost:
-            lost_label = lost_font.render("GAME OVER", True, (255, 255, 255))
+            lost_label: pygame.Surface = lost_font.render("GAME OVER", True, (255, 255, 255))
             self.window.blit(lost_label, (gameSettings.width / 2 - lost_label.get_width() / 2, 350))
 
         # Lives and level display
-        lives_label = main_font.render(f"Lives: {self.lives}", True, (255, 255, 255))
-        level_label = main_font.render(f"Level: {self.level}", True, (255, 255, 255))
+        lives_label: pygame.Surface = main_font.render(f"Lives: {self.lives}", True, (255, 255, 255))
+        level_label: pygame.Surface = main_font.render(f"Level: {self.level}", True, (255, 255, 255))
 
         self.window.blit(lives_label, (10, 10))
         self.window.blit(level_label, (gameSettings.width - level_label.get_width() - 10, 10))
@@ -79,13 +78,13 @@ class MainGame(GameScreen):
 
         pygame.display.update()
 
-    def click_handler(self, button: int, position: tuple[int, int]):
+    def click_handler(self, button: int, position: tuple[int, int]) -> None:
         pass
 
-    def mouse_move_handler(self, button: int, position: tuple[int, int]):
+    def mouse_move_handler(self, button: int, position: tuple[int, int]) -> None:
         pass
 
-    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]):
+    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         if mainGameState.isPaused is False:
             if not self.gameLost:
                 if keys[pygame.K_a] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
@@ -99,7 +98,7 @@ class MainGame(GameScreen):
                 if keys[pygame.K_SPACE]:
                     self.player.shoot()
 
-    def keyboard_press_button_handler(self, key: int):
+    def keyboard_press_button_handler(self, key: int) -> None:
         match key:
             case pygame.K_ESCAPE:
                 if self.upgradeMenu.isShown is False:
@@ -111,7 +110,7 @@ class MainGame(GameScreen):
                 else:
                     mainGameState.isPaused = False
 
-    def window_resize_handler(self):
+    def window_resize_handler(self) -> None:
         self.player.resize()
         self.upgradeMenu.resize()
         for enemy in self.enemies:
@@ -122,11 +121,11 @@ class MainGame(GameScreen):
             self.gameLost = True
             self.lostCount += 1
 
-    def updatePlayer(self):
+    def updatePlayer(self) -> None:
         self.player.move_lasers(self.enemies)
         self.player.updateEffects()
 
-    def updateEnemies(self):
+    def updateEnemies(self) -> None:
         if len(self.enemies) == 0:
             self.goToNextLevel()
 
@@ -148,11 +147,11 @@ class MainGame(GameScreen):
                 self.lives -= 1
                 self.enemies.remove(enemy)
 
-    def goToNextLevel(self):
+    def goToNextLevel(self) -> None:
         self.level += 1
         self.waveLength += 5
         for i in range(self.waveLength):
-            enemy = Enemy(ShipType.ENEMY,
+            enemy = Enemy(ShipType(ShipType.ENEMY),
                           random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP).get_width())),
                           random.randrange(math.ceil(-1500 * gameSettings.h_scale_base), math.ceil(-100 * gameSettings.h_scale_base)),
                           random.choice(["red", "blue", "green"]),

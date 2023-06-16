@@ -1,8 +1,8 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class ScreenType(Enum):
-    MAIN_MENU = 1
-    MAIN_GAME = 2
-    OPTIONS_MENU = 3
-    LEADERBOARD = 4
+class ScreenType(IntEnum):
+    MAIN_MENU: int = 1
+    MAIN_GAME: int = 2
+    OPTIONS_MENU: int = 3
+    LEADERBOARD: int = 4

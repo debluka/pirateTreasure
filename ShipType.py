@@ -1,5 +1,6 @@
-from enum import Enum
+from enum import IntEnum
 
-class ShipType(Enum):
-    PLAYER = 1
-    ENEMY = 2
+
+class ShipType(IntEnum):
+    PLAYER: int = 1
+    ENEMY: int = 2

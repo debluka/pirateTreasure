@@ -1,12 +1,13 @@
-from enum import Enum
+from enum import IntEnum
 
-class UpgradeType(Enum):
-    SHOOTING_SPEED = 1
-    HEALTH = 2
-    WIND_IGNORE = 3
-    BULLET_COLLISION = 4
-    ARMOR = 5
-    MULTI_CANNON = 6
-    HEALTH_REGENERATION = 7
-    NUMBER_OF_BULLETS = 8
-    DUMMY_2 = 9
+
+class UpgradeType(IntEnum):
+    SHOOTING_SPEED: int = 1
+    HEALTH: int = 2
+    WIND_IGNORE: int = 3
+    BULLET_COLLISION: int = 4
+    ARMOR: int = 5
+    MULTI_CANNON: int = 6
+    HEALTH_REGENERATION: int = 7
+    NUMBER_OF_BULLETS: int = 8
+    DUMMY_2: int = 9

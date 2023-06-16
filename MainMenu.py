@@ -1,17 +1,15 @@
-import pygame
 from pygame import Surface
 
 from GameScreen import GameScreen
 from ScreenType import ScreenType
 from TextButton import TextButton
-from fonts import title_font
 
 
 class MainMenu(GameScreen):
     def __init__(self, window: Surface):
-        super().__init__(ScreenType.MAIN_MENU, window)
+        super().__init__(ScreenType(ScreenType.MAIN_MENU), window)
         TOP_OFFSET: int = 270
-        BUTTON_SPACING = 60
+        BUTTON_SPACING: int = 60
         self.buttons: dict[str, TextButton] = {"Start game": TextButton(self. window, TOP_OFFSET, "Start game"),
                                                "Leaderboard": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING, "Leaderboard"),
                                                "Options": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 2, "Options"),
@@ -34,23 +32,23 @@ class MainMenu(GameScreen):
                     case "Exit":
                         return True
 
-    def render(self):
+    def render(self) -> None:
         self.window.fill((14, 194, 249))
         for _, button in self.buttons.items():
             button.draw()
 
-    def click_handler(self, button: int, position: tuple[int, int]):
+    def click_handler(self, button: int, position: tuple[int, int]) -> None:
         pass
 
-    def mouse_move_handler(self, button: int, position: tuple[int, int]):
+    def mouse_move_handler(self, button: int, position: tuple[int, int]) -> None:
         pass
 
-    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]):
+    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         pass
 
-    def keyboard_press_button_handler(self, key: int):
+    def keyboard_press_button_handler(self, key: int) -> None:
         pass
 
-    def window_resize_handler(self):
+    def window_resize_handler(self) -> None:
         for _, button in self.buttons.items():
             button.resize()

@@ -1,6 +1,5 @@
 import pygame
 
-from GameSettings import gameSettings
 from UpgradeType import UpgradeType
 from fonts import main_font
 from PlayerUpgrades import playerUpgrades
@@ -11,13 +10,13 @@ from util import scaleRect
 
 
 class UpgradeButton:
-    def __init__(self, window: pygame.Surface, x: float, y: float, width: float, height: float, upgradeType: UpgradeType):
+    def __init__(self, window: pygame.Surface, x: int, y: int, width: int, height: int, upgradeType: UpgradeType):
         self.buttonRect: pygame.Rect = pygame.Rect(x, y, width, height)
         self.clicked: bool = False
         self.window: pygame.Surface = window
         self.upgradeType: UpgradeType = upgradeType
 
-    def update(self):
+    def update(self) -> None:
         # Get mouse position
         pos: tuple[int, int] = pygame.mouse.get_pos()
 
@@ -30,16 +29,16 @@ class UpgradeButton:
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
-    def draw(self):
+    def draw(self) -> None:
 
         # Draw button on screen
         pygame.draw.rect(self.window, pygame.Color(255, 255, 255), self.buttonRect, 2)
         self.window.blit(main_font.render(self.upgradeType.name, True, pygame.Color(255, 255, 255)), self.buttonRect)
 
-    def resize(self):
+    def resize(self) -> None:
         scaleRect(self.buttonRect)
 
-    def addPlayerUpgrade(self):
+    def addPlayerUpgrade(self) -> None:
         match self.upgradeType:
             case UpgradeType.SHOOTING_SPEED:
                 playerUpgrades.shootingSpeed += 1

@@ -3,4 +3,4 @@ class MainGameState:
         self.isPaused: bool = False
 
 
-mainGameState = MainGameState()
+mainGameState: MainGameState = MainGameState()

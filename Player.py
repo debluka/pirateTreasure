@@ -1,5 +1,3 @@
-import os
-
 import pygame
 
 from Enemy import Enemy
@@ -9,16 +7,15 @@ from Ship import Ship
 from ShipType import ShipType
 from Textures import PLAYER_IMAGE, YELLOW_LASER
 from fonts import healthbarFont
-from util import scaleSurface, scaleSurfaceBase
 
 class Player(Ship):
-    def __init__(self, shipType: ShipType, x, y, velocity, health=1000):
+    def __init__(self, shipType: ShipType, x: int, y: int, velocity: float, health: int = 1000):
         super().__init__(shipType, PLAYER_IMAGE, YELLOW_LASER, x, y, velocity, health)
-        self.laser_damage = playerUpgrades.laserDamage
-        self.COOLDOWN = 30
+        self.laser_damage: int = playerUpgrades.laserDamage
+        self.COOLDOWN: int = 30
         self.updateUpgrades()
 
-    def move_lasers(self, enemies: list[Enemy]):
+    def move_lasers(self, enemies: list[Enemy]) -> None:
         # handle player's shooting cooldown
         self.cooldown()
         for playerLaser in self.lasers:
@@ -56,11 +53,11 @@ class Player(Ship):
                             if targetLaser.health <= 0 and targetLaser in enemy.lasers:
                                 enemy.lasers.remove(targetLaser)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         super().draw(window)
         self.healthbar(window)
 
-    def healthbar(self, window):
+    def healthbar(self, window) -> None:
         pygame.draw.rect(window, (255, 0, 0), (self.x, self.y +
                          self.ship_img.get_height() + 2 + self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_img.get_height() +
@@ -70,5 +67,5 @@ class Player(Ship):
                                          pygame.Color(255, 255, 255)),
                     (self.x, self.y + self.ship_img.get_height() + 2 + self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
 
-    def updateUpgrades(self):
+    def updateUpgrades(self) -> None:
         self.COOLDOWN = 30 - 5 * playerUpgrades.shootingSpeed

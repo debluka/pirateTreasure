@@ -3,18 +3,17 @@ import pygame
 from GameScreen import GameScreen
 from GameSettings import gameSettings
 from MainGame import MainGame
-from MainGameState import mainGameState
 from MainMenu import MainMenu
 from ScreenType import ScreenType
 
 
 class ScreenController:
     def __init__(self, window: pygame.Surface):
-        self.window = window
+        self.window: pygame.Surface = window
         self.currentScreen: GameScreen = MainMenu(window)
 
-    def process_game_update(self):
-        quit_game = False
+    def process_game_update(self) -> bool:
+        quit_game: bool = False
 
         for event in pygame.event.get():
             match event.type:
@@ -35,7 +34,7 @@ class ScreenController:
                 case pygame.KEYDOWN:
                     self.currentScreen.keyboard_press_button_handler(event.key)
 
-        keys = pygame.key.get_pressed()
+        keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
 
         self.currentScreen.keyboard_hold_button_handler(keys)
 

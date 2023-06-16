@@ -18,7 +18,7 @@ def main_loop(clock: pygame.time.Clock) -> None:
 pygame.display.set_caption("Pirate's Treasure")
 
 # Main window config
-window = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE)
+window: pygame.Surface = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE)
 screenController: ScreenController = ScreenController(window)
 
 main_loop(pygame.time.Clock())
