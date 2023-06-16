@@ -8,5 +8,5 @@ class UpgradeType(Enum):
     ARMOR = 5
     MULTI_CANNON = 6
     HEALTH_REGENERATION = 7
-    DUMMY_1 = 8
+    NUMBER_OF_BULLETS = 8
     DUMMY_2 = 9

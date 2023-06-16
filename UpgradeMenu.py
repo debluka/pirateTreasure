@@ -67,6 +67,6 @@ class UpgradeMenu:
                 UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType.ARMOR),
                 UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType.MULTI_CANNON),
                 UpgradeButton(self.window, self.menuRect.x, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType.HEALTH_REGENERATION),
-                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType.DUMMY_1),
+                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType.NUMBER_OF_BULLETS),
                 UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType.DUMMY_2),
         ]

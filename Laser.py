@@ -7,19 +7,21 @@ from util import collide, scaleSurface, scaleSurfaceBase
 
 
 class Laser:
-    def __init__(self, x, y, img, velocity):
+    def __init__(self, x, y, img, y_velocity, x_velocity=0):
         self.x = x
         self.y = y
         self.img = scaleSurfaceBase(img)
         self.imgSrc = img
         self.mask = pygame.mask.from_surface(self.img)
-        self.velocity = velocity * gameSettings.h_scale_base
+        self.y_velocity = y_velocity * gameSettings.h_scale_base
+        self.x_velocity = x_velocity * gameSettings.h_scale_base
 
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
 
     def move(self):
-        self.y += self.velocity
+        self.y += self.y_velocity
+        self.x += self.x_velocity
 
     def off_screen(self, height):
         return not (self.y <= height and self.y >= 0)
@@ -33,4 +35,5 @@ class Laser:
 
         self.img = scaleSurface(self.img, self.imgSrc)
         self.mask = pygame.mask.from_surface(self.img)
-        self.velocity = self.velocity * gameSettings.h_scale
+        self.y_velocity = self.y_velocity * gameSettings.h_scale
+        self.x_velocity = self.x_velocity * gameSettings.h_scale

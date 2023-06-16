@@ -2,6 +2,7 @@ import pygame
 
 from GameSettings import gameSettings
 from Laser import Laser
+from PlayerUpgrades import playerUpgrades
 from ShipType import ShipType
 from util import scaleSurface, scaleSurfaceBase
 
@@ -69,6 +70,16 @@ class Ship:
         if self.cool_down_counter == 0:
             laser = Laser(self.x + self.get_width()/2 - self.laser_img.get_width()/2, self.y, self.laser_img, -gameSettings.LASER_BASE_VELOCITY)
             self.lasers.append(laser)
+
+            if self.shipType is ShipType.PLAYER:
+                if playerUpgrades.number_of_bullets >= 2:
+                    laser = Laser(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2, self.y,
+                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY, -gameSettings.LASER_BASE_VELOCITY * 0.1)
+                    self.lasers.append(laser)
+                if playerUpgrades.number_of_bullets >= 3:
+                    laser = Laser(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2, self.y,
+                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY, gameSettings.LASER_BASE_VELOCITY * 0.1)
+                    self.lasers.append(laser)
             self.cool_down_counter = 1
 
     def get_width(self):
