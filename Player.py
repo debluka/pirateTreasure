@@ -8,6 +8,7 @@ from PlayerUpgrades import playerUpgrades
 from Ship import Ship
 from ShipType import ShipType
 from Textures import PLAYER_IMAGE, YELLOW_LASER
+from fonts import healthbarFont
 from util import scaleSurface, scaleSurfaceBase
 
 class Player(Ship):
@@ -61,9 +62,13 @@ class Player(Ship):
 
     def healthbar(self, window):
         pygame.draw.rect(window, (255, 0, 0), (self.x, self.y +
-                         self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
+                         self.ship_img.get_height() + 2 + self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_img.get_height() +
-                         10, self.ship_img.get_width() * (self.health/self.max_health), 10))
+                         2 + self.healthbarHeight, self.ship_img.get_width() * (self.health/self.max_health), self.healthbarHeight))
+        window.blit(healthbarFont.render(str(self.health) + " / " + str(self.max_health),
+                                         True,
+                                         pygame.Color(255, 255, 255)),
+                    (self.x, self.y + self.ship_img.get_height() + 2 + self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
 
     def updateUpgrades(self):
         self.COOLDOWN = 30 - 5 * playerUpgrades.shootingSpeed

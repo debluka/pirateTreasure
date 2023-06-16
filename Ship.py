@@ -4,6 +4,7 @@ from GameSettings import gameSettings
 from Laser import Laser
 from PlayerUpgrades import playerUpgrades
 from ShipType import ShipType
+from fonts import main_font, healthbarFont
 from util import scaleSurface, scaleSurfaceBase
 
 
@@ -25,6 +26,7 @@ class Ship:
         self.velocity = velocity
         self.mask = pygame.mask.from_surface(self.ship_img)
         self.shipType = shipType
+        self.healthbarHeight = healthbarFont.get_height()
 
     def draw(self, window):
         window.blit(self.ship_img, (self.x, self.y))
@@ -33,8 +35,12 @@ class Ship:
             laser.draw(window)
 
     def healthbar(self, window):
-        pygame.draw.rect(window, (255, 0, 0), (self.x, self.y - 10, self.ship_img.get_width(), 8))
-        pygame.draw.rect(window, (0, 255, 0), (self.x, self.y - 10, self.ship_img.get_width() * (self.health / self.max_health), 8))
+        pygame.draw.rect(window, (255, 0, 0), (self.x, self.y - 2 - self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
+        pygame.draw.rect(window, (0, 255, 0), (self.x, self.y - 2 - self.healthbarHeight, self.ship_img.get_width() * (self.health / self.max_health), self.healthbarHeight))
+        window.blit(healthbarFont.render(str(self.health) + " / " + str(self.max_health),
+                                         True,
+                                         pygame.Color(255, 255, 255)),
+                    (self.x, self.y - 2 - self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
 
     def move_lasers(self, obj):
         self.cooldown()

@@ -33,10 +33,7 @@ class ScreenController:
                     gameSettings.height = event.h
                     self.currentScreen.window_resize_handler()
                 case pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE and self.currentScreen.screenType is ScreenType.MAIN_GAME:
-                        mainGameState.isPaused = not mainGameState.isPaused
-                    else:
-                        self.currentScreen.keyboard_press_button_handler(event.key)
+                    self.currentScreen.keyboard_press_button_handler(event.key)
 
         keys = pygame.key.get_pressed()
 
