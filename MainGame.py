@@ -22,7 +22,7 @@ class MainGame(GameScreen):
         self.level: int = 0
         self.lives: int = 5
         self.enemies: [Enemy] = []
-        self.waveLength: int = 5
+        self.waveLength: int = 500
         self.player = Player(ShipType.PLAYER, gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2, gameSettings.height * 0.8, gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost = False
         self.lostCount = 0

@@ -15,6 +15,7 @@ class Player(Ship):
         super().__init__(shipType, PLAYER_IMAGE, YELLOW_LASER, x, y, velocity, health)
         self.laser_damage = playerUpgrades.laserDamage
         self.COOLDOWN = 30
+        self.updateUpgrades()
 
     def move_lasers(self, enemies: list[Enemy]):
         # handle player's shooting cooldown
