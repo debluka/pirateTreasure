@@ -18,12 +18,12 @@ from util import collide, scaleSurfaceBase
 
 class MainGame(GameScreen):
     def __init__(self, window: pygame.Surface):
-        super().__init__(ScreenType.MAIN_GAME, window)
+        super().__init__(ScreenType(ScreenType.MAIN_GAME), window)
         self.level: int = 0
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 5
-        self.player = Player(ShipType.PLAYER, gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2, gameSettings.height * 0.8, gameSettings.PLAYER_BASE_VELOCITY)
+        self.player = Player(ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost: bool = False
         self.lostCount: int = 0
 
