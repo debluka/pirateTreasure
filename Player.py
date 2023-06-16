@@ -13,7 +13,6 @@ from util import scaleSurface, scaleSurfaceBase
 class Player(Ship):
     def __init__(self, shipType: ShipType, x, y, velocity, health=1000):
         super().__init__(shipType, PLAYER_IMAGE, YELLOW_LASER, x, y, velocity, health)
-        self.max_health = health
         self.laser_damage = playerUpgrades.laserDamage
         self.COOLDOWN = 30
 

@@ -14,6 +14,7 @@ class Ship:
         self.x = x
         self.y = y
         self.health = health
+        self.max_health = health
         self.imgSrc = shipImg
         self.ship_img = scaleSurfaceBase(shipImg)
         self.laser_img = laserImg
@@ -27,8 +28,13 @@ class Ship:
 
     def draw(self, window):
         window.blit(self.ship_img, (self.x, self.y))
+        self.healthbar(window)
         for laser in self.lasers:
             laser.draw(window)
+
+    def healthbar(self, window):
+        pygame.draw.rect(window, (255, 0, 0), (self.x, self.y - 10, self.ship_img.get_width(), 8))
+        pygame.draw.rect(window, (0, 255, 0), (self.x, self.y - 10, self.ship_img.get_width() * (self.health / self.max_health), 8))
 
     def move_lasers(self, obj):
         self.cooldown()
