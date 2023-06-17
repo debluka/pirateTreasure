@@ -25,8 +25,8 @@ class MainMenu(GameScreen):
                 match key:
                     case "Start game":
                         self.nextScreen = ScreenType.MAIN_GAME
-                    # case "Leaderboard":
-                    #     self.nextScreen = ScreenType.LEADERBOARD
+                    case "Leaderboard":
+                        self.nextScreen = ScreenType.LEADERBOARD
                     # case "Options":
                     #     self.nextScreen = ScreenType.OPTIONS_MENU
                     case "Exit":

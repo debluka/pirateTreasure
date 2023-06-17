@@ -2,6 +2,7 @@ import pygame
 
 from GameScreen import GameScreen
 from GameSettings import gameSettings
+from Leaderboard import Leaderboard
 from MainGame import MainGame
 from MainMenu import MainMenu
 from ScreenType import ScreenType
@@ -56,3 +57,5 @@ class ScreenController:
                 self.currentScreen = MainMenu(self.window)
             case ScreenType.MAIN_GAME:
                 self.currentScreen = MainGame(self.window)
+            case ScreenType.LEADERBOARD:
+                self.currentScreen = Leaderboard(self.window)

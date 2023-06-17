@@ -12,6 +12,7 @@ from Player import Player
 from ScreenType import ScreenType
 from ShipType import ShipType
 from UpgradeMenu import UpgradeMenu
+from dbModifyScores import saveScore
 from fonts import lost_font, main_font
 from util import collide, scaleSurfaceBase
 
