@@ -4,6 +4,7 @@ class PlayerUpgrades:
         self.numberOfBullets: int = 1
         self.laserDamage: int = 10
         self.bulletCollision: int = 0
+        self.maxHealth: int = 0
 
 
 playerUpgrades: PlayerUpgrades = PlayerUpgrades()

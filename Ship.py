@@ -15,6 +15,7 @@ class Ship:
         self.x: int = x
         self.y: int = y
         self.health: int = health
+        self.BASE_MAX_HEALTH: int = health
         self.max_health: int = health
         self.imgSrc: pygame.Surface = shipImg
         self.ship_img: pygame.Surface = scaleSurfaceBase(shipImg)

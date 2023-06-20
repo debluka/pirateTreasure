@@ -46,6 +46,8 @@ class UpgradeButton:
                 playerUpgrades.numberOfBullets += 1
             case UpgradeType.BULLET_COLLISION:
                 playerUpgrades.bulletCollision += 1
+            case UpgradeType.HEALTH:
+                playerUpgrades.maxHealth += 1
 
 
 
