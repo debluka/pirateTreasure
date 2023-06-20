@@ -12,7 +12,7 @@ class Leaderboard(GameScreen):
     def __init__(self, window: pygame.Surface):
         super().__init__(ScreenType(ScreenType.LEADERBOARD), window)
         self.x: int = int(gameSettings.width * 0.05)
-        self.y: int = int(gameSettings.width * 0.15)
+        self.y: int = int(gameSettings.height * 0.15)
         self.width: int = int(gameSettings.width * 0.9)
         self.height: int = int(gameSettings.height * 0.8)
         self.leaderboardRect: pygame.Rect = pygame.Rect((self.x, self.y, self.width, self.height))

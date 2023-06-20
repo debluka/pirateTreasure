@@ -65,7 +65,7 @@ class MainGame(GameScreen):
         # Lose screen
         if self.gameLost:
             lost_label: pygame.Surface = lost_font.render("GAME OVER", True, (255, 255, 255))
-            self.window.blit(lost_label, (gameSettings.width / 2 - lost_label.get_width() / 2, 350))
+            self.window.blit(lost_label, (gameSettings.width / 2 - lost_label.get_width() / 2, gameSettings.height / 2 - lost_font.get_height() / 2))
 
         # Lives and level display
         lives_label: pygame.Surface = main_font.render(f"Lives: {self.lives}", True, (255, 255, 255))
@@ -73,6 +73,11 @@ class MainGame(GameScreen):
 
         self.window.blit(lives_label, (10, 10))
         self.window.blit(level_label, (gameSettings.width - level_label.get_width() - 10, 10))
+
+        # Pause text
+        if mainGameState.isPaused:
+            pause_label: pygame.Surface = main_font.render("GAME PAUSED", True, (255, 255, 255))
+            self.window.blit(pause_label, (gameSettings.width / 2 - pause_label.get_width() / 2, gameSettings.height / 2 - main_font.get_height() / 2))
 
         if self.upgradeMenu.isShown:
             self.upgradeMenu.draw()
