@@ -5,7 +5,7 @@ from util import collide, scaleSurface, scaleSurfaceBase
 
 
 class Laser:
-    def __init__(self, x: int, y: int, img: pygame.Surface, y_velocity: float, x_velocity: float = 0):
+    def __init__(self, x: int, y: int, appliesEffects:bool, img: pygame.Surface, y_velocity: float, x_velocity: float = 0):
         self.x: int = x
         self.y: int = y
         self.img: pygame.Surface = scaleSurfaceBase(img)
@@ -15,6 +15,7 @@ class Laser:
         self.x_velocity: float = x_velocity * gameSettings.h_scale_base
         self.isSlowed: bool = False
         self.health: int = 3
+        self.appliesEffects: bool = appliesEffects
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.img, (self.x, self.y))

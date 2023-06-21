@@ -20,7 +20,6 @@ from util import collide, scaleSurfaceBase
 class MainGame(GameScreen):
     def __init__(self, window: pygame.Surface):
         super().__init__(ScreenType(ScreenType.MAIN_GAME), window)
-        self.level: int = 0
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 0
@@ -154,7 +153,7 @@ class MainGame(GameScreen):
                 self.enemies.remove(enemy)
 
     def goToNextLevel(self) -> None:
-        self.level += 1
+        mainGameState.level += 1
         self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):
             enemy = Enemy(ShipType(ShipType.ENEMY),

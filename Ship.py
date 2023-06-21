@@ -62,7 +62,7 @@ class Ship:
 
     def shoot(self) -> None:
         if self.cool_down_counter == 0:
-            laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2), self.y, self.laser_img, -gameSettings.LASER_BASE_VELOCITY)
+            laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2), self.y, False, self.laser_img, -gameSettings.LASER_BASE_VELOCITY)
             self.lasers.append(laser)
 
             if self.shipType is ShipType.PLAYER:
