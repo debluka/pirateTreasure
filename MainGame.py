@@ -68,9 +68,13 @@ class MainGame(GameScreen):
 
         # Lives and level display
         lives_label: pygame.Surface = main_font.render(f"Lives: {self.lives}", True, (255, 255, 255))
-        level_label: pygame.Surface = main_font.render(f"Level: {self.level}", True, (255, 255, 255))
+        level_label: pygame.Surface = main_font.render(f"Level: {mainGameState.level}", True, (255, 255, 255))
+        score_label: pygame.Surface = main_font.render(f"Score: {mainGameState.score}", True, (255, 255, 255))
+        money_label: pygame.Surface = main_font.render(f"Money: {mainGameState.money}", True, (255, 255, 255))
 
         self.window.blit(lives_label, (10, 10))
+        self.window.blit(score_label, (10, main_font.get_height() + 10))
+        self.window.blit(money_label, (10, main_font.get_height() * 2 + 10))
         self.window.blit(level_label, (gameSettings.width - level_label.get_width() - 10, 10))
 
         # Pause text
