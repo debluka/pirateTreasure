@@ -134,7 +134,7 @@ class MainGame(GameScreen):
     def updatePlayer(self) -> None:
         self.player.move_lasers(self.enemies)
         self.player.updateEffects()
-        self.player.updateHealth()
+        self.player.updateHealthAndArmor()
 
     def updateEnemies(self) -> None:
         if len(self.enemies) == 0:
@@ -162,6 +162,7 @@ class MainGame(GameScreen):
 
     def goToNextLevel(self) -> None:
         mainGameState.level += 1
+        self.player.armor = self.player.max_armor
         self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):
             enemy = Enemy(ShipType(ShipType.ENEMY),

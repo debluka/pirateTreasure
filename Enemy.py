@@ -40,7 +40,10 @@ class Enemy(Ship):
                             obj.effects['poisoned'] = gameSettings.FPS * 3
                         case 'blue':
                             obj.effects['slowed'] = gameSettings.FPS * 3
-                obj.health -= 10
+                if obj.armor > 0:
+                    obj.armor -= 10
+                else:
+                    obj.health -= 10
                 self.lasers.remove(laser)
 
     def shoot(self) -> None:

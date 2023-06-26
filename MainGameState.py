@@ -9,6 +9,7 @@ class MainGameState:
         self.HEALTH_PER_UPGRADE: int = 10
         self.VELOCITY_PER_UPGRADE: int = 1
         self.HEALTH_REGENERATION_PER_UPGRADE: float = 0.01
+        self.ARMOR_PER_UPGRADE: int = 20
 
 
 mainGameState: MainGameState = MainGameState()
