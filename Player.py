@@ -6,12 +6,12 @@ from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
 from Ship import Ship
 from ShipType import ShipType
-from Textures import PLAYER_IMAGE, CANNONBALL
+from Textures import PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3, CANNONBALL
 from fonts import healthbarFont
 
 class Player(Ship):
-    def __init__(self, shipType: ShipType, x: int, y: int, velocity: float, health: int = 1000):
-        super().__init__(shipType, PLAYER_IMAGE, CANNONBALL, x, y, velocity, health)
+    def __init__(self, shipType: ShipType, x: int, y: int, velocity: float, health: int = 10):
+        super().__init__(shipType, (PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3), CANNONBALL, x, y, velocity, health)
         self.laser_base_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
         self.laser_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
         self.COOLDOWN: int = 30
@@ -133,3 +133,5 @@ class Player(Ship):
 
         if self.health <= self.max_health and self.effects.get('poisoned', 0) <= 0:
             self.health += mainGameState.HEALTH_REGENERATION_PER_UPGRADE * playerUpgrades.healthRegeneration
+            if self.health > self.max_health:
+                self.health = self.max_health

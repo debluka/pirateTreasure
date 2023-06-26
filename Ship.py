@@ -1,3 +1,6 @@
+import copy
+import math
+
 import pygame
 
 from GameSettings import gameSettings
@@ -5,6 +8,7 @@ from Laser import Laser
 from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
 from ShipType import ShipType
+from Textures import PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3
 from fonts import healthbarFont
 from util import scaleSurface, scaleSurfaceBase
 
@@ -12,14 +16,14 @@ from util import scaleSurface, scaleSurfaceBase
 class Ship:
     COOLDOWN: int = 30
 
-    def __init__(self, shipType: ShipType, shipImg: pygame.Surface, laserImg: pygame.Surface, x: int, y: int, velocity: float, health: int = 100):
+    def __init__(self, shipType: ShipType, src_images: (pygame.Surface, ...), laserImg: pygame.Surface, x: int, y: int, velocity: float, health: int = 100):
         self.x: int = x
         self.y: int = y
         self.health: float = health
         self.BASE_MAX_HEALTH: int = health
         self.max_health: int = health
-        self.imgSrc: pygame.Surface = shipImg
-        self.ship_img: pygame.Surface = scaleSurfaceBase(shipImg)
+        self.imgSrc: pygame.Surface = src_images[-1]
+        self.ship_img: pygame.Surface = scaleSurfaceBase(src_images[-1])
         self.laser_img: pygame.Surface = laserImg
         self.lasers: list[Laser] = []
         self.effects: dict[str, int] = dict()
@@ -29,8 +33,11 @@ class Ship:
         self.mask: pygame.mask.Mask = pygame.mask.from_surface(self.ship_img)
         self.shipType: ShipType = shipType
         self.healthbarHeight: int = healthbarFont.get_height()
+        self.images: (pygame.Surface, ...) = src_images
 
     def draw(self, window: pygame.Surface) -> None:
+        self.updateImage()
+
         window.blit(self.ship_img, (self.x, self.y))
         self.healthbar(window)
         for laser in self.lasers:
@@ -95,3 +102,7 @@ class Ship:
 
         for laser in self.lasers:
             laser.resize()
+
+    def updateImage(self) -> None:
+        self.imgSrc = self.images[math.ceil(self.health / self.max_health * 3) - 1 if self.health > 0 else 0]
+        self.ship_img = scaleSurfaceBase(self.imgSrc)

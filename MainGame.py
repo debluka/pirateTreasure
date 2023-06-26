@@ -23,7 +23,7 @@ class MainGame(GameScreen):
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 0
-        self.player = Player(ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
+        self.player = Player(ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost: bool = False
         self.lostCount: int = 0
 
@@ -160,7 +160,7 @@ class MainGame(GameScreen):
         self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):
             enemy = Enemy(ShipType(ShipType.ENEMY),
-                          random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP).get_width())),
+                          random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
                           random.randrange(math.ceil(-1500 * gameSettings.h_scale_base), math.ceil(-100 * gameSettings.h_scale_base)),
                           random.choice(["red", "blue", "green"]),
                           gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base)

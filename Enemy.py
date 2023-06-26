@@ -7,14 +7,14 @@ from Laser import Laser
 from MainGameState import mainGameState
 from Ship import Ship
 from ShipType import ShipType
-from Textures import RED_SHIP, BLUE_SHIP, GREEN_SHIP, RED_LASER, BLUE_LASER, GREEN_LASER, CANNONBALL
+from Textures import RED_SHIP3, RED_SHIP2, RED_SHIP1, BLUE_SHIP3, BLUE_SHIP2, BLUE_SHIP1, GREEN_SHIP3, GREEN_SHIP2, GREEN_SHIP1, RED_LASER, BLUE_LASER, GREEN_LASER, CANNONBALL
 
 
 class Enemy(Ship):
     COLOR_MAP: dict[str, tuple[pygame.Surface, pygame.Surface]] = {
-        "red": (RED_SHIP, RED_LASER),
-        "green": (GREEN_SHIP, GREEN_LASER),
-        "blue": (BLUE_SHIP, BLUE_LASER)
+        "red": ((RED_SHIP1, RED_SHIP2, RED_SHIP3), RED_LASER),
+        "green": ((GREEN_SHIP1, GREEN_SHIP2, GREEN_SHIP3), GREEN_LASER),
+        "blue": ((BLUE_SHIP1, BLUE_SHIP2, BLUE_SHIP3), BLUE_LASER)
     }
 
     def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, health=100):
