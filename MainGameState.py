@@ -6,5 +6,7 @@ class MainGameState:
         self.score = 0
         self.money = 0
 
+        self.HEALTH_PER_UPGRADE: int = 10
+
 
 mainGameState: MainGameState = MainGameState()
