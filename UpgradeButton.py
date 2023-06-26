@@ -1,5 +1,6 @@
 import pygame
 
+from MainGameState import mainGameState
 from UpgradeType import UpgradeType
 from fonts import main_font
 from PlayerUpgrades import playerUpgrades

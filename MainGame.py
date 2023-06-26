@@ -40,6 +40,7 @@ class MainGame(GameScreen):
             # Endgame text timer
             if self.gameLost:
                 if self.lostCount > gameSettings.FPS * 3:
+                    saveScore("Testing", mainGameState.score)
                     self.nextScreen = ScreenType.MAIN_MENU
                     return True
                 else:
@@ -151,6 +152,8 @@ class MainGame(GameScreen):
             if collide(enemy, self.player):
                 self.player.health -= 10
                 self.enemies.remove(enemy)
+                mainGameState.score += 10
+                mainGameState.money += 10
             elif enemy.y + enemy.get_height() > gameSettings.height:
                 # If enemy gets to the bottom of the screen we also lose lives
                 self.lives -= 1

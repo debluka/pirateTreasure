@@ -2,6 +2,7 @@ import pygame
 
 from Enemy import Enemy
 from GameSettings import gameSettings
+from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
 from Ship import Ship
 from ShipType import ShipType
@@ -29,6 +30,8 @@ class Player(Ship):
                         # check for laser collision with the enemy and damage/kill the enemy and remove the laser
                         enemy.health -= self.laser_damage
                         if enemy.health <= 0:
+                            mainGameState.score += 10
+                            mainGameState.money += 10
                             enemies.remove(enemy)
                         if playerLaser in self.lasers:
                             self.lasers.remove(playerLaser)
