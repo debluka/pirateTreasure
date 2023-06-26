@@ -63,17 +63,17 @@ class Ship:
 
     def shoot(self) -> None:
         if self.cool_down_counter == 0:
-            laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2), self.y, False, self.laser_img, -gameSettings.LASER_BASE_VELOCITY)
+            laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2), self.y, False, self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
             self.lasers.append(laser)
 
             if self.shipType is ShipType.PLAYER:
                 if playerUpgrades.numberOfBullets >= 2:
                     laser = Laser(int(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2), self.y, False,
-                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY, -gameSettings.LASER_BASE_VELOCITY * 0.1)
+                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE, -gameSettings.LASER_BASE_VELOCITY * 0.1 - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
                     self.lasers.append(laser)
                 if playerUpgrades.numberOfBullets >= 3:
                     laser = Laser(int(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2), self.y, False,
-                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY, gameSettings.LASER_BASE_VELOCITY * 0.1)
+                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE, gameSettings.LASER_BASE_VELOCITY * 0.1 + playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
                     self.lasers.append(laser)
             self.cool_down_counter = 1
 
