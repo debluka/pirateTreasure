@@ -61,11 +61,11 @@ class UpgradeMenu:
     def initUpgradeButtons(self) -> list[UpgradeButton]:
         return [UpgradeButton(self.window, self.menuRect.x, self.menuRect.y, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.SHOOTING_SPEED)),
                 UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.HEALTH)),
-                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.WIND_IGNORE)),
-                UpgradeButton(self.window, self.menuRect.x, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.BULLET_COLLISION)),
-                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.ARMOR)),
-                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.MULTI_CANNON)),
+                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.VELOCITY)),
+                UpgradeButton(self.window, self.menuRect.x, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.PROJECTILE_COLLISION)),
+                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.PROJECTILE_SPEED)),
+                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y + self.menuRect.height * 1 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.ARMOR)),
                 UpgradeButton(self.window, self.menuRect.x, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.HEALTH_REGENERATION)),
                 UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 1 / 3, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.NUMBER_OF_BULLETS)),
-                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.DUMMY_2)),
+                UpgradeButton(self.window, self.menuRect.x + self.menuRect.width * 2 / 3, self.menuRect.y + self.menuRect.height * 2 / 3, self.menuRect.width * 1 / 3, self.menuRect.height * 1 / 3, UpgradeType(UpgradeType.PROJECTILE_DAMAGE)),
         ]
