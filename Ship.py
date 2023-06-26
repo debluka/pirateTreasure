@@ -2,6 +2,7 @@ import pygame
 
 from GameSettings import gameSettings
 from Laser import Laser
+from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
 from ShipType import ShipType
 from fonts import healthbarFont
@@ -14,7 +15,7 @@ class Ship:
     def __init__(self, shipType: ShipType, shipImg: pygame.Surface, laserImg: pygame.Surface, x: int, y: int, velocity: float, health: int = 100):
         self.x: int = x
         self.y: int = y
-        self.health: int = health
+        self.health: float = health
         self.BASE_MAX_HEALTH: int = health
         self.max_health: int = health
         self.imgSrc: pygame.Surface = shipImg

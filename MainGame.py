@@ -134,6 +134,7 @@ class MainGame(GameScreen):
     def updatePlayer(self) -> None:
         self.player.move_lasers(self.enemies)
         self.player.updateEffects()
+        self.player.updateHealth()
 
     def updateEnemies(self) -> None:
         if len(self.enemies) == 0:

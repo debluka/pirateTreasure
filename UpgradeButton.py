@@ -41,10 +41,12 @@ class UpgradeButton:
 
     def addPlayerUpgrade(self) -> None:
         match self.upgradeType:
-            case UpgradeType.SHOOTING_SPEED:
-                playerUpgrades.shootingSpeed += 1
             case UpgradeType.HEALTH:
                 playerUpgrades.maxHealth += 1
+            case UpgradeType.HEALTH_REGENERATION:
+                playerUpgrades.healthRegeneration += 1
+            case UpgradeType.SHOOTING_SPEED:
+                playerUpgrades.shootingSpeed += 1
             case UpgradeType.VELOCITY:
                 playerUpgrades.velocity += 1
             case UpgradeType.NUMBER_OF_BULLETS:

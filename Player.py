@@ -65,7 +65,7 @@ class Player(Ship):
                          self.ship_img.get_height() + 2 + self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_img.get_height() +
                          2 + self.healthbarHeight, self.ship_img.get_width() * (self.health/self.max_health), self.healthbarHeight))
-        window.blit(healthbarFont.render(str(self.health) + " / " + str(self.max_health),
+        window.blit(healthbarFont.render(str(int(self.health)) + " / " + str(self.max_health),
                                          True,
                                          pygame.Color(255, 255, 255)),
                     (self.x, self.y + self.ship_img.get_height() + 2 + self.healthbarHeight, self.ship_img.get_width(), self.healthbarHeight))
@@ -76,3 +76,7 @@ class Player(Ship):
         self.max_health = self.BASE_MAX_HEALTH + mainGameState.HEALTH_PER_UPGRADE * playerUpgrades.maxHealth
 
         self.velocity = self.base_velocity + mainGameState.VELOCITY_PER_UPGRADE * playerUpgrades.velocity
+
+    def updateHealth(self) -> None:
+        if self.health <= self.max_health and self.effects.get('poisoned', 0) <= 0:
+            self.health += mainGameState.HEALTH_REGENERATION_PER_UPGRADE * playerUpgrades.healthRegeneration
