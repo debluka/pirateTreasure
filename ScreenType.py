@@ -6,3 +6,4 @@ class ScreenType(IntEnum):
     MAIN_GAME: int = 2
     OPTIONS_MENU: int = 3
     LEADERBOARD: int = 4
+    WELCOME_SCREEN: int = 5

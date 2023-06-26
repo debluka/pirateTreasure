@@ -17,5 +17,6 @@ def getHighscores() -> dict[str: int]:
 
 # Save a player's score
 def saveScore(username: str, score: int) -> None:
-    playRef: Reference = highscoresRef.child(username)
-    playRef.set({"score": score})
+    if len(username) > 0:
+        playRef: Reference = highscoresRef.child(username)
+        playRef.set({"score": score})

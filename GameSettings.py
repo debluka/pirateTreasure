@@ -16,6 +16,7 @@ class GameSettings:
         self.h_scale: float = 1.0
         self.w_scale_base: float = 1.0
         self.h_scale_base: float = 1.0
+        self.username: str = ''
 
 
 gameSettings: GameSettings = GameSettings()

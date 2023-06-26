@@ -43,18 +43,8 @@ class Leaderboard(GameScreen):
             if position > 10:
                 break
 
-
-    def click_handler(self, button: int, position: tuple[int, int]) -> None:
-        pass
-
-    def mouse_move_handler(self, button: int, position: tuple[int, int]) -> None:
-        pass
-
-    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
-        pass
-
-    def keyboard_press_button_handler(self, key: int) -> None:
-        match key:
+    def keyboard_press_button_handler(self, event: pygame.event.Event) -> None:
+        match event.key:
             case pygame.K_ESCAPE:
                 self.nextScreen = ScreenType.MAIN_MENU
 

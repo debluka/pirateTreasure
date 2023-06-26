@@ -1,3 +1,4 @@
+import pygame
 from pygame import Surface
 
 from GameScreen import GameScreen
@@ -36,18 +37,6 @@ class MainMenu(GameScreen):
         self.window.fill((14, 194, 249))
         for _, button in self.buttons.items():
             button.draw()
-
-    def click_handler(self, button: int, position: tuple[int, int]) -> None:
-        pass
-
-    def mouse_move_handler(self, button: int, position: tuple[int, int]) -> None:
-        pass
-
-    def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
-        pass
-
-    def keyboard_press_button_handler(self, key: int) -> None:
-        pass
 
     def window_resize_handler(self) -> None:
         for _, button in self.buttons.items():

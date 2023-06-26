@@ -40,7 +40,7 @@ class MainGame(GameScreen):
             # Endgame text timer
             if self.gameLost:
                 if self.lostCount > gameSettings.FPS * 3:
-                    saveScore("Testing", mainGameState.score)
+                    saveScore(gameSettings.username, mainGameState.score)
                     self.nextScreen = ScreenType.MAIN_MENU
                     return True
                 else:
@@ -88,12 +88,6 @@ class MainGame(GameScreen):
 
         pygame.display.update()
 
-    def click_handler(self, button: int, position: tuple[int, int]) -> None:
-        pass
-
-    def mouse_move_handler(self, button: int, position: tuple[int, int]) -> None:
-        pass
-
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         if mainGameState.isPaused is False:
             if not self.gameLost:
@@ -108,8 +102,8 @@ class MainGame(GameScreen):
                 if keys[pygame.K_SPACE]:
                     self.player.shoot()
 
-    def keyboard_press_button_handler(self, key: int) -> None:
-        match key:
+    def keyboard_press_button_handler(self, event: pygame.event.Event) -> None:
+        match event.key:
             case pygame.K_ESCAPE:
                 if self.upgradeMenu.isShown is False:
                     mainGameState.isPaused = not mainGameState.isPaused

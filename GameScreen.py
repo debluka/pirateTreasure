@@ -15,7 +15,7 @@ class GameScreen:
     def render(self) -> None:
         pass
 
-    def click_handler(self, button: int, position: tuple[int, int]) -> None:
+    def click_handler(self, event: pygame.event.Event) -> None:
         pass
 
     def mouse_move_handler(self, button: int, position: tuple[int, int]) -> None:
@@ -24,7 +24,7 @@ class GameScreen:
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         pass
 
-    def keyboard_press_button_handler(self, key: int) -> None:
+    def keyboard_press_button_handler(self, event: pygame.event.Event) -> None:
         pass
 
     def window_resize_handler(self) -> None:

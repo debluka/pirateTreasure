@@ -6,12 +6,13 @@ from Leaderboard import Leaderboard
 from MainGame import MainGame
 from MainMenu import MainMenu
 from ScreenType import ScreenType
+from WelcomeScreen import WelcomeScreen
 
 
 class ScreenController:
     def __init__(self, window: pygame.Surface):
         self.window: pygame.Surface = window
-        self.currentScreen: GameScreen = MainMenu(window)
+        self.currentScreen: GameScreen = WelcomeScreen(window)
 
     def process_game_update(self) -> bool:
         quit_game: bool = False
@@ -23,7 +24,7 @@ class ScreenController:
                 case pygame.MOUSEMOTION:
                     self.currentScreen.mouse_move_handler(event.buttons, pygame.mouse.get_pos())
                 case pygame.MOUSEBUTTONDOWN:
-                    self.currentScreen.click_handler(event.button, pygame.mouse.get_pos())
+                    self.currentScreen.click_handler(event)
                 case pygame.VIDEORESIZE:
                     gameSettings.w_scale = event.w / gameSettings.width
                     gameSettings.h_scale = event.h / gameSettings.height
@@ -33,7 +34,7 @@ class ScreenController:
                     gameSettings.height = event.h
                     self.currentScreen.window_resize_handler()
                 case pygame.KEYDOWN:
-                    self.currentScreen.keyboard_press_button_handler(event.key)
+                    self.currentScreen.keyboard_press_button_handler(event)
 
         keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
 
