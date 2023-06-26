@@ -11,6 +11,7 @@ class MainGameState:
         self.HEALTH_REGENERATION_PER_UPGRADE: float = 0.01
         self.ARMOR_PER_UPGRADE: int = 20
         self.PROJECTILE_SPEED_PER_UPGRADE: int = 2
+        self.PROJECTILE_DAMAGE_PER_UPGRADE: int = 5
 
 
 mainGameState: MainGameState = MainGameState()

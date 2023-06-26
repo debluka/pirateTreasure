@@ -9,6 +9,7 @@ class PlayerUpgrades:
         self.healthRegeneration: int = 0
         self.armor: int = 0
         self.projectileSpeed: int = 0
+        self.projectileDamage: int = 0
 
 
 playerUpgrades: PlayerUpgrades = PlayerUpgrades()

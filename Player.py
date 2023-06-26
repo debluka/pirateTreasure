@@ -12,7 +12,8 @@ from fonts import healthbarFont
 class Player(Ship):
     def __init__(self, shipType: ShipType, x: int, y: int, velocity: float, health: int = 1000):
         super().__init__(shipType, PLAYER_IMAGE, CANNONBALL, x, y, velocity, health)
-        self.laser_damage: int = playerUpgrades.laserDamage
+        self.laser_base_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
+        self.laser_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
         self.COOLDOWN: int = 30
         self.armor: int = 0
         self.max_armor: int = 0
@@ -22,7 +23,7 @@ class Player(Ship):
         # handle player's shooting cooldown
         self.cooldown()
         for playerLaser in self.lasers:
-            # move player's laser and remove those thate are off screen
+            # move player's laser and remove those that are off-screen
             playerLaser.move()
             if playerLaser.off_screen(gameSettings.height):
                 self.lasers.remove(playerLaser)
@@ -123,6 +124,8 @@ class Player(Ship):
         self.max_armor = mainGameState.ARMOR_PER_UPGRADE * playerUpgrades.armor
         if isArmorFull:
             self.armor = self.max_armor
+
+        self.laser_damage = self.laser_base_damage + mainGameState.PROJECTILE_DAMAGE_PER_UPGRADE * playerUpgrades.projectileDamage
 
     def updateHealthAndArmor(self) -> None:
         if self.armor < 0:
