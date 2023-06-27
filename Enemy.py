@@ -17,7 +17,7 @@ class Enemy(Ship):
         "blue": ((BLUE_SHIP1, BLUE_SHIP2, BLUE_SHIP3), BLUE_LASER)
     }
 
-    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, health=100):
+    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, health=10):
         super().__init__(shipType, self.COLOR_MAP[color][0], self.COLOR_MAP[color][1], x, y, velocity, health)
         self.color: str = color
 

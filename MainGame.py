@@ -5,6 +5,7 @@ import pygame
 
 import Textures
 from Enemy import Enemy
+from ExplosionAnimation import ExplosionAnimation
 from GameScreen import GameScreen
 from GameSettings import gameSettings
 from MainGameState import mainGameState
@@ -23,9 +24,10 @@ class MainGame(GameScreen):
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 0
-        self.player = Player(ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
+        self.player = Player(self.window, ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost: bool = False
         self.lostCount: int = 0
+        self.animations: list[ExplosionAnimation] = []
 
         self.upgradeMenu: UpgradeMenu = UpgradeMenu(self.window)
 
@@ -48,6 +50,7 @@ class MainGame(GameScreen):
 
             self.updateEnemies()
             self.updatePlayer()
+            self.updateAnimations()
 
         if self.upgradeMenu.isShown:
             self.upgradeMenu.update()
@@ -61,6 +64,10 @@ class MainGame(GameScreen):
             enemy.draw(self.window)
 
         self.player.draw(self.window)
+
+        # Animations
+        for animation in self.animations:
+            animation.draw()
 
         # Lose screen
         if self.gameLost:
@@ -126,7 +133,7 @@ class MainGame(GameScreen):
             self.lostCount += 1
 
     def updatePlayer(self) -> None:
-        self.player.move_lasers(self.enemies)
+        self.player.move_lasers(self.enemies, self.animations)
         self.player.updateEffects()
         self.player.updateHealthAndArmor()
 
@@ -147,12 +154,20 @@ class MainGame(GameScreen):
             if collide(enemy, self.player):
                 self.player.health -= 10
                 self.enemies.remove(enemy)
+                self.animations.append(ExplosionAnimation(int(enemy.x + enemy.get_width() / 2), int(enemy.y + enemy.get_height() / 2), self.window))
                 mainGameState.score += 10
                 mainGameState.money += 10
             elif enemy.y + enemy.get_height() > gameSettings.height:
                 # If enemy gets to the bottom of the screen we also lose lives
                 self.lives -= 1
                 self.enemies.remove(enemy)
+
+    def updateAnimations(self):
+        for animation in self.animations:
+            animation.update()
+            if animation.isDone:
+                self.animations.remove(animation)
+
 
     def goToNextLevel(self) -> None:
         mainGameState.level += 1

@@ -1,6 +1,7 @@
 import pygame
 
 from Enemy import Enemy
+from ExplosionAnimation import ExplosionAnimation
 from GameSettings import gameSettings
 from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
@@ -10,7 +11,7 @@ from Textures import PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3, CANNONBALL
 from fonts import healthbarFont
 
 class Player(Ship):
-    def __init__(self, shipType: ShipType, x: int, y: int, velocity: float, health: int = 10):
+    def __init__(self, window: pygame.Surface, shipType: ShipType, x: int, y: int, velocity: float, health: int = 10):
         super().__init__(shipType, (PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3), CANNONBALL, x, y, velocity, health)
         self.laser_base_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
         self.laser_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
@@ -18,8 +19,9 @@ class Player(Ship):
         self.armor: int = 0
         self.max_armor: int = 0
         self.updateUpgrades()
+        self.window: pygame.Surface = window
 
-    def move_lasers(self, enemies: list[Enemy]) -> None:
+    def move_lasers(self, enemies: list[Enemy], animations: list[ExplosionAnimation]) -> None:
         # handle player's shooting cooldown
         self.cooldown()
         for playerLaser in self.lasers:
@@ -36,6 +38,7 @@ class Player(Ship):
                             mainGameState.score += 10
                             mainGameState.money += 10
                             enemies.remove(enemy)
+                            animations.append(ExplosionAnimation(int(enemy.x + enemy.get_width() / 2), int(enemy.y + enemy.get_height() / 2), self.window))
                         if playerLaser in self.lasers:
                             self.lasers.remove(playerLaser)
                     for targetLaser in enemy.lasers:

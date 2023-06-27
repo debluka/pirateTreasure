@@ -21,3 +21,7 @@ RED_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "red_projec
 GREEN_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "green_projectile.png"))
 BLUE_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "blue_projectile.png"))
 CANNONBALL: pygame.Surface = pygame.image.load(os.path.join("assets", "cannonBall.png"))
+
+EXPLOSION1: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion1.png"))
+EXPLOSION2: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion2.png"))
+EXPLOSION3: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion3.png"))
