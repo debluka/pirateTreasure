@@ -6,6 +6,10 @@ class MainGameState:
         self.score = 0
         self.money = 0
 
+        self.limitedVision: bool = True
+        self.pX: int = 0
+        self.pY: int = 0
+
         self.HEALTH_PER_UPGRADE: int = 10
         self.VELOCITY_PER_UPGRADE: int = 1
         self.HEALTH_REGENERATION_PER_UPGRADE: float = 0.01

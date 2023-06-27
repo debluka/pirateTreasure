@@ -59,6 +59,8 @@ class MainGame(GameScreen):
     def render(self) -> None:
         self.window.fill((14, 194, 249))
 
+
+
         # Enemies and player's character
         for enemy in self.enemies:
             enemy.draw(self.window)
@@ -68,6 +70,17 @@ class MainGame(GameScreen):
         # Animations
         for animation in self.animations:
             animation.draw()
+
+        if mainGameState.limitedVision is True:
+            cover_surf = pygame.Surface((gameSettings.width, gameSettings.height))
+            cover_surf.fill((128, 128, 128))
+            cover_surf.set_colorkey((255, 255, 255))
+            pygame.draw.ellipse(cover_surf, (255, 255, 255), (int(mainGameState.pX - gameSettings.blindCircleBaseRadius * gameSettings.w_scale_base),
+                                                              int(mainGameState.pY - gameSettings.blindCircleBaseRadius * gameSettings.h_scale_base),
+                                                              int(gameSettings.blindCircleBaseRadius * gameSettings.w_scale_base * 2),
+                                                              int(gameSettings.blindCircleBaseRadius * gameSettings.h_scale_base * 2)))
+
+            self.window.blit(cover_surf, (0, 0))
 
         # Lose screen
         if self.gameLost:
@@ -133,6 +146,9 @@ class MainGame(GameScreen):
             self.lostCount += 1
 
     def updatePlayer(self) -> None:
+        mainGameState.pX = self.player.x + self.player.get_width() / 2
+        mainGameState.pY = self.player.y + self.player.get_height() / 2
+
         self.player.move_lasers(self.enemies, self.animations)
         self.player.updateEffects()
         self.player.updateHealthAndArmor()
