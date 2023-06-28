@@ -6,7 +6,7 @@ class MainGameState:
         self.score = 0
         self.money = 0
 
-        self.limitedVision: bool = True
+        self.limitedVision: bool = False
         self.pX: int = 0
         self.pY: int = 0
 

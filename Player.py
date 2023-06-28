@@ -46,10 +46,10 @@ class Player(Ship):
                             # if we have the first stage of laser collision upgrades,
                             # we can slow and push them back slightly
                             if playerUpgrades.bulletCollision > 0:
-                                targetLaser.y -= 30
+                                targetLaser.y -= (30 + 3 * playerUpgrades.projectileSpeed) * gameSettings.h_scale_base
                                 if targetLaser.isSlowed is False:
                                     targetLaser.isSlowed = True
-                                    targetLaser.y_velocity *= 0.8
+                                    targetLaser.y_velocity *= (0.8 - 0.1 * playerUpgrades.projectileSpeed)
 
                             # if we have the second stage of laser collision upgrades,
                             # we can destroy the laser
