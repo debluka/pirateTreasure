@@ -17,9 +17,12 @@ BLUE_SHIP3: pygame.Surface = pygame.image.load(os.path.join("assets", "enemy_blu
 BLUE_SHIP2: pygame.Surface = pygame.image.load(os.path.join("assets", "enemy_blue2.png"))
 BLUE_SHIP1: pygame.Surface = pygame.image.load(os.path.join("assets", "enemy_blue1.png"))
 
+GHOST_SHIP1: pygame.Surface = pygame.image.load(os.path.join("assets", "enemy_ghost.png"))
+
 RED_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "red_projectile.png"))
 GREEN_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "green_projectile.png"))
 BLUE_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "blue_projectile.png"))
+GREY_LASER: pygame.Surface = pygame.image.load(os.path.join("assets", "grey_projectile.png"))
 CANNONBALL: pygame.Surface = pygame.image.load(os.path.join("assets", "cannonBall.png"))
 
 EXPLOSION1: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion1.png"))

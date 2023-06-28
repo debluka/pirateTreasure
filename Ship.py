@@ -61,6 +61,8 @@ class Ship:
                     case 'poisoned':
                         if duration % 10 == 0:
                             self.health = self.health - 1
+                    case 'short_sighted':
+                        mainGameState.limitedVision = True if duration > 1 else False
 
     def cooldown(self) -> None:
         if self.cool_down_counter >= self.COOLDOWN:

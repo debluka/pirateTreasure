@@ -73,7 +73,7 @@ class MainGame(GameScreen):
 
         if mainGameState.limitedVision is True:
             cover_surf = pygame.Surface((gameSettings.width, gameSettings.height))
-            cover_surf.fill((128, 128, 128))
+            cover_surf.fill((80, 80, 80))
             cover_surf.set_colorkey((255, 255, 255))
             pygame.draw.ellipse(cover_surf, (255, 255, 255), (int(mainGameState.pX - gameSettings.blindCircleBaseRadius * gameSettings.w_scale_base),
                                                               int(mainGameState.pY - gameSettings.blindCircleBaseRadius * gameSettings.h_scale_base),
@@ -190,9 +190,12 @@ class MainGame(GameScreen):
         self.player.armor = self.player.max_armor
         self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):
+            enemySpawnTypePool = ["red", "blue", "green"]
+            if mainGameState.level > 5:
+                enemySpawnTypePool.append("ghost")
             enemy = Enemy(ShipType(ShipType.ENEMY),
                           random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
                           random.randrange(math.ceil(-1500 * gameSettings.h_scale_base), math.ceil(-100 * gameSettings.h_scale_base)),
-                          random.choice(["red", "blue", "green"]),
+                          random.choice(enemySpawnTypePool),
                           gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base)
             self.enemies.append(enemy)

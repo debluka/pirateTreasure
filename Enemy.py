@@ -7,14 +7,16 @@ from Laser import Laser
 from MainGameState import mainGameState
 from Ship import Ship
 from ShipType import ShipType
-from Textures import RED_SHIP3, RED_SHIP2, RED_SHIP1, BLUE_SHIP3, BLUE_SHIP2, BLUE_SHIP1, GREEN_SHIP3, GREEN_SHIP2, GREEN_SHIP1, RED_LASER, BLUE_LASER, GREEN_LASER, CANNONBALL
+from Textures import RED_SHIP3, RED_SHIP2, RED_SHIP1, BLUE_SHIP3, BLUE_SHIP2, BLUE_SHIP1, GREEN_SHIP3, GREEN_SHIP2, \
+    GREEN_SHIP1, RED_LASER, BLUE_LASER, GREEN_LASER, CANNONBALL, GHOST_SHIP1
 
 
 class Enemy(Ship):
     COLOR_MAP: dict[str, tuple[pygame.Surface, pygame.Surface]] = {
         "red": ((RED_SHIP1, RED_SHIP2, RED_SHIP3), RED_LASER),
         "green": ((GREEN_SHIP1, GREEN_SHIP2, GREEN_SHIP3), GREEN_LASER),
-        "blue": ((BLUE_SHIP1, BLUE_SHIP2, BLUE_SHIP3), BLUE_LASER)
+        "blue": ((BLUE_SHIP1, BLUE_SHIP2, BLUE_SHIP3), BLUE_LASER),
+        "ghost": ((GHOST_SHIP1, GHOST_SHIP1, GHOST_SHIP1), BLUE_LASER)
     }
 
     def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, health=10):
@@ -40,6 +42,8 @@ class Enemy(Ship):
                             obj.effects['poisoned'] = gameSettings.FPS * 3
                         case 'blue':
                             obj.effects['slowed'] = gameSettings.FPS * 3
+                        case 'ghost':
+                            obj.effects['short_sighted'] = gameSettings.FPS * 3
                 if obj.armor > 0:
                     obj.armor -= 10
                 else:
