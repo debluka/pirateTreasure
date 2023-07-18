@@ -1,10 +1,7 @@
 import pygame
 
-from MainGameState import mainGameState
 from UpgradeType import UpgradeType
-from fonts import main_font
 from PlayerUpgrades import playerUpgrades
-
 
 # button class
 from util import scaleRect
@@ -16,8 +13,89 @@ class UpgradeButton:
         self.clicked: bool = False
         self.window: pygame.Surface = window
         self.upgradeType: UpgradeType = upgradeType
+        # self.img: pygame.Surface = pygame.transform.scale(GHOST_SHIP1, (
+        #     GHOST_SHIP1.get_width() * self.buttonRect.width / 2 / GHOST_SHIP1.get_width(),
+        #     GHOST_SHIP1.get_height() * self.buttonRect.height / 2 / GHOST_SHIP1.get_height()))
+        # self.img.set_alpha(128)
+        self.upgradeTitleFont: pygame.font.Font = pygame.font.SysFont("bahnschrift", 20)
+        self.upgradeExplanationFont: pygame.font.Font = pygame.font.SysFont("bahnschrift", 18)
+        self.upgradeLevel: int = 0
+        self.displayText: str = ''
+        self.explanationText: [str] = []
+
+        match self.upgradeType:
+            case UpgradeType.HEALTH:
+                self.displayText = "Max health"
+                self.explanationText = ["Increase your max",
+                                        "health by 20"]
+            case UpgradeType.HEALTH_REGENERATION:
+                self.displayText = "Health regen"
+                self.explanationText = ["Increase your health",
+                                        "regen by 0.6/s"]
+            case UpgradeType.ARMOR:
+                self.displayText = "Armor"
+                self.explanationText = ["Increase your armor",
+                                        "by 20. Armor blocks",
+                                        "damage from enemy",
+                                        "projectiles but does",
+                                        "not block damage",
+                                        "from ship collisions"]
+            case UpgradeType.VELOCITY:
+                self.displayText = "Move speed"
+                self.explanationText = ["Increase your move",
+                                        "speed"]
+            case UpgradeType.SHOOTING_SPEED:
+                self.displayText = "Shooting speed"
+                self.explanationText = ["Increase your rate",
+                                        "of fire"]
+            case UpgradeType.NUMBER_OF_BULLETS:
+                self.displayText = "Number of projectiles"
+                self.explanationText = ["Increase your projectile",
+                                        "count per shot fired"]
+            case UpgradeType.PROJECTILE_COLLISION:
+                self.displayText = "Projectile collision"
+                self.explanationText = ["Enemy projectiles",
+                                        "destroy your bullets",
+                                        "by default. At level 1",
+                                        "your projectiles slow",
+                                        "and knockback enemy",
+                                        "projectiles. At level 2",
+                                        "you can also destroy",
+                                        "them with 3 hits"]
+            case UpgradeType.PROJECTILE_SPEED:
+                self.displayText = "Projectile speed"
+                self.explanationText = ["Increase projectile",
+                                        "move speed, which also",
+                                        "increase slow and",
+                                        "knocback strength",
+                                        "if you have the required",
+                                        "collision upgrade"]
+            case UpgradeType.PROJECTILE_DAMAGE:
+                self.displayText = "Projectile damage"
+                self.explanationText = ["Projectile's damage",
+                                        "is increased by 5"]
 
     def update(self) -> None:
+        match self.upgradeType:
+            case UpgradeType.HEALTH:
+                self.upgradeLevel = playerUpgrades.maxHealth
+            case UpgradeType.HEALTH_REGENERATION:
+                self.upgradeLevel = playerUpgrades.healthRegeneration
+            case UpgradeType.ARMOR:
+                self.upgradeLevel = playerUpgrades.armor
+            case UpgradeType.VELOCITY:
+                self.upgradeLevel = playerUpgrades.velocity
+            case UpgradeType.SHOOTING_SPEED:
+                self.upgradeLevel = playerUpgrades.shootingSpeed
+            case UpgradeType.NUMBER_OF_BULLETS:
+                self.upgradeLevel = playerUpgrades.numberOfBullets
+            case UpgradeType.PROJECTILE_COLLISION:
+                self.upgradeLevel = playerUpgrades.bulletCollision
+            case UpgradeType.PROJECTILE_SPEED:
+                self.upgradeLevel = playerUpgrades.projectileSpeed
+            case UpgradeType.PROJECTILE_DAMAGE:
+                self.upgradeLevel = playerUpgrades.projectileDamage
+
         # Get mouse position
         pos: tuple[int, int] = pygame.mouse.get_pos()
 
@@ -32,9 +110,34 @@ class UpgradeButton:
 
     def draw(self) -> None:
 
-        # Draw button on screen
+        # Button background and border
+        if self.clicked:
+            backgroundColor = (90, 90, 90)
+        else:
+            backgroundColor = (80, 80, 80)
+        pygame.draw.rect(self.window, backgroundColor, self.buttonRect)
         pygame.draw.rect(self.window, pygame.Color(255, 255, 255), self.buttonRect, 2)
-        self.window.blit(main_font.render(self.upgradeType.name, True, pygame.Color(255, 255, 255)), self.buttonRect)
+
+        # # Background image
+        # self.window.blit(self.img, (self.buttonRect.x + self.buttonRect.width / 2 - self.img.get_width() / 2,
+        #                             self.buttonRect.y + self.buttonRect.height / 2 - self.img.get_height() / 2))
+
+        # Upgrade name
+        self.window.blit(self.upgradeTitleFont.render(self.displayText + " " + str(self.upgradeLevel),
+                                                      True,
+                                                      pygame.Color(220, 220, 58)),
+                         (self.buttonRect.x + 10,
+                          self.buttonRect.y + 10))
+
+        # Upgrade explanation
+        textOffset: int = self.buttonRect.y + 10 + self.upgradeTitleFont.get_height() + 5
+        for text in self.explanationText:
+            self.window.blit(self.upgradeExplanationFont.render(text,
+                                                                True,
+                                                                pygame.Color(255, 255, 255)),
+                             (self.buttonRect.x + 10,
+                              textOffset))
+            textOffset += self.upgradeExplanationFont.get_height()
 
     def resize(self) -> None:
         scaleRect(self.buttonRect)
@@ -59,6 +162,3 @@ class UpgradeButton:
                 playerUpgrades.projectileSpeed += 1
             case UpgradeType.PROJECTILE_DAMAGE:
                 playerUpgrades.projectileDamage += 1
-
-
-

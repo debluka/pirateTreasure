@@ -40,7 +40,7 @@ class UpgradeMenu:
 
     def draw(self) -> None:
         pygame.draw.rect(self.window, (87, 217, 255), self.backgroundRect, border_radius=self.borderRadius)
-        pygame.draw.rect(self.window, (0, 255, 0), self.menuRect)
+        pygame.draw.rect(self.window, (255, 255, 255), self.menuRect)
         self.window.blit(main_font.render(self.titleText, True, (255, 255, 255)),
                          (self.backgroundRect.center[0] - self.textRect.width / 2, self.textRect.y))
 
