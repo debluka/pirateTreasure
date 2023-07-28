@@ -28,8 +28,8 @@ class MainMenu(GameScreen):
                         self.nextScreen = ScreenType.MAIN_GAME
                     case "Leaderboard":
                         self.nextScreen = ScreenType.LEADERBOARD
-                    # case "Options":
-                    #     self.nextScreen = ScreenType.OPTIONS_MENU
+                    case "Options":
+                        self.nextScreen = ScreenType.OPTIONS_MENU
                     case "Exit":
                         return True
 

@@ -19,6 +19,8 @@ class GameSettings:
         self.username: str = ''
 
         self.blindCircleBaseRadius: int = 250
+        self.resizableScreen: bool = True
+        self.soundEnabled: bool = True
 
 
 gameSettings: GameSettings = GameSettings()

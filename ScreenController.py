@@ -5,6 +5,7 @@ from GameSettings import gameSettings
 from Leaderboard import Leaderboard
 from MainGame import MainGame
 from MainMenu import MainMenu
+from OptionsMenu import OptionsMenu
 from ScreenType import ScreenType
 from WelcomeScreen import WelcomeScreen
 
@@ -58,5 +59,7 @@ class ScreenController:
                 self.currentScreen = MainMenu(self.window)
             case ScreenType.MAIN_GAME:
                 self.currentScreen = MainGame(self.window)
+            case ScreenType.OPTIONS_MENU:
+                self.currentScreen = OptionsMenu(self.window)
             case ScreenType.LEADERBOARD:
                 self.currentScreen = Leaderboard(self.window)
