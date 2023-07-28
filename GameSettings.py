@@ -1,3 +1,6 @@
+import pygame
+
+
 class GameSettings:
     def __init__(self):
         self.FPS: int = 60
@@ -21,6 +24,13 @@ class GameSettings:
         self.blindCircleBaseRadius: int = 250
         self.resizableScreen: bool = True
         self.soundEnabled: bool = True
+        self.fullScreen: bool = False
+
+        self.moveUpBinding: int = pygame.K_w
+        self.moveDownBinding: int = pygame.K_s
+        self.moveLeftBinding: int = pygame.K_a
+        self.moveRightBinding: int = pygame.K_d
+        self.shootBinding: int = pygame.K_SPACE
 
 
 gameSettings: GameSettings = GameSettings()

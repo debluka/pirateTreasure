@@ -46,9 +46,18 @@ class Checkbox:
             match self.buttonType:
                 case OptionsButtonType.SCREEN_RESIZE:
                     gameSettings.resizableScreen = not gameSettings.resizableScreen
-                    self.surface = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE if gameSettings.resizableScreen == True else 0)
+                    if gameSettings.fullScreen is False:
+                        self.surface = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE if gameSettings.resizableScreen == True else 0)
                 case OptionsButtonType.SOUND_ENABLED:
                     gameSettings.resizableScreen = not gameSettings.soundEnabled
+                case OptionsButtonType.FULL_SCREEN:
+                    gameSettings.fullScreen = not gameSettings.fullScreen
+                    if gameSettings.fullScreen is True:
+                        self.surface = pygame.display.set_mode((gameSettings.width, gameSettings.height),
+                                                               pygame.FULLSCREEN if gameSettings.resizableScreen == True else 0)
+                    else:
+                        self.surface = pygame.display.set_mode((gameSettings.width, gameSettings.height),
+                                                               pygame.RESIZABLE if gameSettings.resizableScreen == True else 0)
 
     def resize(self) -> None:
         util.scaleRect(self.textRect)

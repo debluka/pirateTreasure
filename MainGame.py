@@ -111,15 +111,15 @@ class MainGame(GameScreen):
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         if mainGameState.isPaused is False:
             if not self.gameLost:
-                if keys[pygame.K_a] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
+                if keys[gameSettings.moveLeftBinding] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
                     self.player.x -= self.player.velocity * gameSettings.w_scale_base
-                if keys[pygame.K_d] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
+                if keys[gameSettings.moveRightBinding] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
                     self.player.x += self.player.velocity * gameSettings.w_scale_base
-                if keys[pygame.K_w] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
+                if keys[gameSettings.moveUpBinding] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
                     self.player.y -= self.player.velocity * gameSettings.h_scale_base
-                if keys[pygame.K_s] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
+                if keys[gameSettings.moveDownBinding] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
                     self.player.y += self.player.velocity * gameSettings.h_scale_base
-                if keys[pygame.K_SPACE]:
+                if keys[gameSettings.shootBinding]:
                     self.player.shoot()
 
     def keyboard_press_button_handler(self, event: pygame.event.Event) -> None:
