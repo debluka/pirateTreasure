@@ -8,6 +8,7 @@ from Laser import Laser
 from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
 from ShipType import ShipType
+from SoundFx import cannonFireFX
 from Textures import PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3
 from fonts import healthbarFont
 from util import scaleSurface, scaleSurfaceBase
@@ -37,6 +38,9 @@ class Ship:
 
     def draw(self, window: pygame.Surface) -> None:
         self.updateImage()
+
+        if self.effects.get('vulnerable', 0) > 0:
+            pygame.draw.rect(window, (255, 0, 0), (0, 0, gameSettings.width, gameSettings.height), 5)
 
         window.blit(self.ship_img, (self.x, self.y))
         self.healthbar(window)
@@ -72,6 +76,7 @@ class Ship:
 
     def shoot(self) -> None:
         if self.cool_down_counter == 0:
+            pygame.mixer.Sound.play(cannonFireFX)
             laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2), self.y, False, self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
             self.lasers.append(laser)
 

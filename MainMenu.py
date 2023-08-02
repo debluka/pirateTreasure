@@ -15,6 +15,8 @@ class MainMenu(GameScreen):
                                                "Leaderboard": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING, "Leaderboard"),
                                                "Options": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 2, "Options"),
                                                "Exit": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 3, "Exit")}
+        pygame.mixer.music.load('assets/audio/mainTheme.mp3')
+        pygame.mixer.music.play(-1)
 
     # Renders the main menu
     def update(self) -> bool:
@@ -23,6 +25,7 @@ class MainMenu(GameScreen):
 
         for key, button in self.buttons.items():
             if button.clicked is True:
+                pygame.mixer.music.stop()
                 match key:
                     case "Start game":
                         self.nextScreen = ScreenType.MAIN_GAME

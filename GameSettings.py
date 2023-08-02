@@ -6,6 +6,7 @@ class GameSettings:
         self.FPS: int = 60
         self.PLAYER_BASE_VELOCITY: int = 5
         self.PLAYER_LASER_BASE_DAMAGE: int = 10
+        self.ENEMY_LASER_BASE_DAMAGE: int = 10
         self.LASER_BASE_VELOCITY: int = 5
         self.ENEMY_BASE_VELOCITY: int = 1
 

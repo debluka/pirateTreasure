@@ -7,6 +7,7 @@ from MainGameState import mainGameState
 from PlayerUpgrades import playerUpgrades
 from Ship import Ship
 from ShipType import ShipType
+from SoundFx import hitFX
 from Textures import PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3, CANNONBALL
 from fonts import healthbarFont
 
@@ -33,6 +34,7 @@ class Player(Ship):
                 for enemy in enemies:
                     if playerLaser.collision(enemy):
                         # check for laser collision with the enemy and damage/kill the enemy and remove the laser
+                        pygame.mixer.Sound.play(hitFX)
                         enemy.health -= self.laser_damage
                         if enemy.health <= 0:
                             mainGameState.score += 10
@@ -43,6 +45,7 @@ class Player(Ship):
                             self.lasers.remove(playerLaser)
                     for targetLaser in enemy.lasers:
                         if playerLaser.collision(targetLaser):
+                            pygame.mixer.Sound.play(hitFX)
                             # if we have the first stage of laser collision upgrades,
                             # we can slow and push them back slightly
                             if playerUpgrades.bulletCollision > 0:

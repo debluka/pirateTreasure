@@ -12,6 +12,7 @@ from MainGameState import mainGameState
 from Player import Player
 from ScreenType import ScreenType
 from ShipType import ShipType
+from SoundFx import deathFX, newLevelFX, shipCollisionFX, thunderStrikeFX
 from UpgradeMenu import UpgradeMenu
 from dbModifyScores import saveScore
 from fonts import lost_font, main_font
@@ -30,11 +31,15 @@ class MainGame(GameScreen):
         self.animations: list[ExplosionAnimation] = []
 
         self.upgradeMenu: UpgradeMenu = UpgradeMenu(self.window)
+        self.waterColor: (int, int, int) = (14, 194, 249)
 
+        pygame.mixer.music.load('assets/audio/ambient.mp3')
+        pygame.mixer.music.play(-1)
     # Renders the main menu
     def update(self) -> bool:
         if mainGameState.isPaused is False:
             if self.nextScreen is not None:
+                pygame.mixer.music.play(-1)
                 return True
 
             self.checkEndgameConditions()
@@ -57,7 +62,7 @@ class MainGame(GameScreen):
             self.player.updateUpgrades()
 
     def render(self) -> None:
-        self.window.fill((14, 194, 249))
+        self.window.fill(self.waterColor)
 
 
 
@@ -142,6 +147,8 @@ class MainGame(GameScreen):
 
     def checkEndgameConditions(self) -> None:
         if self.lives <= 0 or self.player.health <= 0:
+            if not self.gameLost:
+                pygame.mixer.Sound.play(deathFX)
             self.gameLost = True
             self.lostCount += 1
 
@@ -168,6 +175,7 @@ class MainGame(GameScreen):
 
             # Collision checking
             if collide(enemy, self.player):
+                pygame.mixer.Sound.play(shipCollisionFX)
                 self.player.health -= 10
                 self.enemies.remove(enemy)
                 self.animations.append(ExplosionAnimation(int(enemy.x + enemy.get_width() / 2), int(enemy.y + enemy.get_height() / 2), self.window))
@@ -187,6 +195,13 @@ class MainGame(GameScreen):
 
     def goToNextLevel(self) -> None:
         mainGameState.level += 1
+        if mainGameState.level == 5:
+            pygame.mixer.Sound.play(thunderStrikeFX)
+            pygame.mixer.music.load('assets/audio/thunderAmbient.mp3')
+            pygame.mixer.music.play(-1)
+            self.waterColor = (11, 41, 46)
+        if mainGameState.level > 1:
+            pygame.mixer.Sound.play(newLevelFX)
         self.player.armor = self.player.max_armor
         self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):

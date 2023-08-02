@@ -7,6 +7,7 @@ from Laser import Laser
 from MainGameState import mainGameState
 from Ship import Ship
 from ShipType import ShipType
+from SoundFx import hitFX, poisonFX, freezeFX, blindFX, vulnerableFX
 from Textures import RED_SHIP3, RED_SHIP2, RED_SHIP1, BLUE_SHIP3, BLUE_SHIP2, BLUE_SHIP1, GREEN_SHIP3, GREEN_SHIP2, \
     GREEN_SHIP1, RED_LASER, BLUE_LASER, GREEN_LASER, CANNONBALL, GHOST_SHIP1
 
@@ -33,21 +34,27 @@ class Enemy(Ship):
             if laser.off_screen(gameSettings.height):
                 self.lasers.remove(laser)
             elif laser.collision(obj):
+                pygame.mixer.Sound.play(hitFX)
                 # Apply laser effects
                 if laser.appliesEffects is True:
                     match self.color:
                         case 'red':
+                            pygame.mixer.Sound.play(vulnerableFX)
                             obj.effects['vulnerable'] = gameSettings.FPS * 3
                         case 'green':
+                            pygame.mixer.Sound.play(poisonFX)
                             obj.effects['poisoned'] = gameSettings.FPS * 3
                         case 'blue':
+                            pygame.mixer.Sound.play(freezeFX)
                             obj.effects['slowed'] = gameSettings.FPS * 3
                         case 'ghost':
+                            pygame.mixer.Sound.play(blindFX)
                             obj.effects['short_sighted'] = gameSettings.FPS * 3
+                damage: int = gameSettings.ENEMY_LASER_BASE_DAMAGE * (2 if obj.effects.get('vulnerable', 0) > 0 else 1)
                 if obj.armor > 0:
-                    obj.armor -= 10
+                    obj.armor -= damage
                 else:
-                    obj.health -= 10
+                    obj.health -= damage
                 self.lasers.remove(laser)
 
     def shoot(self) -> None:
