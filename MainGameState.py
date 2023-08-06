@@ -4,7 +4,7 @@ class MainGameState:
         self.level = 0
         self.WAVE_SIZE: int = 5
         self.score = 0
-        self.money = 0
+        self.money = 1000
 
         self.limitedVision: bool = False
         self.pX: int = 0

@@ -1,5 +1,6 @@
 import pygame
 
+from MainGameState import mainGameState
 from UpgradeType import UpgradeType
 from PlayerUpgrades import playerUpgrades
 
@@ -22,16 +23,22 @@ class UpgradeButton:
         self.upgradeLevel: int = 0
         self.displayText: str = ''
         self.explanationText: [str] = []
+        self.cost: int = 0
+        self.maxLevel: int = 0
 
         match self.upgradeType:
             case UpgradeType.HEALTH:
                 self.displayText = "Max health"
                 self.explanationText = ["Increase your max",
                                         "health by 20"]
+                self.cost = 25
+                self.maxLevel = 10
             case UpgradeType.HEALTH_REGENERATION:
                 self.displayText = "Health regen"
                 self.explanationText = ["Increase your health",
                                         "regen by 0.6/s"]
+                self.cost = 20
+                self.maxLevel = 10
             case UpgradeType.ARMOR:
                 self.displayText = "Armor"
                 self.explanationText = ["Increase your armor",
@@ -40,28 +47,35 @@ class UpgradeButton:
                                         "projectiles but does",
                                         "not block damage",
                                         "from ship collisions"]
+                self.cost = 30
+                self.maxLevel = 10
             case UpgradeType.VELOCITY:
                 self.displayText = "Move speed"
                 self.explanationText = ["Increase your move",
                                         "speed"]
+                self.cost = 20
+                self.maxLevel = 5
             case UpgradeType.SHOOTING_SPEED:
                 self.displayText = "Shooting speed"
                 self.explanationText = ["Increase your rate",
                                         "of fire"]
+                self.cost = 30
+                self.maxLevel = 5
             case UpgradeType.NUMBER_OF_BULLETS:
-                self.displayText = "Number of projectiles"
+                self.displayText = "No. of projectiles"
                 self.explanationText = ["Increase your projectile",
                                         "count per shot fired"]
+                self.cost = 150
+                self.maxLevel = 3
             case UpgradeType.PROJECTILE_COLLISION:
                 self.displayText = "Projectile collision"
-                self.explanationText = ["Enemy projectiles",
-                                        "destroy your bullets",
-                                        "by default. At level 1",
-                                        "your projectiles slow",
+                self.explanationText = ["Your projectiles slow",
                                         "and knockback enemy",
                                         "projectiles. At level 2",
                                         "you can also destroy",
                                         "them with 3 hits"]
+                self.cost = 75
+                self.maxLevel = 2
             case UpgradeType.PROJECTILE_SPEED:
                 self.displayText = "Projectile speed"
                 self.explanationText = ["Increase projectile",
@@ -70,10 +84,14 @@ class UpgradeButton:
                                         "knocback strength",
                                         "if you have the required",
                                         "collision upgrade"]
+                self.cost = 20
+                self.maxLevel = 10
             case UpgradeType.PROJECTILE_DAMAGE:
                 self.displayText = "Projectile damage"
                 self.explanationText = ["Projectile's damage",
                                         "is increased by 5"]
+                self.cost = 50
+                self.maxLevel = 4
 
     def update(self) -> None:
         match self.upgradeType:
@@ -139,10 +157,21 @@ class UpgradeButton:
                               textOffset))
             textOffset += self.upgradeExplanationFont.get_height()
 
+        # Upgrade cost
+        self.window.blit(self.upgradeTitleFont.render("Cost: " + str(self.cost),
+                                                      True,
+                                                      pygame.Color(6, 197, 207)),
+                         (self.buttonRect.x + 10,
+                          self.buttonRect.y + self.buttonRect.height - 10 - self.upgradeTitleFont.get_height()))
+
     def resize(self) -> None:
         scaleRect(self.buttonRect)
 
     def addPlayerUpgrade(self) -> None:
+        if mainGameState.money < self.cost or self.upgradeLevel >= self.maxLevel:
+            return
+
+        mainGameState.money -= self.cost
         match self.upgradeType:
             case UpgradeType.HEALTH:
                 playerUpgrades.maxHealth += 1
