@@ -10,6 +10,7 @@ from GameScreen import GameScreen
 from GameSettings import gameSettings
 from MainGameState import mainGameState
 from Player import Player
+from PlayerUpgrades import playerUpgrades
 from ScreenType import ScreenType
 from ShipType import ShipType
 from SoundFx import deathFX, newLevelFX, shipCollisionFX, thunderStrikeFX
@@ -47,6 +48,8 @@ class MainGame(GameScreen):
             # Endgame text timer
             if self.gameLost:
                 if self.lostCount > gameSettings.FPS * 3:
+                    mainGameState.reset()
+                    playerUpgrades.reset()
                     saveScore(gameSettings.username, mainGameState.score)
                     self.nextScreen = ScreenType.MAIN_MENU
                     return True

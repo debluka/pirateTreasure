@@ -4,7 +4,7 @@ class MainGameState:
         self.level = 0
         self.WAVE_SIZE: int = 5
         self.score = 0
-        self.money = 1000
+        self.money = 0
 
         self.limitedVision: bool = False
         self.pX: int = 0
@@ -16,6 +16,16 @@ class MainGameState:
         self.ARMOR_PER_UPGRADE: int = 20
         self.PROJECTILE_SPEED_PER_UPGRADE: int = 2
         self.PROJECTILE_DAMAGE_PER_UPGRADE: int = 5
+
+    def reset(self) -> None:
+        self.isPaused: bool = False
+        self.level = 0
+        self.score = 0
+        self.money = 0
+
+        self.limitedVision: bool = False
+        self.pX: int = 0
+        self.pY: int = 0
 
 
 mainGameState: MainGameState = MainGameState()
