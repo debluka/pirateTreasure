@@ -1,5 +1,6 @@
 import pygame
 
+import util
 from GameSettings import gameSettings
 from fonts import main_font
 
@@ -45,5 +46,14 @@ class TextButton():
         return action
 
     def resize(self) -> None:
-        self.buttonRect.x = (gameSettings.width - self.fontWidth) / 2 - self.Xmargin
-        self.buttonRect.y = self.buttonRect.y * gameSettings.h_scale
+        if self.text == "How to play":
+            self.buttonRect.x = gameSettings.width - main_font.size(self.text)[0] - 30
+            self.buttonRect.y = gameSettings.height - main_font.get_height() - 30
+        elif self.text == "Back":
+            self.buttonRect.x = (gameSettings.width - self.fontWidth) / 2 - self.Xmargin
+            self.buttonRect.y = gameSettings.height - self.fontWidth - 20
+        elif self.text == "Credits":
+            self.buttonRect.y = gameSettings.height - main_font.get_height() - 30
+        else:
+            self.buttonRect.x = (gameSettings.width - self.fontWidth) / 2 - self.Xmargin
+            self.buttonRect.y = self.buttonRect.y * gameSettings.h_scale

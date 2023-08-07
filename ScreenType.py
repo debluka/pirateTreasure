@@ -7,3 +7,5 @@ class ScreenType(IntEnum):
     OPTIONS_MENU: int = 3
     LEADERBOARD: int = 4
     WELCOME_SCREEN: int = 5
+    CREDITS_SCREEN: int = 6
+    HOW_TO_PLAY_SCREEN: int = 7

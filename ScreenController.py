@@ -1,7 +1,9 @@
 import pygame
 
+from CreditsScreen import CreditsScreen
 from GameScreen import GameScreen
 from GameSettings import gameSettings
+from HowToPlayScreen import HowToPlayScreen
 from Leaderboard import Leaderboard
 from MainGame import MainGame
 from MainMenu import MainMenu
@@ -63,3 +65,7 @@ class ScreenController:
                 self.currentScreen = OptionsMenu(self.window)
             case ScreenType.LEADERBOARD:
                 self.currentScreen = Leaderboard(self.window)
+            case ScreenType.HOW_TO_PLAY_SCREEN:
+                self.currentScreen = HowToPlayScreen(self.window)
+            case ScreenType.CREDITS_SCREEN:
+                self.currentScreen = CreditsScreen(self.window)

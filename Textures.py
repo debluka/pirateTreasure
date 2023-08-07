@@ -28,3 +28,6 @@ CANNONBALL: pygame.Surface = pygame.image.load(os.path.join("assets", "cannonBal
 EXPLOSION1: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion1.png"))
 EXPLOSION2: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion2.png"))
 EXPLOSION3: pygame.Surface = pygame.image.load(os.path.join("assets", "explosion3.png"))
+
+
+HOW_TO_PLAY: pygame.Surface = pygame.image.load(os.path.join("assets", "HowToPlay.png"))

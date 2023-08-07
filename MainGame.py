@@ -50,6 +50,7 @@ class MainGame(GameScreen):
                 if self.lostCount > gameSettings.FPS * 3:
                     mainGameState.reset()
                     playerUpgrades.reset()
+                    pygame.mixer.music.stop()
                     saveScore(gameSettings.username, mainGameState.score)
                     self.nextScreen = ScreenType.MAIN_MENU
                     return True
