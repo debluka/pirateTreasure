@@ -3,6 +3,7 @@ import pygame
 from GameScreen import GameScreen
 from GameSettings import gameSettings
 from ScreenType import ScreenType
+from TextButton import TextButton
 from util import scaleRect
 from fonts import main_font
 from dbModifyScores import getHighscores
@@ -14,7 +15,8 @@ class Leaderboard(GameScreen):
         self.x: int = int(gameSettings.width * 0.05)
         self.y: int = int(gameSettings.height * 0.15)
         self.width: int = int(gameSettings.width * 0.9)
-        self.height: int = int(gameSettings.height * 0.8)
+        self.height: int = int(gameSettings.height * 0.7)
+        self.buttons: dict[str, TextButton] = {"Back": TextButton(self.window, gameSettings.height - main_font.get_height() - 20, "Back"),}
         self.leaderboardRect: pygame.Rect = pygame.Rect((self.x, self.y, self.width, self.height))
         self.highscores: dict[str, int] = getHighscores()
 
@@ -22,6 +24,12 @@ class Leaderboard(GameScreen):
     def update(self) -> bool:
         if self.nextScreen is not None:
             return True
+
+        for key, button in self.buttons.items():
+            if button.clicked is True:
+                match key:
+                    case "Back":
+                        self.nextScreen = ScreenType.MAIN_MENU
 
     def render(self) -> None:
         self.window.fill((14, 194, 249))
@@ -43,6 +51,9 @@ class Leaderboard(GameScreen):
             if position > 10:
                 break
 
+        for _, button in self.buttons.items():
+            button.draw()
+
     def keyboard_press_button_handler(self, event: pygame.event.Event) -> None:
         match event.key:
             case pygame.K_ESCAPE:
@@ -50,3 +61,5 @@ class Leaderboard(GameScreen):
 
     def window_resize_handler(self) -> None:
         scaleRect(self.leaderboardRect)
+        for _, button in self.buttons.items():
+            button.resize()

@@ -31,13 +31,13 @@ class UpgradeButton:
                 self.displayText = "Max health"
                 self.explanationText = ["Increase your max",
                                         "health by 20"]
-                self.cost = 25
+                self.cost = 15
                 self.maxLevel = 10
             case UpgradeType.HEALTH_REGENERATION:
                 self.displayText = "Health regen"
                 self.explanationText = ["Increase your health",
                                         "regen by 0.6/s"]
-                self.cost = 20
+                self.cost = 10
                 self.maxLevel = 10
             case UpgradeType.ARMOR:
                 self.displayText = "Armor"
@@ -47,25 +47,25 @@ class UpgradeButton:
                                         "projectiles but does",
                                         "not block damage",
                                         "from ship collisions"]
-                self.cost = 30
+                self.cost = 20
                 self.maxLevel = 10
             case UpgradeType.VELOCITY:
                 self.displayText = "Move speed"
                 self.explanationText = ["Increase your move",
                                         "speed"]
-                self.cost = 20
+                self.cost = 15
                 self.maxLevel = 5
             case UpgradeType.SHOOTING_SPEED:
                 self.displayText = "Shooting speed"
                 self.explanationText = ["Increase your rate",
                                         "of fire"]
-                self.cost = 30
+                self.cost = 25
                 self.maxLevel = 5
             case UpgradeType.NUMBER_OF_BULLETS:
                 self.displayText = "No. of projectiles"
                 self.explanationText = ["Increase your projectile",
                                         "count per shot fired"]
-                self.cost = 150
+                self.cost = 75
                 self.maxLevel = 3
             case UpgradeType.PROJECTILE_COLLISION:
                 self.displayText = "Projectile collision"
@@ -74,7 +74,7 @@ class UpgradeButton:
                                         "projectiles. At level 2",
                                         "you can also destroy",
                                         "them with 3 hits"]
-                self.cost = 75
+                self.cost = 40
                 self.maxLevel = 2
             case UpgradeType.PROJECTILE_SPEED:
                 self.displayText = "Projectile speed"
@@ -84,13 +84,13 @@ class UpgradeButton:
                                         "knocback strength",
                                         "if you have the required",
                                         "collision upgrade"]
-                self.cost = 20
-                self.maxLevel = 10
+                self.cost = 10
+                self.maxLevel = 5
             case UpgradeType.PROJECTILE_DAMAGE:
                 self.displayText = "Projectile damage"
                 self.explanationText = ["Projectile's damage",
                                         "is increased by 5"]
-                self.cost = 50
+                self.cost = 35
                 self.maxLevel = 4
 
     def update(self) -> None:

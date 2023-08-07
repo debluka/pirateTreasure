@@ -43,10 +43,6 @@ class HowToPlayScreen(GameScreen):
         for _, button in self.buttons.items():
             button.draw()
 
-    def window_resize_handler(self) -> None:
-        for _, button in self.buttons.items():
-            button.resize()
-
     def keyboard_press_button_handler(self, event: pygame.event.Event) -> None:
         if event.key == pygame.K_ESCAPE:
             self.nextScreen = ScreenType.MAIN_MENU
@@ -60,4 +56,4 @@ class HowToPlayScreen(GameScreen):
         self.width: int = int(gameSettings.width * 0.9)
         self.height: int = int(gameSettings.height * 0.7)
 
-        self.imgSrc = scaleSurface(HOW_TO_PLAY, self.imgSrc)
+        self.imgSrc = scaleSurface(self.imgSrc, HOW_TO_PLAY)

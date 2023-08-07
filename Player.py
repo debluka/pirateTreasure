@@ -16,7 +16,7 @@ class Player(Ship):
         super().__init__(shipType, (PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3), CANNONBALL, x, y, velocity, health)
         self.laser_base_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
         self.laser_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
-        self.COOLDOWN: int = 30
+        self.COOLDOWN: int = 300
         self.armor: int = 0
         self.max_armor: int = 0
         self.updateUpgrades()
@@ -37,8 +37,8 @@ class Player(Ship):
                         pygame.mixer.Sound.play(hitFX)
                         enemy.health -= self.laser_damage
                         if enemy.health <= 0:
-                            mainGameState.score += 10
-                            mainGameState.money += 10
+                            mainGameState.score += int(10 + mainGameState.level * 0.3)
+                            mainGameState.money += 5
                             enemies.remove(enemy)
                             animations.append(ExplosionAnimation(int(enemy.x + enemy.get_width() / 2), int(enemy.y + enemy.get_height() / 2), self.window))
                         if playerLaser in self.lasers:
@@ -122,7 +122,7 @@ class Player(Ship):
                      self.ship_img.get_height()))
 
     def updateUpgrades(self) -> None:
-        self.COOLDOWN = 30 - 5 * playerUpgrades.shootingSpeed
+        self.COOLDOWN = 30 - 4 * playerUpgrades.shootingSpeed
         self.max_health = self.BASE_MAX_HEALTH + mainGameState.HEALTH_PER_UPGRADE * playerUpgrades.maxHealth
         self.velocity = self.base_velocity + mainGameState.VELOCITY_PER_UPGRADE * playerUpgrades.velocity
 

@@ -9,6 +9,7 @@ from RebindButton import RebindButton
 from RebindButtonType import RebindButtonType
 from ScreenType import ScreenType
 from TextButton import TextButton
+from fonts import main_font
 
 
 class OptionsMenu(GameScreen):
@@ -25,23 +26,18 @@ class OptionsMenu(GameScreen):
                                                        "moveRight": RebindButton(self.window, RebindButtonType.RIGHT, TOP_OFFSET + BUTTON_SPACING * 7, "Move right"),
                                                        "shoot": RebindButton(self.window, RebindButtonType.SHOOT, TOP_OFFSET + BUTTON_SPACING * 8, "Shoot")}
         self.selectedRebindButtonType: RebindButtonType | None = None
+        self.buttons: dict[str, TextButton] = {"Back": TextButton(self.window, gameSettings.height - main_font.get_height() - 20, "Back"),}
 
     # Renders the main menu
     def update(self) -> bool:
         if self.nextScreen is not None:
             return True
 
-        for key, button in self.checboxButtons.items():
+        for key, button in self.buttons.items():
             if button.clicked is True:
                 match key:
-                    case "Start game":
-                        self.nextScreen = ScreenType.MAIN_GAME
-                    case "Leaderboard":
-                        self.nextScreen = ScreenType.LEADERBOARD
-                    case "Options":
-                        print("asdf")
-                    case "Exit":
-                        return True
+                    case "Back":
+                        self.nextScreen = ScreenType.MAIN_MENU
 
     def render(self) -> None:
         self.window.fill((14, 194, 249))
@@ -49,6 +45,9 @@ class OptionsMenu(GameScreen):
             button.draw()
 
         for _, button in self.rebindButtons.items():
+            button.draw()
+
+        for _, button in self.buttons.items():
             button.draw()
 
     def click_handler(self, event: pygame.event.Event) -> None:
@@ -61,6 +60,9 @@ class OptionsMenu(GameScreen):
                 self.selectedRebindButtonType = button.buttonType
 
     def window_resize_handler(self) -> None:
+        for _, button in self.buttons.items():
+            button.resize()
+
         for _, button in self.checboxButtons.items():
             button.resize()
 

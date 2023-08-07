@@ -5,7 +5,7 @@ from GameScreen import GameScreen
 from GameSettings import gameSettings
 from ScreenType import ScreenType
 from TextButton import TextButton
-from fonts import main_font
+from fonts import main_font, title_font
 
 
 class MainMenu(GameScreen):
@@ -47,6 +47,13 @@ class MainMenu(GameScreen):
 
     def render(self) -> None:
         self.window.fill((14, 194, 249))
+
+        titleLabel: pygame.Surface = title_font.render("Pirate's Treasure", True, (200, 11, 11))
+        self.window.blit(titleLabel, (gameSettings.width / 2 - titleLabel.get_width() / 2,
+                                        gameSettings.height * 0.05,
+                                        titleLabel.get_width(),
+                                        titleLabel.get_height()))
+
         for _, button in self.buttons.items():
             button.draw()
 

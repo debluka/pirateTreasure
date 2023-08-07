@@ -40,7 +40,10 @@ class TextButton():
             self.clicked = False
 
         # Draw button on screen
-        pygame.draw.rect(self.surface, pygame.Color(255, 255, 255), self.buttonRect, 2)
+        if self.text == "Back":
+            pygame.draw.rect(self.surface, pygame.Color(0, 0, 0), self.buttonRect, 2)
+        else:
+            pygame.draw.rect(self.surface, pygame.Color(255, 255, 255), self.buttonRect, 2)
         self.surface.blit(main_font.render(self.text, True, (255, 255, 255)), (self.buttonRect.center[0] - self.textRect.width / 2, self.buttonRect.center[1] - self.textRect.height / 2))
 
         return action

@@ -48,10 +48,10 @@ class MainGame(GameScreen):
             # Endgame text timer
             if self.gameLost:
                 if self.lostCount > gameSettings.FPS * 3:
+                    saveScore(gameSettings.username, mainGameState.score)
                     mainGameState.reset()
                     playerUpgrades.reset()
                     pygame.mixer.music.stop()
-                    saveScore(gameSettings.username, mainGameState.score)
                     self.nextScreen = ScreenType.MAIN_MENU
                     return True
                 else:
@@ -185,8 +185,8 @@ class MainGame(GameScreen):
                 self.player.health -= 10
                 self.enemies.remove(enemy)
                 self.animations.append(ExplosionAnimation(int(enemy.x + enemy.get_width() / 2), int(enemy.y + enemy.get_height() / 2), self.window))
-                mainGameState.score += 10
-                mainGameState.money += 10
+                mainGameState.score += int(10 + mainGameState.level * 0.3)
+                mainGameState.money += 5
             elif enemy.y + enemy.get_height() > gameSettings.height:
                 # If enemy gets to the bottom of the screen we also lose lives
                 self.lives -= 1
@@ -218,5 +218,6 @@ class MainGame(GameScreen):
                           random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
                           random.randrange(math.ceil(-1500 * gameSettings.h_scale_base), math.ceil(-100 * gameSettings.h_scale_base)),
                           random.choice(enemySpawnTypePool),
-                          gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base)
+                          gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                          10 * mainGameState.level)
             self.enemies.append(enemy)

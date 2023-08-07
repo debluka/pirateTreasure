@@ -15,7 +15,6 @@ from util import scaleSurface, scaleSurfaceBase
 
 
 class Ship:
-    COOLDOWN: int = 30
 
     def __init__(self, shipType: ShipType, src_images: (pygame.Surface, ...), laserImg: pygame.Surface, x: int, y: int, velocity: float, health: int = 100):
         self.x: int = x
@@ -35,6 +34,7 @@ class Ship:
         self.shipType: ShipType = shipType
         self.healthbarHeight: int = healthbarFont.get_height()
         self.images: (pygame.Surface, ...) = src_images
+        self.COOLDOWN: int = 200
 
     def draw(self, window: pygame.Surface) -> None:
         self.updateImage()
