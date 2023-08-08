@@ -76,25 +76,26 @@ class Player(Ship):
         # Red part of the health bar
         pygame.draw.rect(window,
                          (255, 0, 0),
-                         (self.x,
-                          self.y + self.ship_img.get_height() + 2 + self.healthbarHeight,
-                          self.ship_img.get_width(), self.healthbarHeight))
+                         (self.x + self.ship_img.get_width()/2 - self.healthbarWidth/2,
+                               self.y + self.ship_img.get_height() + 2 + self.healthbarHeight,
+                               self.healthbarWidth,
+                               self.healthbarHeight))
 
         # Green part of the health bar
         pygame.draw.rect(window,
                          (0, 255, 0),
-                         (self.x,
-                          self.y + self.ship_img.get_height() + 2 + self.healthbarHeight,
-                          self.ship_img.get_width() * (self.health/self.max_health),
-                          self.healthbarHeight))
+                         (self.x + self.ship_img.get_width()/2 - self.healthbarWidth/2,
+                               self.y + self.ship_img.get_height() + 2 + self.healthbarHeight,
+                               self.healthbarWidth * (self.health/self.max_health),
+                               self.healthbarHeight))
 
         window.blit(healthbarFont.render(str(int(self.health)) + " / " + str(self.max_health),
                                          True,
                                          pygame.Color(255, 255, 255)),
-                    (self.x,
-                     self.y + self.ship_img.get_height() + 2 + self.healthbarHeight,
-                     self.ship_img.get_width(),
-                     self.healthbarHeight))
+                                         (self.x + self.ship_img.get_width()/2 - self.healthbarWidth/2,
+                                               self.y + self.ship_img.get_height() + 2 + self.healthbarHeight,
+                                               self.healthbarWidth,
+                                               self.healthbarHeight))
 
     def armorBar(self, window: pygame.Surface):
         # Red part of the armor bar

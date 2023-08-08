@@ -130,6 +130,10 @@ class MainGame(GameScreen):
                     self.player.y -= self.player.velocity * gameSettings.h_scale_base
                 if keys[gameSettings.moveDownBinding] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
                     self.player.y += self.player.velocity * gameSettings.h_scale_base
+                if keys[pygame.K_e]:
+                    self.player.rotate -= 2
+                if keys[pygame.K_q]:
+                    self.player.rotate += 2
                 if keys[gameSettings.shootBinding]:
                     self.player.shoot()
 

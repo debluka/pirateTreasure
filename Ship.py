@@ -35,6 +35,8 @@ class Ship:
         self.healthbarHeight: int = healthbarFont.get_height()
         self.images: (pygame.Surface, ...) = src_images
         self.COOLDOWN: int = 200
+        self.rotate: int = 0
+        self.healthbarWidth = 66 * gameSettings.w_scale_base
 
     def draw(self, window: pygame.Surface) -> None:
         self.updateImage()
@@ -77,17 +79,30 @@ class Ship:
     def shoot(self) -> None:
         if self.cool_down_counter == 0:
             pygame.mixer.Sound.play(cannonFireFX)
-            laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2), self.y, False, self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
+            laser = Laser(int(self.x + self.get_width()/2 - self.laser_img.get_width()/2),
+                          int(self.y + self.get_height()/2 + self.laser_img.get_height()/2),
+                          False,
+                          self.laser_img,
+                          math.sin(math.radians(self.rotate + 90)) * (-gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE),
+                          -math.cos(math.radians(self.rotate + 90)) * (-gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE))
             self.lasers.append(laser)
 
             if self.shipType is ShipType.PLAYER:
                 if playerUpgrades.numberOfBullets >= 2:
-                    laser = Laser(int(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2), self.y, False,
-                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE, -gameSettings.LASER_BASE_VELOCITY * 0.1 - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
+                    laser = Laser(int(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2),
+                                  int(self.y + self.get_height()/2 + self.laser_img.get_height()/2),
+                                  False,
+                                  self.laser_img,
+                                  math.sin(math.radians(self.rotate + 90 + 20)) * (-gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE),
+                                  -math.cos(math.radians(self.rotate + 90 + 20)) * (-gameSettings.LASER_BASE_VELOCITY- playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE))
                     self.lasers.append(laser)
                 if playerUpgrades.numberOfBullets >= 3:
-                    laser = Laser(int(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2), self.y, False,
-                                  self.laser_img, -gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE, gameSettings.LASER_BASE_VELOCITY * 0.1 + playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE)
+                    laser = Laser(int(self.x + self.get_width() / 2 - self.laser_img.get_width() / 2),
+                                  int(self.y + self.get_height()/2 + self.laser_img.get_height()/2),
+                                  False,
+                                  self.laser_img,
+                                  math.sin(math.radians(self.rotate + 90 - 20)) * (-gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE),
+                                  -math.cos(math.radians(self.rotate + 90 - 20)) * (-gameSettings.LASER_BASE_VELOCITY - playerUpgrades.projectileSpeed * mainGameState.PROJECTILE_SPEED_PER_UPGRADE))
                     self.lasers.append(laser)
             self.cool_down_counter = 1
 
@@ -100,6 +115,7 @@ class Ship:
     def resize(self) -> None:
         self.x = self.x * gameSettings.w_scale
         self.y = self.y * gameSettings.h_scale
+        self.healthbarWidth *= gameSettings.w_scale
 
         self.ship_img = scaleSurface(self.ship_img, self.imgSrc)
         self.mask = pygame.mask.from_surface(self.ship_img)
@@ -110,6 +126,13 @@ class Ship:
         for laser in self.lasers:
             laser.resize()
 
+
+
     def updateImage(self) -> None:
         self.imgSrc = self.images[math.ceil(self.health / self.max_health * 3) - 1 if self.health > 0 else 0]
-        self.ship_img = scaleSurfaceBase(self.imgSrc)
+        center = self.ship_img.get_rect().center
+        self.ship_img = pygame.transform.rotate(scaleSurfaceBase(self.imgSrc), self.rotate)
+        self.x += center[0] - self.ship_img.get_rect().center[0]
+        self.y += center[1] - self.ship_img.get_rect().center[1]
+        self.mask = pygame.mask.from_surface(self.ship_img)
+
