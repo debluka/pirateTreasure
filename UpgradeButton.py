@@ -158,11 +158,18 @@ class UpgradeButton:
             textOffset += self.upgradeExplanationFont.get_height()
 
         # Upgrade cost
-        self.window.blit(self.upgradeTitleFont.render("Cost: " + str(self.cost),
-                                                      True,
-                                                      pygame.Color(6, 197, 207)),
-                         (self.buttonRect.x + 10,
-                          self.buttonRect.y + self.buttonRect.height - 10 - self.upgradeTitleFont.get_height()))
+        if self.upgradeLevel == self.maxLevel:
+            self.window.blit(self.upgradeTitleFont.render("Max level",
+                                                          True,
+                                                          pygame.Color(235, 55, 5)),
+                             (self.buttonRect.x + 10,
+                              self.buttonRect.y + self.buttonRect.height - 10 - self.upgradeTitleFont.get_height()))
+        else:
+            self.window.blit(self.upgradeTitleFont.render("Cost: " + str(self.cost),
+                                                          True,
+                                                          pygame.Color(6, 197, 207)),
+                             (self.buttonRect.x + 10,
+                              self.buttonRect.y + self.buttonRect.height - 10 - self.upgradeTitleFont.get_height()))
 
     def resize(self) -> None:
         scaleRect(self.buttonRect)
