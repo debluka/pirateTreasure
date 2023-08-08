@@ -17,9 +17,9 @@ class OptionsMenu(GameScreen):
         super().__init__(ScreenType(ScreenType.MAIN_MENU), window)
         TOP_OFFSET: int = 100
         BUTTON_SPACING: int = 60
-        self.checboxButtons: dict[str, Checkbox] = {"Toggle sound": Checkbox(self.window, OptionsButtonType.SOUND_ENABLED, True, TOP_OFFSET, "Toggle sound"),
-                                                    "Resizable screen": Checkbox(self.window, OptionsButtonType.SCREEN_RESIZE, True, TOP_OFFSET + BUTTON_SPACING, "Resizable screen"),
-                                                    "Full-screen": Checkbox(self.window, OptionsButtonType.FULL_SCREEN, False, TOP_OFFSET + BUTTON_SPACING * 2, "Full-screen")}
+        self.checboxButtons: dict[str, Checkbox] = {"Toggle music": Checkbox(self.window, OptionsButtonType.SOUND_ENABLED, gameSettings.soundEnabled, TOP_OFFSET, "Toggle music"),
+                                                    "Resizable screen": Checkbox(self.window, OptionsButtonType.SCREEN_RESIZE, gameSettings.resizableScreen, TOP_OFFSET + BUTTON_SPACING, "Resizable screen"),
+                                                    "Full-screen": Checkbox(self.window, OptionsButtonType.FULL_SCREEN, gameSettings.fullScreen, TOP_OFFSET + BUTTON_SPACING * 2, "Full-screen")}
         self.rebindButtons: dict[str, RebindButton] = {"moveUp": RebindButton(self.window, RebindButtonType.UP, TOP_OFFSET + BUTTON_SPACING * 4, "Move up"),
                                                        "moveDown": RebindButton(self.window, RebindButtonType.DOWN, TOP_OFFSET + BUTTON_SPACING * 5, "Move down"),
                                                        "moveLeft": RebindButton(self.window, RebindButtonType.LEFT, TOP_OFFSET + BUTTON_SPACING * 6, "Move left"),

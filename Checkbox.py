@@ -49,7 +49,11 @@ class Checkbox:
                     if gameSettings.fullScreen is False:
                         self.surface = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE if gameSettings.resizableScreen == True else 0)
                 case OptionsButtonType.SOUND_ENABLED:
-                    gameSettings.resizableScreen = not gameSettings.soundEnabled
+                    gameSettings.soundEnabled = not gameSettings.soundEnabled
+                    if gameSettings.soundEnabled is True:
+                        pygame.mixer.music.set_volume(100)
+                    else:
+                        pygame.mixer.music.set_volume(0)
                 case OptionsButtonType.FULL_SCREEN:
                     gameSettings.fullScreen = not gameSettings.fullScreen
                     if gameSettings.fullScreen is True:
