@@ -8,7 +8,7 @@ class GameSettings:
         self.PLAYER_LASER_BASE_DAMAGE: int = 10
         self.ENEMY_LASER_BASE_DAMAGE: int = 10
         self.LASER_BASE_VELOCITY: int = 5
-        self.ENEMY_BASE_VELOCITY: int = 4
+        self.ENEMY_BASE_VELOCITY: int = 2
 
         self.BASE_WIDTH: int = 750
         self.BASE_HEIGHT: int = 750
@@ -19,7 +19,7 @@ class GameSettings:
         self.height: int = 750
         self.minY: float = -700
         self.maxY: float = 900
-        self.baseHeight: float = 200
+        self.baseHeight: float = 100
 
         self.w_scale: float = 1.0
         self.h_scale: float = 1.0

@@ -67,14 +67,13 @@ class MainGame(GameScreen):
 
     def render(self) -> None:
         self.window.fill(self.waterColor)
+        pygame.draw.rect(self.window, (255,255,255), self.coords)
+        pygame.draw.rect(self.window, (50, 160, 250),
+                         (0, gameSettings.height / 2 - 5 + mainGameState.yOffset, gameSettings.width, 10 * gameSettings.w_scale_base))
         pygame.draw.rect(self.window, (255, 0, 0),
-                         (0, 0 + mainGameState.yOffset, gameSettings.width, 100 * gameSettings.w_scale_base))
+                         (0, -gameSettings.maxY + mainGameState.yOffset, gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
         pygame.draw.rect(self.window, (0, 255, 0),
-                         (0, -900 * gameSettings.w_scale_base + mainGameState.yOffset, gameSettings.width, 100 * gameSettings.w_scale_base))
-        pygame.draw.rect(self.window, (255, 0, 0),
-                         (0, 750 * gameSettings.w_scale_base + mainGameState.yOffset, gameSettings.width, 750 * gameSettings.w_scale_base))
-        pygame.draw.rect(self.window, (0, 255, 0),
-                         (0, 1250 * gameSettings.w_scale_base + mainGameState.yOffset, gameSettings.width, 200 * gameSettings.w_scale_base))
+                         (0, -gameSettings.minY + gameSettings.height + mainGameState.yOffset - gameSettings.baseHeight, gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
 
 
         # Enemies and player's character
@@ -123,7 +122,6 @@ class MainGame(GameScreen):
         self.window.blit(score_label, (10, main_font.get_height() + 10))
         self.window.blit(money_label, (10, main_font.get_height() * 2 + 10))
         self.window.blit(level_label, (gameSettings.width - level_label.get_width() - 10, 10))
-
         pygame.display.update()
 
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
