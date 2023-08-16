@@ -12,7 +12,7 @@ from Textures import PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3, CANNONBALL
 from fonts import healthbarFont
 
 class Player(Ship):
-    def __init__(self, window: pygame.Surface, shipType: ShipType, x: int, y: int, velocity: float, health: int = 100):
+    def __init__(self, window: pygame.Surface, shipType: ShipType, x: float, y: float, velocity: float, health: int = 100):
         super().__init__(shipType, (PLAYER_IMAGE1, PLAYER_IMAGE2, PLAYER_IMAGE3), CANNONBALL, x, y, velocity, health)
         self.laser_base_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE
         self.laser_damage: int = gameSettings.PLAYER_LASER_BASE_DAMAGE

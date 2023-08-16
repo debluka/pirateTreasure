@@ -6,6 +6,7 @@ from GameSettings import gameSettings
 from HowToPlayScreen import HowToPlayScreen
 from Leaderboard import Leaderboard
 from MainGame import MainGame
+from MainGameState import mainGameState
 from MainMenu import MainMenu
 from OptionsMenu import OptionsMenu
 from ScreenType import ScreenType
@@ -44,6 +45,11 @@ class ScreenController:
                     gameSettings.h_scale_base = sizeTaken / gameSettings.BASE_HEIGHT
                     gameSettings.width = sizeTaken
                     gameSettings.height = sizeTaken
+                    gameSettings.minY *= gameSettings.w_scale
+                    gameSettings.maxY *= gameSettings.w_scale
+                    gameSettings.baseHeight *= gameSettings.w_scale
+
+                    mainGameState.yOffset *= gameSettings.w_scale
                     self.window = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE)
                     self.currentScreen.window_resize_handler()
                 case pygame.KEYDOWN:

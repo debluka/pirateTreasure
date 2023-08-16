@@ -2,6 +2,7 @@ import math
 
 import pygame
 
+from MainGameState import mainGameState
 from Textures import EXPLOSION1, EXPLOSION2, EXPLOSION3
 from util import scaleSurfaceBase, scaleSurface
 
@@ -31,6 +32,6 @@ class ExplosionAnimation:
     def draw(self):
         if self.animationCounter < self.frameSpeed * len(self.frames):
             self.window.blit(self.currentFrame, (self.x - self.currentFrame.get_width() / 2,
-                                                 self.y - self.currentFrame.get_height() / 2,
+                                                 self.y - self.currentFrame.get_height() / 2 + mainGameState.yOffset,
                                                  self.currentFrame.get_width(),
                                                  self.currentFrame.get_height()))

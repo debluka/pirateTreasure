@@ -26,7 +26,7 @@ class MainGame(GameScreen):
         self.lives: int = 5
         self.enemies: [Enemy] = []
         self.waveLength: int = 0
-        self.player = Player(self.window, ShipType(ShipType.PLAYER), int(gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_width() / 2), int(gameSettings.height * 0.8), gameSettings.PLAYER_BASE_VELOCITY)
+        self.player = Player(self.window, ShipType(ShipType.PLAYER), gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_width() / 2, gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2, gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost: bool = False
         self.lostCount: int = 0
         self.animations: list[ExplosionAnimation] = []
@@ -67,7 +67,14 @@ class MainGame(GameScreen):
 
     def render(self) -> None:
         self.window.fill(self.waterColor)
-
+        pygame.draw.rect(self.window, (255, 0, 0),
+                         (0, 0 + mainGameState.yOffset, gameSettings.width, 100 * gameSettings.w_scale_base))
+        pygame.draw.rect(self.window, (0, 255, 0),
+                         (0, -900 * gameSettings.w_scale_base + mainGameState.yOffset, gameSettings.width, 100 * gameSettings.w_scale_base))
+        pygame.draw.rect(self.window, (255, 0, 0),
+                         (0, 750 * gameSettings.w_scale_base + mainGameState.yOffset, gameSettings.width, 750 * gameSettings.w_scale_base))
+        pygame.draw.rect(self.window, (0, 255, 0),
+                         (0, 1250 * gameSettings.w_scale_base + mainGameState.yOffset, gameSettings.width, 200 * gameSettings.w_scale_base))
 
 
         # Enemies and player's character
@@ -127,9 +134,19 @@ class MainGame(GameScreen):
                 if keys[gameSettings.moveRightBinding] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
                     self.player.x += self.player.velocity * gameSettings.w_scale_base
                 if keys[gameSettings.moveUpBinding] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
-                    self.player.y -= self.player.velocity * gameSettings.h_scale_base
+                    if gameSettings.maxY > mainGameState.yOffset >= gameSettings.minY and self.player.y <= gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2:
+                        mainGameState.yOffset += self.player.velocity * gameSettings.h_scale_base
+                        if mainGameState.yOffset > gameSettings.maxY:
+                            mainGameState.yOffset = gameSettings.maxY
+                    else:
+                        self.player.y -= self.player.velocity * gameSettings.h_scale_base
                 if keys[gameSettings.moveDownBinding] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
-                    self.player.y += self.player.velocity * gameSettings.h_scale_base
+                    if gameSettings.minY < mainGameState.yOffset <= gameSettings.maxY and self.player.y >= gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2:
+                        mainGameState.yOffset -= self.player.velocity * gameSettings.h_scale_base
+                        if mainGameState.yOffset < gameSettings.minY:
+                            mainGameState.yOffset = gameSettings.minY
+                    else:
+                        self.player.y += self.player.velocity * gameSettings.h_scale_base
                 if keys[pygame.K_e]:
                     self.player.rotate -= 2
                 if keys[pygame.K_q]:
@@ -191,7 +208,7 @@ class MainGame(GameScreen):
                 self.animations.append(ExplosionAnimation(int(enemy.x + enemy.get_width() / 2), int(enemy.y + enemy.get_height() / 2), self.window))
                 mainGameState.score += int(10 + mainGameState.level * 0.3)
                 mainGameState.money += 5
-            elif enemy.y + enemy.get_height() > gameSettings.height:
+            elif enemy.y + enemy.get_height() > gameSettings.height - gameSettings.minY - gameSettings.baseHeight:
                 # If enemy gets to the bottom of the screen we also lose lives
                 self.lives -= 1
                 self.enemies.remove(enemy)
@@ -220,7 +237,7 @@ class MainGame(GameScreen):
                 enemySpawnTypePool.append("ghost")
             enemy = Enemy(ShipType(ShipType.ENEMY),
                           random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
-                          random.randrange(math.ceil(-1500 * gameSettings.h_scale_base), math.ceil(-100 * gameSettings.h_scale_base)),
+                          random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
                           random.choice(enemySpawnTypePool),
                           gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
                           10 * mainGameState.level)

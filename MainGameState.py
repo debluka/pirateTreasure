@@ -10,6 +10,8 @@ class MainGameState:
         self.pX: int = 0
         self.pY: int = 0
 
+        self.yOffset: int = 0
+
         self.HEALTH_PER_UPGRADE: int = 10
         self.VELOCITY_PER_UPGRADE: int = 1
         self.HEALTH_REGENERATION_PER_UPGRADE: float = 0.01
@@ -26,6 +28,7 @@ class MainGameState:
         self.limitedVision: bool = False
         self.pX: int = 0
         self.pY: int = 0
+        self.yOffset = 0
 
 
 mainGameState: MainGameState = MainGameState()
