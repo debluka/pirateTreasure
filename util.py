@@ -41,3 +41,11 @@ def scaleRectBase(rect: pygame.Rect) -> pygame.Rect:
 def scaleSurfaceBase(img: pygame.Surface) -> pygame.Surface:
     return pygame.transform.scale(img, (img.get_width() * gameSettings.w_scale_base,
                                         img.get_height() * gameSettings.h_scale_base))
+
+def gradientRect( window, left_colour, right_colour, target_rect ):
+    """ Draw a horizontal-gradient filled rectangle covering <target_rect> """
+    colour_rect = pygame.Surface( ( 2, 2 ) )                                   # tiny! 2x2 bitmap
+    pygame.draw.line( colour_rect, left_colour,  ( 0,0 ), ( 0,1 ) )            # left colour line
+    pygame.draw.line( colour_rect, right_colour, ( 1,0 ), ( 1,1 ) )            # right colour line
+    colour_rect = pygame.transform.smoothscale( colour_rect, ( target_rect.width, target_rect.height ) )  # stretch!
+    window.blit( colour_rect, target_rect )                                    # paint it

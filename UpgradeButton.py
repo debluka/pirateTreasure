@@ -5,7 +5,7 @@ from UpgradeType import UpgradeType
 from PlayerUpgrades import playerUpgrades
 
 # button class
-from util import scaleRect
+from util import scaleRect, gradientRect
 
 
 class UpgradeButton:
@@ -44,7 +44,7 @@ class UpgradeButton:
                 self.explanationText = ["Increase your armor",
                                         "by 20. Armor blocks",
                                         "damage from enemy",
-                                        "projectiles but does",
+                                        "projectiles, but does",
                                         "not block damage",
                                         "from ship collisions"]
                 self.cost = 20
@@ -80,8 +80,8 @@ class UpgradeButton:
                 self.displayText = "Projectile speed"
                 self.explanationText = ["Increase projectile",
                                         "move speed, which also",
-                                        "increase slow and",
-                                        "knocback strength",
+                                        "increases slow and",
+                                        "knockback strength",
                                         "if you have the required",
                                         "collision upgrade"]
                 self.cost = 10
@@ -130,10 +130,10 @@ class UpgradeButton:
 
         # Button background and border
         if self.clicked:
-            backgroundColor = (90, 90, 90)
+            backgroundColor = (101, 196, 27)
+            pygame.draw.rect(self.window, backgroundColor, self.buttonRect)
         else:
-            backgroundColor = (80, 80, 80)
-        pygame.draw.rect(self.window, backgroundColor, self.buttonRect)
+            gradientRect(self.window, (25, 176, 80), (12, 201, 81), self.buttonRect)
         pygame.draw.rect(self.window, pygame.Color(255, 255, 255), self.buttonRect, 2)
 
         # # Background image
@@ -167,7 +167,7 @@ class UpgradeButton:
         else:
             self.window.blit(self.upgradeTitleFont.render("Cost: " + str(self.cost),
                                                           True,
-                                                          pygame.Color(6, 197, 207)),
+                                                          pygame.Color(32, 69, 201)),
                              (self.buttonRect.x + 10,
                               self.buttonRect.y + self.buttonRect.height - 10 - self.upgradeTitleFont.get_height()))
 

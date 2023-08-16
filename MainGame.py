@@ -34,11 +34,41 @@ class MainGame(GameScreen):
         self.upgradeMenu: UpgradeMenu = UpgradeMenu(self.window)
         self.waterColor: (int, int, int) = (14, 194, 249)
 
+        self.base_water_color = '#3D897B'
+        self.high_light_color = '#FFFFFF'
+        self.points: [[pygame.Vector2, int]] = []
+        self.populate()
+
+
         pygame.mixer.music.load('assets/audio/ambient.mp3')
         pygame.mixer.music.play(-1)
+
+    def populate(self) -> None:
+        random.seed(None)
+        # first_sin_input = random.randint(1,90)
+        for x in range(int(gameSettings.width / (30 * gameSettings.w_scale_base))):
+            for y in range(int((gameSettings.height - gameSettings.minY + gameSettings.maxY) / (90* gameSettings.w_scale_base))):
+                point_xy = pygame.Vector2(random.randint(0, 23) + (gameSettings.width / 24) * x,
+                                          random.randint(0, 200) + ((gameSettings.height - gameSettings.minY + gameSettings.maxY) / 25) * y - gameSettings.maxY)
+                self.points.append([point_xy, random.randint(1, 359)])
+                print(x, random.randint( 0, 23) + (gameSettings.width / 24) * x, y, random.randint(0, 70) + ((gameSettings.height - gameSettings.minY + gameSettings.maxY) / 25) * x)
+
+    def wave(self, point: pygame.Vector2, sin_input: int) -> int:
+
+        speed: int = random.randint(1, 2)
+        sin_input += speed
+        if sin_input >= 360:
+            sin_input = 0
+
+        point.y += (math.sin(math.radians(sin_input))) / random.randint(20, 25)
+
+        return sin_input
+
     # Renders the main menu
     def update(self) -> bool:
         if mainGameState.isPaused is False:
+            for point in self.points:
+                point[1] = self.wave(point[0], point[1])
             if self.nextScreen is not None:
                 pygame.mixer.music.play(-1)
                 return True
@@ -66,14 +96,29 @@ class MainGame(GameScreen):
             self.player.updateUpgrades()
 
     def render(self) -> None:
+        # Background and sea effects
         self.window.fill(self.waterColor)
-        pygame.draw.rect(self.window, (255,255,255), self.coords)
-        pygame.draw.rect(self.window, (50, 160, 250),
-                         (0, gameSettings.height / 2 - 5 + mainGameState.yOffset, gameSettings.width, 10 * gameSettings.w_scale_base))
-        pygame.draw.rect(self.window, (255, 0, 0),
-                         (0, -gameSettings.maxY + mainGameState.yOffset, gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
-        pygame.draw.rect(self.window, (0, 255, 0),
-                         (0, -gameSettings.minY + gameSettings.height + mainGameState.yOffset - gameSettings.baseHeight, gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
+        for point in self.points:
+            random_width = point[1] // 100
+            vector_width = pygame.Vector2(random_width, 0)
+            pygame.draw.line(self.window, (255, 255, 255), [point[0][0] - vector_width[0], point[0][1] - vector_width[1] + mainGameState.yOffset],
+                             [point[0][0] + vector_width[0], point[0][1] + vector_width[1] + mainGameState.yOffset])
+
+        # Reference lines
+        enemySurface = pygame.Surface((gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
+        enemySurface.set_alpha(99)
+        enemySurface.fill((255, 0, 0))
+        self.window.blit(enemySurface, (0, -gameSettings.maxY + mainGameState.yOffset))
+
+        midSurface = pygame.Surface((gameSettings.width, 10 * gameSettings.w_scale_base))
+        midSurface.set_alpha(99)
+        midSurface.fill((50, 160, 250))
+        self.window.blit(midSurface, (0, gameSettings.height / 2 - 5 + mainGameState.yOffset))
+
+        homeSurface = pygame.Surface((gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
+        homeSurface.set_alpha(99)
+        homeSurface.fill((0, 255, 0))
+        self.window.blit(homeSurface, (0, -gameSettings.minY + gameSettings.height + mainGameState.yOffset - gameSettings.baseHeight))
 
 
         # Enemies and player's character
@@ -107,8 +152,6 @@ class MainGame(GameScreen):
         level_label: pygame.Surface = main_font.render(f"Level: {mainGameState.level}", True, (255, 255, 255))
         score_label: pygame.Surface = main_font.render(f"Score: {mainGameState.score}", True, (255, 255, 255))
         money_label: pygame.Surface = main_font.render(f"Money: {mainGameState.money}", True, (255, 255, 255))
-
-
 
         # Pause text
         if mainGameState.isPaused:
@@ -169,6 +212,10 @@ class MainGame(GameScreen):
         self.upgradeMenu.resize()
         for enemy in self.enemies:
             enemy.resize()
+
+        self.points = []
+        self.populate()
+
 
     def checkEndgameConditions(self) -> None:
         if self.lives <= 0 or self.player.health <= 0:
