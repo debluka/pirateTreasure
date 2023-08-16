@@ -29,12 +29,22 @@ class ScreenController:
                 case pygame.MOUSEBUTTONDOWN:
                     self.currentScreen.click_handler(event)
                 case pygame.VIDEORESIZE:
-                    gameSettings.w_scale = event.w / gameSettings.width
-                    gameSettings.h_scale = event.h / gameSettings.height
-                    gameSettings.w_scale_base = event.w / gameSettings.BASE_WIDTH
-                    gameSettings.h_scale_base = event.h / gameSettings.BASE_HEIGHT
-                    gameSettings.width = event.w
-                    gameSettings.height = event.h
+                    if event.w < 750 or event.h < 750:
+                        sizeTaken = 750
+                    else:
+                        if event.w > gameSettings.prevWidth or event.h > gameSettings.prevHeight:
+                            sizeTaken = max(event.w, event.h)
+                        else:
+                            sizeTaken = min(event.w, event.h)
+                    gameSettings.prevWidth = sizeTaken
+                    gameSettings.prevHeight = sizeTaken
+                    gameSettings.w_scale = sizeTaken / gameSettings.width
+                    gameSettings.h_scale = sizeTaken / gameSettings.height
+                    gameSettings.w_scale_base = sizeTaken / gameSettings.BASE_WIDTH
+                    gameSettings.h_scale_base = sizeTaken / gameSettings.BASE_HEIGHT
+                    gameSettings.width = sizeTaken
+                    gameSettings.height = sizeTaken
+                    self.window = pygame.display.set_mode((gameSettings.width, gameSettings.height), pygame.RESIZABLE)
                     self.currentScreen.window_resize_handler()
                 case pygame.KEYDOWN:
                     self.currentScreen.keyboard_press_button_handler(event)

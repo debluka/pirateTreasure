@@ -12,6 +12,8 @@ class GameSettings:
 
         self.BASE_WIDTH: int = 750
         self.BASE_HEIGHT: int = 750
+        self.prevWidth = 750
+        self.prevHeight = 750
 
         self.width: int = 750
         self.height: int = 750
