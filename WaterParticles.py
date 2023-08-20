@@ -4,6 +4,7 @@ import pygame
 
 from GameSettings import gameSettings
 from MainGameState import mainGameState
+from util import circle_rect_collision
 
 
 class ParticlePrinciple:
@@ -48,5 +49,6 @@ class WaterParticle:
 		self.radius -= 0.15 * gameSettings.w_scale_base
 
 	def draw(self):
-		pygame.draw.circle(self.window, pygame.Color('White'), (self.x, self.y), self.radius)
+		if circle_rect_collision((self.x, self.y), self.radius, mainGameState.cameraRect):
+			pygame.draw.circle(self.window, pygame.Color('White'), (self.x, self.y), self.radius)
 

@@ -20,14 +20,15 @@ class Laser:
         self.isPlayer = isPlayer
 
     def draw(self, window: pygame.Surface) -> None:
-        window.blit(self.img, (self.x, self.y + mainGameState.yOffset))
+        if pygame.Rect(self.x, self.y + mainGameState.yOffset, self.img.get_width(), self.img.get_height()).colliderect(mainGameState.cameraRect):
+            window.blit(self.img, (self.x, self.y + mainGameState.yOffset))
 
     def move(self) -> None:
         self.y += self.y_velocity
         self.x += self.x_velocity
 
     def off_screen(self, height: int) -> bool:
-        return not (height - gameSettings.minY >= self.y >= 0 - gameSettings.maxY)
+        return not (height - gameSettings.minY >= self.y >= 0 - gameSettings.maxY and 0 <= self.x <= gameSettings.width)
 
     def collision(self, obj: any) -> tuple[int, int] | None:
         if self.isPlayer:

@@ -44,7 +44,8 @@ class Ship:
         if self.effects.get('vulnerable', 0) > 0:
             pygame.draw.rect(window, (255, 0, 0), (0, 0, gameSettings.width, gameSettings.height), 5)
 
-        window.blit(self.ship_img, (self.x, self.y + (mainGameState.yOffset if self.shipType == ShipType.ENEMY else 0)))
+        if pygame.Rect(self.x, self.y + (mainGameState.yOffset if self.shipType == ShipType.ENEMY else 0), self.ship_img.get_width(), self.ship_img.get_height()).colliderect(mainGameState.cameraRect):
+            window.blit(self.ship_img, (self.x, self.y + (mainGameState.yOffset if self.shipType == ShipType.ENEMY else 0)))
         self.healthbar(window)
         for laser in self.lasers:
             laser.draw(window)

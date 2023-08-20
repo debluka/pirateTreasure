@@ -18,7 +18,7 @@ from UpgradeMenu import UpgradeMenu
 from WaterParticles import ParticlePrinciple
 from dbModifyScores import saveScore
 from fonts import lost_font, main_font
-from util import collide, scaleSurfaceBase
+from util import collide, scaleSurfaceBase, line_rect_collision
 
 
 class MainGame(GameScreen):
@@ -67,6 +67,7 @@ class MainGame(GameScreen):
 
     # Renders the main menu
     def update(self) -> bool:
+        mainGameState.cameraRect = pygame.Rect(0, 0, gameSettings.width, gameSettings.height)
         if mainGameState.isPaused is False:
             self.playerParticles.update()
             for point in self.points:
@@ -104,8 +105,10 @@ class MainGame(GameScreen):
         for point in self.points:
             random_width = point[1] // 100
             vector_width = pygame.Vector2(random_width, 0)
-            pygame.draw.line(self.window, (255, 255, 255), [point[0][0] - vector_width[0], point[0][1] - vector_width[1] + mainGameState.yOffset],
-                             [point[0][0] + vector_width[0], point[0][1] + vector_width[1] + mainGameState.yOffset])
+            startPos = [point[0][0] - vector_width[0], point[0][1] - vector_width[1] + mainGameState.yOffset]
+            endPos = [point[0][0] + vector_width[0], point[0][1] + vector_width[1] + mainGameState.yOffset]
+            if line_rect_collision(startPos, endPos, mainGameState.cameraRect):
+                pygame.draw.line(self.window, (255, 255, 255), startPos, endPos)
 
         # Reference lines
         enemySurface = pygame.Surface((gameSettings.width, gameSettings.baseHeight * gameSettings.w_scale_base))
