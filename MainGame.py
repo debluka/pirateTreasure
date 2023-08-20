@@ -53,7 +53,6 @@ class MainGame(GameScreen):
                 point_xy = pygame.Vector2(random.randint(0, 23) + (gameSettings.width / 24) * x,
                                           random.randint(0, 200) + ((gameSettings.height - gameSettings.minY + gameSettings.maxY) / 25) * y - gameSettings.maxY)
                 self.points.append([point_xy, random.randint(1, 359)])
-                print(x, random.randint( 0, 23) + (gameSettings.width / 24) * x, y, random.randint(0, 70) + ((gameSettings.height - gameSettings.minY + gameSettings.maxY) / 25) * x)
 
     def wave(self, point: pygame.Vector2, sin_input: int) -> int:
 
