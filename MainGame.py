@@ -15,6 +15,7 @@ from ScreenType import ScreenType
 from ShipType import ShipType
 from SoundFx import deathFX, newLevelFX, shipCollisionFX, thunderStrikeFX
 from UpgradeMenu import UpgradeMenu
+from WaterParticles import ParticlePrinciple
 from dbModifyScores import saveScore
 from fonts import lost_font, main_font
 from util import collide, scaleSurfaceBase
@@ -38,6 +39,7 @@ class MainGame(GameScreen):
         self.high_light_color = '#FFFFFF'
         self.points: [[pygame.Vector2, int]] = []
         self.populate()
+        self.playerParticles = ParticlePrinciple(self.window)
 
 
         pygame.mixer.music.load('assets/audio/ambient.mp3')
@@ -67,6 +69,7 @@ class MainGame(GameScreen):
     # Renders the main menu
     def update(self) -> bool:
         if mainGameState.isPaused is False:
+            self.playerParticles.update()
             for point in self.points:
                 point[1] = self.wave(point[0], point[1])
             if self.nextScreen is not None:
@@ -98,6 +101,7 @@ class MainGame(GameScreen):
     def render(self) -> None:
         # Background and sea effects
         self.window.fill(self.waterColor)
+        self.playerParticles.draw()
         for point in self.points:
             random_width = point[1] // 100
             vector_width = pygame.Vector2(random_width, 0)
@@ -170,28 +174,53 @@ class MainGame(GameScreen):
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         if mainGameState.isPaused is False:
             if not self.gameLost:
-                if keys[gameSettings.moveLeftBinding] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:  # left
+                # left
+                if keys[gameSettings.moveLeftBinding] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
+                                                       self.player.y + self.player.get_height() * 0.7, 1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
+                                                       self.player.y + self.player.get_height() * 0.4, 1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
+                                                       self.player.y + self.player.get_height() * 0.1, 1)
                     self.player.x -= self.player.velocity * gameSettings.w_scale_base
-                if keys[gameSettings.moveRightBinding] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:  # right
+                # right
+                if keys[gameSettings.moveRightBinding] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
+                                                       self.player.y + self.player.get_height() * 0.7, 1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
+                                                       self.player.y + self.player.get_height() * 0.4, 1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
+                                                       self.player.y + self.player.get_height() * 0.1, 1)
                     self.player.x += self.player.velocity * gameSettings.w_scale_base
-                if keys[gameSettings.moveUpBinding] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:  # up
+                # up
+                if keys[gameSettings.moveUpBinding] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7, 1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4, 1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1, 1)
                     if gameSettings.maxY > mainGameState.yOffset >= gameSettings.minY and self.player.y <= gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2:
                         mainGameState.yOffset += self.player.velocity * gameSettings.h_scale_base
                         if mainGameState.yOffset > gameSettings.maxY:
                             mainGameState.yOffset = gameSettings.maxY
                     else:
                         self.player.y -= self.player.velocity * gameSettings.h_scale_base
-                if keys[gameSettings.moveDownBinding] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:  # down
+                # down
+                if keys[gameSettings.moveDownBinding] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7, -1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4, -1)
+                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1, -1)
                     if gameSettings.minY < mainGameState.yOffset <= gameSettings.maxY and self.player.y >= gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2:
                         mainGameState.yOffset -= self.player.velocity * gameSettings.h_scale_base
                         if mainGameState.yOffset < gameSettings.minY:
                             mainGameState.yOffset = gameSettings.minY
                     else:
                         self.player.y += self.player.velocity * gameSettings.h_scale_base
+                # rotate left
                 if keys[pygame.K_e]:
                     self.player.rotate -= 2
+                # rotate right
                 if keys[pygame.K_q]:
                     self.player.rotate += 2
+                # shoot
                 if keys[gameSettings.shootBinding]:
                     self.player.shoot()
 
@@ -237,6 +266,7 @@ class MainGame(GameScreen):
             self.goToNextLevel()
 
         for enemy in self.enemies[:]:
+            enemy.updateParticles()
             enemy.updateEffects()
             enemy.move()
             enemy.move_lasers(self.player)
@@ -285,5 +315,6 @@ class MainGame(GameScreen):
                           random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
                           random.choice(enemySpawnTypePool),
                           gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                          self.window,
                           10 * mainGameState.level)
             self.enemies.append(enemy)

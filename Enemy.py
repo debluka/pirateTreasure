@@ -10,6 +10,7 @@ from ShipType import ShipType
 from SoundFx import hitFX, poisonFX, freezeFX, blindFX, vulnerableFX
 from Textures import RED_SHIP3, RED_SHIP2, RED_SHIP1, BLUE_SHIP3, BLUE_SHIP2, BLUE_SHIP1, GREEN_SHIP3, GREEN_SHIP2, \
     GREEN_SHIP1, RED_LASER, BLUE_LASER, GREEN_LASER, CANNONBALL, GHOST_SHIP1
+from WaterParticles import ParticlePrinciple
 
 
 class Enemy(Ship):
@@ -20,12 +21,23 @@ class Enemy(Ship):
         "ghost": ((GHOST_SHIP1, GHOST_SHIP1, GHOST_SHIP1), BLUE_LASER)
     }
 
-    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, health=10):
+    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10):
         super().__init__(shipType, self.COLOR_MAP[color][0], self.COLOR_MAP[color][1], x, y, velocity, health)
         self.color: str = color
+        self.particles = ParticlePrinciple(window)
 
     def move(self) -> None:
         self.y += self.velocity
+        
+    def draw(self, window: pygame.Surface) -> None:
+        self.particles.draw()
+        super().draw(window)
+        
+    def updateParticles(self) -> None:
+        self.particles.update()
+        self.particles.add_particles(self.x + self.get_width() / 2, self.y + mainGameState.yOffset + self.get_height() * 0.7, -1)
+        self.particles.add_particles(self.x + self.get_width() / 2, self.y + mainGameState.yOffset + self.get_height() * 0.4, -1)
+        self.particles.add_particles(self.x + self.get_width() / 2, self.y + mainGameState.yOffset + self.get_height() * 0.1, -1)
 
     def move_lasers(self, obj: any) -> None:
         self.cooldown()
