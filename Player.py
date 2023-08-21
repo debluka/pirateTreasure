@@ -36,7 +36,7 @@ class Player(Ship):
                 for enemy in enemies:
                     if playerLaser.collision(enemy):
                         # check for laser collision with the enemy and damage/kill the enemy and remove the laser
-                        enemyRelativeDist = math.sqrt((self.x - enemy.x)**2 + (self.x - enemy.y)**2) / (gameSettings.width + gameSettings.maxY - gameSettings.minY)
+                        enemyRelativeDist = math.sqrt((self.x - enemy.x)**2 + (self.y - enemy.y)**2) / (gameSettings.width + gameSettings.maxY - gameSettings.minY)
                         enemyXDist = (enemy.x - self.x) / gameSettings.width
                         channel = pygame.mixer.find_channel()
                         channel.set_volume(0.2 + (0.2 * (1 - enemyRelativeDist) + (0.6 * ((1 - enemyXDist) if enemyXDist < 0 else 0))), 0.2 + (0.2 * (1 - enemyRelativeDist)) + (0.6 * ((1 - enemyXDist) if enemyXDist > 0 else 0)))

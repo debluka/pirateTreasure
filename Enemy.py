@@ -1,3 +1,4 @@
+import math
 import random
 
 import pygame
@@ -21,12 +22,27 @@ class Enemy(Ship):
         "ghost": ((GHOST_SHIP1, GHOST_SHIP1, GHOST_SHIP1), BLUE_LASER)
     }
 
-    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10):
+    def __init__(self, isTracker: bool, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10):
         super().__init__(shipType, self.COLOR_MAP[color][0], self.COLOR_MAP[color][1], x, y, velocity, health)
         self.color: str = color
         self.particles = ParticlePrinciple(window)
+        self.isTracker: bool = isTracker
 
     def move(self) -> None:
+        addedSpeed: float = 0
+        if self.isTracker:
+            dist: float = math.sqrt((self.x - mainGameState.pX) ** 2 + (self.y + mainGameState.yOffset - mainGameState.pY) ** 2)
+            xDiff: float = self.x - mainGameState.pX
+            yDiff: float = self.y + mainGameState.yOffset - mainGameState.pY
+
+            xRatio: float = - (xDiff / (abs(yDiff) + abs(xDiff)))
+            yRatio: float = - (yDiff / (abs(yDiff) + abs(xDiff)))
+            if dist < (350 * gameSettings.h_scale):
+                addedSpeed = 2 * dist / (350 * gameSettings.h_scale)
+
+            self.y += (addedSpeed * (yRatio if yDiff < 0 else 0))
+            self.x += (addedSpeed * xRatio)
+
         self.y += self.velocity
         
     def draw(self, window: pygame.Surface) -> None:
