@@ -22,14 +22,40 @@ class Enemy(Ship):
         "ghost": ((GHOST_SHIP1, GHOST_SHIP1, GHOST_SHIP1), BLUE_LASER)
     }
 
-    def __init__(self, isTracker: bool, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10):
+    def __init__(self, isTracker: bool, isDodger: bool, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10):
         super().__init__(shipType, self.COLOR_MAP[color][0], self.COLOR_MAP[color][1], x, y, velocity, health)
         self.color: str = color
         self.particles = ParticlePrinciple(window)
         self.isTracker: bool = isTracker
+        self.isDodger: bool = isDodger
 
-    def move(self) -> None:
+    def move(self, playerLasers: [Laser]) -> None:
         addedSpeed: float = 0
+
+        if self.isDodger:
+            if len(playerLasers) > 0:
+                minDistance: float = math.sqrt((self.x - playerLasers[0].x) ** 2 + (self.y - playerLasers[0].y) ** 2)
+                laserToAvoid: Laser = playerLasers[0]
+
+                for laser in playerLasers:
+                    distance: float = math.sqrt((self.x - laser.x) ** 2 + (self.y - laser.y) ** 2)
+                    if distance < minDistance:
+                        laserToAvoid = laser
+                        minDistance = distance
+
+                xDiff: float = self.x - laserToAvoid.x
+                yDiff: float = self.y - laserToAvoid.y
+
+                xRatio: float = - (1 if xDiff > 0 else -1 - (xDiff / (abs(yDiff) + abs(xDiff))))
+                yRatio: float = - (1 if yDiff > 0 else -1 - (yDiff / (abs(yDiff) + abs(xDiff))))
+                if minDistance < (350 * gameSettings.h_scale):
+                    addedSpeed = 2 * minDistance / (350 * gameSettings.h_scale)
+
+                self.y -= (addedSpeed * yRatio / 2)
+                if 15 * gameSettings.w_scale_base < self.x and self.x + self.ship_img.get_width() < gameSettings.width:
+                    self.x -= (addedSpeed * (2 * xRatio if yDiff < 0 else 0))
+
+
         if self.isTracker:
             dist: float = math.sqrt((self.x - mainGameState.pX) ** 2 + (self.y + mainGameState.yOffset - mainGameState.pY) ** 2)
             xDiff: float = self.x - mainGameState.pX
@@ -41,7 +67,10 @@ class Enemy(Ship):
                 addedSpeed = 2 * dist / (350 * gameSettings.h_scale)
 
             self.y += (addedSpeed * (yRatio if yDiff < 0 else 0))
-            self.x += (addedSpeed * xRatio)
+            if 15 * gameSettings.w_scale_base < self.x and self.x + self.ship_img.get_width() < gameSettings.width:
+                self.x += (addedSpeed * xRatio)
+
+
 
         self.y += self.velocity
         

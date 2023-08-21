@@ -177,7 +177,7 @@ class MainGame(GameScreen):
         if mainGameState.isPaused is False:
             if not self.gameLost:
                 # left
-                if keys[gameSettings.moveLeftBinding] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 0:
+                if keys[gameSettings.moveLeftBinding] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 15 * gameSettings.w_scale_base:
                     self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
                                                        self.player.y + self.player.get_height() * 0.7, 1)
                     self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
@@ -270,7 +270,7 @@ class MainGame(GameScreen):
         for enemy in self.enemies[:]:
             enemy.updateParticles()
             enemy.updateEffects()
-            enemy.move()
+            enemy.move(self.player.lasers)
             enemy.move_lasers(self.player)
 
             # Shooting
@@ -299,24 +299,36 @@ class MainGame(GameScreen):
 
     def goToNextLevel(self) -> None:
         mainGameState.level += 1
-        if mainGameState.level == 5:
+        if mainGameState.level % 5 == 0 and mainGameState.level > 1:
             pygame.mixer.Sound.play(thunderStrikeFX)
             pygame.mixer.music.load('assets/audio/thunderAmbient.mp3')
             pygame.mixer.music.play(-1)
             self.waterColor = (11, 41, 46)
+        elif mainGameState.level % 5 == 1 and mainGameState.level > 5:
+            self.waterColor = (14, 194, 249)
+            pygame.mixer.music.load('assets/audio/ambient.mp3')
         if mainGameState.level > 1:
             pygame.mixer.Sound.play(newLevelFX)
         self.player.armor = self.player.max_armor
         self.waveLength += mainGameState.WAVE_SIZE
         for i in range(self.waveLength):
             enemySpawnTypePool = ["red", "blue", "green"]
-            if mainGameState.level > 5:
+            if mainGameState.level % 5 == 0 and mainGameState.level > 1:
                 enemySpawnTypePool.append("ghost")
+            elif mainGameState.level % 5 == 1 and mainGameState.level > 5:
+                enemySpawnTypePool.remove("ghost")
 
-            base_probability = 0.20
+            base_probability = 0.10
             increase_factor = 0.05
-            probability = min(base_probability + (increase_factor * (mainGameState.level)), 0.5)
-            enemy = Enemy(True if random.random() < probability else False,
+            probability = min(base_probability + (increase_factor * (mainGameState.level)), 0.3)
+            isTracker: bool = True if random.random() < probability else False
+            isDodger: bool = True if random.random() < probability else False
+
+            if isTracker is True:
+                isDodger = False
+
+            enemy = Enemy(isTracker,
+                          isDodger,
                           ShipType(ShipType.ENEMY),
                           random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
                           random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
