@@ -19,7 +19,7 @@ from UpgradeMenu import UpgradeMenu
 from WaterParticles import ParticlePrinciple
 from dbModifyScores import saveScore
 from fonts import lost_font, main_font
-from util import collide, scaleSurfaceBase, line_rect_collision
+from util import collide, scaleSurfaceBase, line_rect_collision, rotate_point
 
 
 class MainGame(GameScreen):
@@ -182,29 +182,37 @@ class MainGame(GameScreen):
     def keyboard_hold_button_handler(self, keys: tuple[bool, ...]) -> None:
         if mainGameState.isPaused is False:
             if not self.gameLost:
+                origin = pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() / 2)
+                # originalPoint = pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7)
+                # point = pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7)
+                # point = rotate_point(point, self.player.rotate, origin)
+                # rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7), self.player.rotate, origin)
                 # left
                 if keys[gameSettings.moveLeftBinding] and self.player.x - self.player.velocity * gameSettings.w_scale_base > 15 * gameSettings.w_scale_base:
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
-                                                       self.player.y + self.player.get_height() * 0.7, 1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
-                                                       self.player.y + self.player.get_height() * 0.4, 1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
-                                                       self.player.y + self.player.get_height() * 0.1, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
                     self.player.x -= self.player.velocity * gameSettings.w_scale_base
                 # right
                 if keys[gameSettings.moveRightBinding] and self.player.x + self.player.velocity * gameSettings.w_scale_base + self.player.get_width() < gameSettings.width:
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
-                                                       self.player.y + self.player.get_height() * 0.7, 1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
-                                                       self.player.y + self.player.get_height() * 0.4, 1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2,
-                                                       self.player.y + self.player.get_height() * 0.1, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
                     self.player.x += self.player.velocity * gameSettings.w_scale_base
                 # up
                 if keys[gameSettings.moveUpBinding] and self.player.y - self.player.velocity * gameSettings.w_scale_base > 0:
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7, 1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4, 1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, 1)
                     if gameSettings.maxY > mainGameState.yOffset >= gameSettings.minY and self.player.y <= gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2:
                         mainGameState.yOffset += self.player.velocity * gameSettings.h_scale_base
                         if mainGameState.yOffset > gameSettings.maxY:
@@ -213,9 +221,12 @@ class MainGame(GameScreen):
                         self.player.y -= self.player.velocity * gameSettings.h_scale_base
                 # down
                 if keys[gameSettings.moveDownBinding] and self.player.y + self.player.velocity * gameSettings.w_scale_base + self.player.get_height() + 15 < gameSettings.height:
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7, -1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4, -1)
-                    self.playerParticles.add_particles(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1, -1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.7), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, -1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.4), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, -1)
+                    point = rotate_point(pygame.Vector2(self.player.x + self.player.get_width() / 2, self.player.y + self.player.get_height() * 0.1), -self.player.rotate, origin)
+                    self.playerParticles.add_particles(point.x, point.y, -1)
                     if gameSettings.minY < mainGameState.yOffset <= gameSettings.maxY and self.player.y >= gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2:
                         mainGameState.yOffset -= self.player.velocity * gameSettings.h_scale_base
                         if mainGameState.yOffset < gameSettings.minY:

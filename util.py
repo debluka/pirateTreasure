@@ -1,3 +1,5 @@
+import math
+
 import pygame
 
 from GameSettings import gameSettings
@@ -82,3 +84,12 @@ def line_rect_collision(line_start, line_end, rect):
         return False
 
     return True
+
+def rotate_point(point, angle_degrees, origin):
+    angle_radians = math.radians(angle_degrees)
+    cos_theta = math.cos(angle_radians)
+    sin_theta = math.sin(angle_radians)
+    translated_point = (point[0] - origin[0], point[1] - origin[1])
+    rotated_x = translated_point[0] * cos_theta - translated_point[1] * sin_theta
+    rotated_y = translated_point[0] * sin_theta + translated_point[1] * cos_theta
+    return pygame.math.Vector2(rotated_x + origin[0], rotated_y + origin[1])
