@@ -2,6 +2,7 @@ import math
 
 import pygame
 
+from Ally import Ally
 from Enemy import Enemy
 from ExplosionAnimation import ExplosionAnimation
 from GameSettings import gameSettings
@@ -24,7 +25,7 @@ class Player(Ship):
         self.updateUpgrades()
         self.window: pygame.Surface = window
 
-    def move_lasers(self, enemies: list[Enemy], animations: list[ExplosionAnimation]) -> None:
+    def move_lasers(self, allies: list[Ally], enemies: list[Enemy], animations: list[ExplosionAnimation]) -> None:
         # handle player's shooting cooldown
         self.cooldown()
         for playerLaser in self.lasers:
@@ -70,6 +71,31 @@ class Player(Ship):
                                 self.lasers.remove(playerLaser)
                             if targetLaser.health <= 0 and targetLaser in enemy.lasers:
                                 enemy.lasers.remove(targetLaser)
+
+                for ally in allies:
+                    if playerLaser.collision(ally):
+                        # check for laser collision with the enemy and damage/kill the enemy and remove the laser
+                        allyRelativeDist = math.sqrt((self.x - ally.x)**2 + (self.y - ally.y)**2) / (gameSettings.width + gameSettings.maxY - gameSettings.minY)
+                        allyXDist = (ally.x - self.x) / gameSettings.width
+                        channel = pygame.mixer.find_channel()
+                        channel.set_volume(0.2 + (0.2 * (1 - allyRelativeDist) + (0.6 * ((1 - allyXDist) if allyXDist < 0 else 0))), 0.2 + (0.2 * (1 - allyRelativeDist)) + (0.6 * ((1 - allyXDist) if allyXDist > 0 else 0)))
+                        channel.play(hitFX)
+                        ally.health -= self.laser_damage
+                        if ally.health <= 0:
+                            allies.remove(ally)
+                            animations.append(ExplosionAnimation(int(ally.x + ally.get_width() / 2), int(ally.y + ally.get_height() / 2), self.window))
+                        if playerLaser in self.lasers:
+                            self.lasers.remove(playerLaser)
+                    for targetLaser in ally.lasers:
+                        if playerLaser.collision(targetLaser):
+                            pygame.mixer.Sound.play(hitFX)
+                            targetLaser.health = 0
+
+                            # remove player's laser on hit and enemy's laser if the have no health left
+                            if playerLaser in self.lasers:
+                                self.lasers.remove(playerLaser)
+                            if targetLaser.health <= 0 and targetLaser in ally.lasers:
+                                ally.lasers.remove(targetLaser)
 
     def draw(self, window: pygame.Surface) -> None:
         super().draw(window)

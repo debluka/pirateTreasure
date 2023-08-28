@@ -4,6 +4,7 @@ import random
 import pygame
 
 import Textures
+from Ally import Ally
 from Enemy import Enemy
 from ExplosionAnimation import ExplosionAnimation
 from GameScreen import GameScreen
@@ -26,6 +27,7 @@ class MainGame(GameScreen):
         super().__init__(ScreenType(ScreenType.MAIN_GAME), window)
         self.lives: int = 5
         self.enemies: [Enemy] = []
+        self.allies: [Ally] = []
         self.waveLength: int = 0
         self.player = Player(self.window, ShipType(ShipType.PLAYER), gameSettings.width / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_width() / 2, gameSettings.height / 2 - scaleSurfaceBase(Textures.PLAYER_IMAGE3).get_height() / 2, gameSettings.PLAYER_BASE_VELOCITY)
         self.gameLost: bool = False
@@ -91,6 +93,7 @@ class MainGame(GameScreen):
                     return False
 
             self.updateEnemies()
+            self.updateAllies()
             self.updatePlayer()
             self.updateAnimations()
 
@@ -130,6 +133,9 @@ class MainGame(GameScreen):
         # Enemies and player's character
         for enemy in self.enemies:
             enemy.draw(self.window)
+
+        for ally in self.allies:
+            ally.draw(self.window)
 
         self.player.draw(self.window)
 
@@ -243,6 +249,8 @@ class MainGame(GameScreen):
         self.upgradeMenu.resize()
         for enemy in self.enemies:
             enemy.resize()
+        for ally in self.allies:
+            ally.resize()
 
         self.points = []
         self.populate()
@@ -259,7 +267,7 @@ class MainGame(GameScreen):
         mainGameState.pX = self.player.x + self.player.get_width() / 2
         mainGameState.pY = self.player.y + self.player.get_height() / 2
 
-        self.player.move_lasers(self.enemies, self.animations)
+        self.player.move_lasers(self.allies, self.enemies, self.animations)
         self.player.updateEffects()
         self.player.updateHealthAndArmor()
 
@@ -289,6 +297,26 @@ class MainGame(GameScreen):
                 # If enemy gets to the bottom of the screen we also lose lives
                 self.lives -= 1
                 self.enemies.remove(enemy)
+
+    def updateAllies(self) -> None:
+        for ally in self.allies[:]:
+            ally.updateParticles()
+            ally.updateEffects()
+            ally.move()
+            ally.move_lasers(self.player)
+
+            # Shooting
+            if random.randrange(0, 2 * 60) == 1:
+                ally.shoot()
+
+            # Collision checking
+            if collide(ally, self.player):
+                pygame.mixer.Sound.play(shipCollisionFX)
+                self.player.health -= 50
+                self.allies.remove(ally)
+                self.animations.append(ExplosionAnimation(int(ally.x + ally.get_width() / 2), int(ally.y + ally.get_height() / 2), self.window))
+            elif ally.y + ally.get_height() > gameSettings.height - gameSettings.minY - gameSettings.baseHeight:
+                self.allies.remove(ally)
 
     def updateAnimations(self):
         for animation in self.animations:
@@ -337,3 +365,13 @@ class MainGame(GameScreen):
                           self.window,
                           10 * mainGameState.level)
             self.enemies.append(enemy)
+
+        for i in range(math.ceil(mainGameState.level / 5)):
+            ally = Ally(ShipType(ShipType.ENEMY),
+                        random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
+                        random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
+                        "yellow",
+                        gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                        self.window,
+                        10)
+            self.allies.append(ally)
