@@ -82,6 +82,10 @@ class Player(Ship):
                         channel.play(hitFX)
                         ally.health -= self.laser_damage
                         if ally.health <= 0:
+                            if not mainGameState.isBonusLevel:
+                                mainGameState.money -= 10
+                                if mainGameState.money < 0:
+                                    mainGameState.money = 0
                             allies.remove(ally)
                             animations.append(ExplosionAnimation(int(ally.x + ally.get_width() / 2), int(ally.y + ally.get_height() / 2), self.window))
                         if playerLaser in self.lasers:

@@ -61,7 +61,10 @@ class Ally(Ship):
                 pygame.mixer.Sound.play(hitFX)
                 # Apply laser effects
                 if obj.health <= obj.max_health - 10:
-                    obj.health += 10
+                    if mainGameState.isBonusLevel:
+                        obj.health += (1 + math.floor(mainGameState.level / 3) - 1)
+                    else:
+                        obj.health += 10
                 self.lasers.remove(laser)
 
     def shoot(self) -> None:

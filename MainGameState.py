@@ -6,8 +6,9 @@ from GameSettings import gameSettings
 class MainGameState:
     def __init__(self):
         self.isPaused: bool = False
+        self.isBonusLevel: bool = False
         self.level = 0
-        self.WAVE_SIZE: int = 3
+        self.WAVE_SIZE: int = 4
         self.score: int = 0
         self.money: int = 0
 

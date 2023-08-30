@@ -283,7 +283,7 @@ class MainGame(GameScreen):
         self.player.updateHealthAndArmor()
 
     def updateEnemies(self) -> None:
-        if len(self.enemies) == 0:
+        if len(self.enemies) == 0 and not mainGameState.isBonusLevel:
             self.goToNextLevel()
 
         for enemy in self.enemies[:]:
@@ -310,6 +310,9 @@ class MainGame(GameScreen):
                 self.enemies.remove(enemy)
 
     def updateAllies(self) -> None:
+        if mainGameState.isBonusLevel and len(self.allies) == 0:
+            self.goToNextLevel()
+
         for ally in self.allies[:]:
             ally.updateParticles()
             ally.updateEffects()
@@ -327,6 +330,8 @@ class MainGame(GameScreen):
                 self.allies.remove(ally)
                 self.animations.append(ExplosionAnimation(int(ally.x + ally.get_width() / 2), int(ally.y + ally.get_height() / 2), self.window))
             elif ally.y + ally.get_height() > gameSettings.height - gameSettings.minY - gameSettings.baseHeight:
+                if self.lives < 10:
+                    self.lives += 1
                 self.allies.remove(ally)
 
     def updateAnimations(self):
@@ -337,52 +342,109 @@ class MainGame(GameScreen):
 
 
     def goToNextLevel(self) -> None:
-        mainGameState.level += 1
-        if mainGameState.level % 5 == 0 and mainGameState.level > 1:
-            pygame.mixer.Sound.play(thunderStrikeFX)
-            pygame.mixer.music.load('assets/audio/thunderAmbient.mp3')
-            pygame.mixer.music.play(-1)
-            self.waterColor = (11, 41, 46)
-        elif mainGameState.level % 5 == 1 and mainGameState.level > 5:
-            self.waterColor = (14, 194, 249)
-            pygame.mixer.music.load('assets/audio/ambient.mp3')
-        if mainGameState.level > 1:
-            pygame.mixer.Sound.play(newLevelFX)
-        self.player.armor = self.player.max_armor
-        self.waveLength += mainGameState.WAVE_SIZE
-        for i in range(self.waveLength):
-            enemySpawnTypePool = ["red", "blue", "green"]
+        if mainGameState.level % 3 == 0 and mainGameState.level > 1 and not mainGameState.isBonusLevel:
+            mainGameState.isBonusLevel = True
+            self.bonusLevel()
+        else:
+            mainGameState.level += 1
+            mainGameState.isBonusLevel = False
             if mainGameState.level % 5 == 0 and mainGameState.level > 1:
-                enemySpawnTypePool.append("ghost")
+                pygame.mixer.Sound.play(thunderStrikeFX)
+                pygame.mixer.music.load('assets/audio/thunderAmbient.mp3')
+                pygame.mixer.music.play(-1)
+                self.waterColor = (11, 41, 46)
             elif mainGameState.level % 5 == 1 and mainGameState.level > 5:
-                enemySpawnTypePool.remove("ghost")
+                self.waterColor = (14, 194, 249)
+                pygame.mixer.music.load('assets/audio/ambient.mp3')
+            if mainGameState.level > 1:
+                pygame.mixer.Sound.play(newLevelFX)
+            self.player.armor = self.player.max_armor
+            self.waveLength += mainGameState.WAVE_SIZE
+            for i in range(self.waveLength):
+                enemySpawnTypePool = ["red", "blue", "green"]
+                if mainGameState.level % 5 == 0 and mainGameState.level > 1:
+                    enemySpawnTypePool.append("ghost")
+                elif mainGameState.level % 5 == 1 and mainGameState.level > 5:
+                    enemySpawnTypePool.remove("ghost")
 
-            base_probability = 0.10
-            increase_factor = 0.05
-            probability = min(base_probability + (increase_factor * (mainGameState.level)), 0.3)
-            isTracker: bool = True if random.random() < probability else False
-            isDodger: bool = True if random.random() < probability else False
+                base_probability = 0.10
+                increase_factor = 0.05
+                probability = min(base_probability + (increase_factor * (mainGameState.level)), 0.3)
+                isTracker: bool = True if random.random() < probability else False
+                isDodger: bool = True if random.random() < probability else False
 
-            if isTracker is True:
-                isDodger = False
+                if isTracker is True:
+                    isDodger = False
 
-            enemy = Enemy(isTracker,
-                          isDodger,
-                          ShipType(ShipType.ENEMY),
-                          random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
-                          random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
-                          random.choice(enemySpawnTypePool),
-                          gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
-                          self.window,
-                          10 * mainGameState.level)
-            self.enemies.append(enemy)
+                enemy = Enemy(isTracker,
+                              isDodger,
+                              ShipType(ShipType.ENEMY),
+                              random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
+                              random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
+                              random.choice(enemySpawnTypePool),
+                              gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                              self.window,
+                              10 * mainGameState.level)
+                self.enemies.append(enemy)
 
-        for i in range(math.ceil(mainGameState.level / 5)):
-            ally = Ally(ShipType(ShipType.ENEMY),
-                        random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
-                        random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
-                        "yellow",
-                        gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
-                        self.window,
-                        10)
-            self.allies.append(ally)
+            for i in range(math.ceil(mainGameState.level / 5)):
+                ally = Ally(ShipType(ShipType.ENEMY),
+                            random.randrange(math.ceil(scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2), math.ceil(gameSettings.width - scaleSurfaceBase(Textures.RED_SHIP1).get_width())),
+                            random.randrange(math.ceil(-2500 * gameSettings.h_scale_base), math.ceil(-1500 * gameSettings.h_scale_base)),
+                            "yellow",
+                            gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                            self.window,
+                            10)
+                self.allies.append(ally)
+
+
+    def bonusLevel(self):
+        ally = Ally(ShipType(ShipType.ENEMY),
+                    int(gameSettings.width * 0.1 - scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2),
+                    int(-1200 * gameSettings.w_scale_base),
+                    "yellow",
+                    gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                    self.window,
+                    10,
+                    False)
+        self.allies.append(ally)
+
+        ally = Ally(ShipType(ShipType.ENEMY),
+                    int(gameSettings.width * 0.3 - scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2),
+                    int(-1200 * gameSettings.w_scale_base + 30 * gameSettings.w_scale_base),
+                    "yellow",
+                    gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                    self.window,
+                    10,
+                    False)
+        self.allies.append(ally)
+
+        ally = Ally(ShipType(ShipType.ENEMY),
+                    int(gameSettings.width * 0.5 - scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2),
+                    int(-1200 * gameSettings.w_scale_base + 45 * gameSettings.w_scale_base),
+                    "yellow",
+                    gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                    self.window,
+                    10,
+                    False)
+        self.allies.append(ally)
+
+        ally = Ally(ShipType(ShipType.ENEMY),
+                    int(gameSettings.width * 0.7 - scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2),
+                    int(-1200 * gameSettings.w_scale_base + 30 * gameSettings.w_scale_base),
+                    "yellow",
+                    gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                    self.window,
+                    10,
+                    False)
+        self.allies.append(ally)
+
+        ally = Ally(ShipType(ShipType.ENEMY),
+                    int(gameSettings.width * 0.9 - scaleSurfaceBase(Textures.RED_SHIP1).get_width() / 2),
+                    int(-1200 * gameSettings.w_scale_base),
+                    "yellow",
+                    gameSettings.ENEMY_BASE_VELOCITY * gameSettings.h_scale_base,
+                    self.window,
+                    10,
+                    False)
+        self.allies.append(ally)
