@@ -7,9 +7,9 @@ class MainGameState:
     def __init__(self):
         self.isPaused: bool = False
         self.level = 0
-        self.WAVE_SIZE: int = 5
+        self.WAVE_SIZE: int = 3
         self.score: int = 0
-        self.money: int = 10000
+        self.money: int = 0
 
         self.limitedVision: bool = False
         self.pX: int = 0

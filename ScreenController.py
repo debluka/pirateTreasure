@@ -10,6 +10,7 @@ from MainGameState import mainGameState
 from MainMenu import MainMenu
 from OptionsMenu import OptionsMenu
 from ScreenType import ScreenType
+from Tutorial import Tutorial
 from WelcomeScreen import WelcomeScreen
 
 
@@ -85,3 +86,5 @@ class ScreenController:
                 self.currentScreen = HowToPlayScreen(self.window)
             case ScreenType.CREDITS_SCREEN:
                 self.currentScreen = CreditsScreen(self.window)
+            case ScreenType.TUTORIAL:
+                self.currentScreen = Tutorial(self.window)

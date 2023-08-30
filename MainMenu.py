@@ -14,11 +14,12 @@ class MainMenu(GameScreen):
         TOP_OFFSET: int = int(270 * gameSettings.h_scale_base)
         BUTTON_SPACING: int = int(60 * gameSettings.h_scale_base)
         self.buttons: dict[str, TextButton] = {"Start game": TextButton(self. window, TOP_OFFSET, "Start game"),
-                                               "Leaderboard": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING, "Leaderboard"),
-                                               "Options": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 2, "Options"),
+                                               "Tutorial": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING, "Tutorial"),
+                                               "Leaderboard": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 2, "Leaderboard"),
+                                               "Options": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 3, "Options"),
                                                "Credits": TextButton(self.window, gameSettings.height - main_font.get_height() - 20, "Credits", 20),
                                                "How to play": TextButton(self.window, gameSettings.height - main_font.get_height() - 20, "How to play", gameSettings.width - main_font.size("How to play")[0] - 20),
-                                               "Exit": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 3, "Exit")}
+                                               "Exit": TextButton(self.window, TOP_OFFSET + BUTTON_SPACING * 4, "Exit")}
         if pygame.mixer.music.get_busy() is False:
             pygame.mixer.music.load('assets/audio/mainTheme.mp3')
             pygame.mixer.music.play(-1)
@@ -33,6 +34,9 @@ class MainMenu(GameScreen):
                 match key:
                     case "Start game":
                         self.nextScreen = ScreenType.MAIN_GAME
+                        pygame.mixer.music.stop()
+                    case "Tutorial":
+                        self.nextScreen = ScreenType.TUTORIAL
                         pygame.mixer.music.stop()
                     case "Leaderboard":
                         self.nextScreen = ScreenType.LEADERBOARD

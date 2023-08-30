@@ -16,27 +16,28 @@ from WaterParticles import ParticlePrinciple
 
 class Ally(Ship):
 
-    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10):
+    def __init__(self, shipType: ShipType, x: int, y: int, color: str, velocity, window: pygame.Surface, health=10, isTracker: bool = True):
         super().__init__(shipType, (YELLOW_SHIP1, YELLOW_SHIP2, YELLOW_SHIP3), HEALTH_LASER, x, y, velocity, health)
         self.color: str = color
         self.particles = ParticlePrinciple(window)
+        self.isTracker = isTracker
 
     def move(self) -> None:
         addedSpeed: float = 0
 
+        if self.isTracker:
+            dist: float = math.sqrt((self.x - mainGameState.pX) ** 2 + (self.y + mainGameState.yOffset - mainGameState.pY) ** 2)
+            xDiff: float = self.x - mainGameState.pX
+            yDiff: float = self.y + mainGameState.yOffset - mainGameState.pY
 
-        dist: float = math.sqrt((self.x - mainGameState.pX) ** 2 + (self.y + mainGameState.yOffset - mainGameState.pY) ** 2)
-        xDiff: float = self.x - mainGameState.pX
-        yDiff: float = self.y + mainGameState.yOffset - mainGameState.pY
+            xRatio: float = - (xDiff / (abs(yDiff) + abs(xDiff)))
+            yRatio: float = - (yDiff / (abs(yDiff) + abs(xDiff)))
+            if dist < (350 * gameSettings.h_scale):
+                addedSpeed = 2 * dist / (350 * gameSettings.h_scale)
 
-        xRatio: float = - (xDiff / (abs(yDiff) + abs(xDiff)))
-        yRatio: float = - (yDiff / (abs(yDiff) + abs(xDiff)))
-        if dist < (350 * gameSettings.h_scale):
-            addedSpeed = 2 * dist / (350 * gameSettings.h_scale)
-
-        self.y += (addedSpeed * (yRatio if yDiff < 0 else 0))
-        if 15 * gameSettings.w_scale_base < self.x and self.x + self.ship_img.get_width() < gameSettings.width:
-            self.x += (addedSpeed * xRatio)
+            self.y += (addedSpeed * (yRatio if yDiff < 0 else 0))
+            if 15 * gameSettings.w_scale_base < self.x and self.x + self.ship_img.get_width() < gameSettings.width:
+                self.x += (addedSpeed * xRatio)
 
         self.y += self.velocity
 

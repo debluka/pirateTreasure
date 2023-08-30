@@ -9,3 +9,4 @@ class ScreenType(IntEnum):
     WELCOME_SCREEN: int = 5
     CREDITS_SCREEN: int = 6
     HOW_TO_PLAY_SCREEN: int = 7
+    TUTORIAL: int = 8
